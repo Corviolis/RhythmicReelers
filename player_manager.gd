@@ -4,8 +4,10 @@ extends Node
 # device is -1 for keyboard/mouse, 0+ for joypads
 # these concepts seem similar but it is useful to separate them so for example, device 6 could control player 1.
 
-signal player_joined(player)
-signal player_left(player)
+signal player_joined(player: int, authority: int)
+signal player_left(player: int)
+
+var is_multiplayer: bool = false
 
 # map from player integer to dictionary of data
 # the existence of a key in this dictionary means this player is joined.
@@ -14,20 +16,47 @@ var player_data: Dictionary = {}
 
 const MAX_PLAYERS = 4
 
-func join(device: int):
-	var player = next_player()
+# called by the server after verifying that a player spot exists
+# or called locally if not multiplayer (or if server)
+@rpc("call_local", "reliable")
+func join_game(device: int, player: int):
+	join_game_puppet.rpc(player, -2 if (device == -1) else -3)
 	if player >= 0:
 		# initialize default player data here
-		# "team" and "car" are remnants from my game just to provide an example
 		player_data[player] = {
 			"device": device,
 		}
-		player_joined.emit(player)
+		player_joined.emit(player, multiplayer.get_unique_id())
 
+func join(device: int):
+	var player: int
+	if is_multiplayer:
+		next_player_rpc.rpc_id(1, device)
+		return
+	player = next_player()
+	join_game(device, player)
+
+# creates a 'fake' player on remote clients (including the server if we are not the server)
+# the device here is just to make the controller / keyboard icon work (feeling cute might remove later)
+# device -2 = keyboard, -3 = controller
+@rpc("any_peer", "reliable")
+func join_game_puppet(player: int, device: int):
+	if player >= 0:
+		# initialize default player data here
+		player_data[player] = {
+			"device": device
+		}
+		player_joined.emit(player, multiplayer.get_remote_sender_id())
+
+@rpc("any_peer", "call_local", "reliable")
 func leave(player: int):
 	if player_data.has(player):
 		player_data.erase(player)
 		player_left.emit(player)
+
+func drop_all_players():
+	for player in get_player_indexes():
+		leave(player)
 
 func get_player_count():
 	return player_data.size()
@@ -58,7 +87,9 @@ func set_player_data(player: int, key: StringName, value: Variant):
 # this is an example of how to look for an action on all devices
 func handle_join_input():
 	for device in get_unjoined_devices():
-		if MultiplayerInput.is_action_just_pressed(device, "join"):
+		# for testing controller (TODO remove later)
+		# if device == -1 or multiplayer.is_server():
+		if MultiplayerInput.is_action_just_pressed(device, &"join"):
 			join(device)
 
 # to see if anybody is pressing the "start" action
@@ -83,6 +114,16 @@ func next_player() -> int:
 	for i in MAX_PLAYERS:
 		if !player_data.has(i): return i
 	return -1
+
+# returns a valid player integer for a new player.
+# returns -1 if there is no room for a new player.
+@rpc("any_peer", "call_local", "reliable")
+func next_player_rpc(device:int):
+	for i in MAX_PLAYERS:
+		if !player_data.has(i): 
+			join_game.rpc_id(multiplayer.get_remote_sender_id(), device, i)
+			return
+	join_game.rpc_id(multiplayer.get_remote_sender_id(), device, -1)
 
 # returns an array of all valid devices that are *not* associated with a joined player
 func get_unjoined_devices():

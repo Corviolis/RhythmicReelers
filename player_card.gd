@@ -5,15 +5,17 @@ class_name PlayerCard
 var player: int
 var input: DeviceInput
 
+var device
+
 func init(player_num: int):
 	player = player_num
-	var device := PlayerManager.get_player_device(player_num)
+	device = PlayerManager.get_player_device(player_num)
 	input = DeviceInput.new(device)
 	
 	var device_name = get_node(^"PanelContainer/MarginContainer/VBoxContainer/DeviceName") as Label
 	device_name.text = "Device: %d" % device
 	var device_icon = get_node(^"PanelContainer/MarginContainer/VBoxContainer/DeviceIcon") as TextureRect
-	if (device == -1):
+	if (device == -1 or device == -2):
 		var keyboard_icon = load("res://keyboard_icon.tres") as CompressedTexture2D
 		device_icon.texture = keyboard_icon
 	else:
@@ -22,5 +24,6 @@ func init(player_num: int):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if input.is_action_just_pressed(&"join"):
-		PlayerManager.leave(player)
+	if input.is_action_just_pressed(&"join") and is_multiplayer_authority():
+		PlayerManager.leave.rpc(player)
+		print("leave called by device: %d" % device)
