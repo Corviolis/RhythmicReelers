@@ -9,7 +9,7 @@ var input: DeviceInput
 
 func init(player_num: int):
 	player = player_num
-	char_index = randi() % PlayerManager.get_character_assets().size()
+	char_index = randi() % PlayerManager.get_character_asset_count()
 	var device := PlayerManager.get_player_device(player_num)
 	input = DeviceInput.new(device)
 	
@@ -26,8 +26,8 @@ func init(player_num: int):
 		device_icon.texture = controller_icon
 
 func update_char_icon(dir: int):
-	char_index = (char_index + dir) % PlayerManager.get_character_assets().size()
-	icon.texture = PlayerManager.get_character_assets()[char_index]["idle.png"]
+	char_index = (char_index + dir) % PlayerManager.get_character_asset_count()
+	icon.texture = PlayerManager.get_character_assets(char_index)["idle.png"]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

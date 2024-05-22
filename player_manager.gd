@@ -33,8 +33,11 @@ func _ready():
 		character_assets.append(assets)
 		folder = chars_dir.get_next()
 
-func get_character_assets():
-	return character_assets
+func get_character_asset_count():
+	return character_assets.size()
+
+func get_character_assets(index: int):
+	return character_assets[index]
 
 func join(device: int):
 	var player = next_player()
