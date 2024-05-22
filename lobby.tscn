@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3 uid="uid://iaqenejaldyp"]
+
+[ext_resource type="Script" path="res://lobby.gd" id="1_en4o0"]
+
+[node name="Lobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_en4o0")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 108.0
+offset_top = 116.0
+offset_right = 318.0
+offset_bottom = 536.0
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 351.0
+offset_top = 116.0
+offset_right = 561.0
+offset_bottom = 536.0
+
+[node name="PanelContainer3" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 596.0
+offset_top = 116.0
+offset_right = 806.0
+offset_bottom = 536.0
+
+[node name="PanelContainer4" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 839.0
+offset_top = 116.0
+offset_right = 1049.0
+offset_bottom = 536.0
+
+[node name="PlayerList" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 92.0
+offset_top = -200.0
+offset_right = 1064.0
+offset_bottom = 200.0
+grow_vertical = 2
+
+[node name="OpenServer" type="Button" parent="."]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 580.0
+offset_right = 514.0
+offset_bottom = 611.0
+text = "Open Server"
+
+[node name="JoinServer" type="Button" parent="."]
+layout_mode = 0
+offset_left = 636.0
+offset_top = 580.0
+offset_right = 740.0
+offset_bottom = 611.0
+text = "Join Server"
+
+[node name="ServerIP" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 768.0
+offset_top = 580.0
+offset_right = 928.0
+offset_bottom = 611.0
+text = "localhost"
+placeholder_text = "0.0.0.0"
+
+[connection signal="pressed" from="OpenServer" to="." method="host_game"]
+[connection signal="pressed" from="JoinServer" to="." method="join_game"]

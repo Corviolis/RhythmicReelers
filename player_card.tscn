@@ -1,0 +1,90 @@
+[gd_scene load_steps=6 format=3 uid="uid://bs76obxtrcy46"]
+
+[ext_resource type="Script" path="res://player_card.gd" id="1_3yjdh"]
+[ext_resource type="Texture2D" uid="uid://baroktadgapan" path="res://characters/test_guy.png" id="2_8tejb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yk6p1"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="Theme" id="Theme_sjxrt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_18dqi"]
+
+[node name="PlayerCard" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 400)
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_3yjdh")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yk6p1")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+custom_minimum_size = Vector2(200, 400)
+layout_mode = 2
+theme = SubResource("Theme_sjxrt")
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="PlayerName" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Player"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+theme_override_styles/separator = SubResource("StyleBoxEmpty_18dqi")
+
+[node name="CharacterSelect" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="SwitchLeft" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/CharacterSelect"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "<"
+
+[node name="CharacterTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/CharacterSelect"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("2_8tejb")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="SwitchRight" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/CharacterSelect"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = ">"
+
+[node name="DeviceName" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.650128, 0.650128, 0.650128, 1)
+text = "Device"
+horizontal_alignment = 1
+
+[node name="DeviceIcon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+expand_mode = 4
+
+[node name="ReadyUp" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Ready Up"

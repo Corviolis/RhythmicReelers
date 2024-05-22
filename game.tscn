@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://cel1gsnerksoe"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_13m2r"]
+[ext_resource type="Texture2D" uid="uid://baroktadgapan" path="res://characters/test_guy.png" id="1_84mkp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mr022"]
+size = Vector2(8, 8)
+
+[node name="Node" type="Node"]
+
+[node name="Scene" type="Node2D" parent="."]
+texture_filter = 1
+
+[node name="Boat" type="StaticBody2D" parent="Scene"]
+
+[node name="Player" type="CharacterBody2D" parent="Scene/Boat"]
+position = Vector2(49, 52)
+floor_stop_on_slope = false
+script = ExtResource("1_13m2r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Boat/Player"]
+shape = SubResource("RectangleShape2D_mr022")
+
+[node name="Sprite2D" type="Sprite2D" parent="Scene/Boat/Player"]
+texture = ExtResource("1_84mkp")
+
+[node name="Camera2D" type="Camera2D" parent="Scene"]
+position = Vector2(288, 162)
+zoom = Vector2(2, 2)
