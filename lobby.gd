@@ -80,6 +80,7 @@ func player_connected(id: int):
 	if multiplayer.is_server():
 		for player in PlayerManager.get_player_indexes():
 			PlayerManager.join_game_puppet.rpc_id(id, player, -2 if (PlayerManager.get_player_device(player) == -1) else -3)
+			
 
 func _exit_tree():
 	thread.wait_to_finish()

@@ -13,8 +13,33 @@ var is_multiplayer: bool = false
 # the existence of a key in this dictionary means this player is joined.
 # use get_player_data() and set_player_data() to use this dictionary.
 var player_data: Dictionary = {}
+var character_assets: Array[Dictionary]
 
 const MAX_PLAYERS = 4
+
+func _ready():
+	var chars_dir = DirAccess.open("res://characters")
+	chars_dir.list_dir_begin()
+	var folder = chars_dir.get_next()
+	
+	while folder != "":
+		var assets = {}
+		var char_dir = DirAccess.open("res://characters/" + folder)
+		char_dir.list_dir_begin()
+		var asset = char_dir.get_next()
+		
+		while asset != "" && asset.ends_with(".png"):
+			assets[asset] = load("res://characters/" + folder + "/" + asset)
+			asset = char_dir.get_next()
+		
+		character_assets.append(assets)
+		folder = chars_dir.get_next()
+
+func get_character_asset_count():
+	return character_assets.size()
+
+func get_character_assets(index: int):
+	return character_assets[index]
 
 # called by the server after verifying that a player spot exists
 # or called locally if not multiplayer (or if server)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baroktadgapan"
-path="res://.godot/imported/test_guy.png-00f8e88deca04614b34f0356f343cc49.ctex"
+uid="uid://bnowygylf74uo"
+path="res://.godot/imported/idle.png-37a120767d9627c4687902ecec3a039a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://characters/test_guy.png"
-dest_files=["res://.godot/imported/test_guy.png-00f8e88deca04614b34f0356f343cc49.ctex"]
+source_file="res://characters/sad_guy/idle.png"
+dest_files=["res://.godot/imported/idle.png-37a120767d9627c4687902ecec3a039a.ctex"]
 
 [params]
 
