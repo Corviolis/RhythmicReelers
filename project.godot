@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 
 MultiplayerInput="*res://addons/multiplayer_input/multiplayer_input.gd"
 PlayerManager="*res://player_manager.gd"
+RhythmEngine="*res://rhythm_engine.gd"
 NetworkManager="*res://network_manager.gd"
 GlobalUtils="*res://global_utils.gd"
 

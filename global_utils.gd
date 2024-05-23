@@ -11,3 +11,6 @@ func _deferred_goto_scene(path: String):
     current_scene = new_scene.instantiate()
     get_tree().root.add_child(current_scene)
     get_tree().current_scene = current_scene
+
+static func equal_approx(a: float, b: float) -> bool:
+	return abs(a - b) < 1
