@@ -95,28 +95,36 @@ grow_vertical = 2
 
 [node name="OpenServer" type="Button" parent="."]
 layout_mode = 0
-offset_left = 410.0
+offset_left = 62.0
 offset_top = 580.0
-offset_right = 514.0
+offset_right = 166.0
 offset_bottom = 611.0
 text = "Open Server"
 
 [node name="JoinServer" type="Button" parent="."]
 layout_mode = 0
-offset_left = 636.0
+offset_left = 266.0
 offset_top = 580.0
-offset_right = 740.0
+offset_right = 370.0
 offset_bottom = 611.0
 text = "Join Server"
 
 [node name="ServerIP" type="LineEdit" parent="."]
 layout_mode = 0
-offset_left = 768.0
+offset_left = 387.0
 offset_top = 580.0
-offset_right = 928.0
+offset_right = 547.0
 offset_bottom = 611.0
 text = "localhost"
 placeholder_text = "0.0.0.0"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 980.0
+offset_top = 573.0
+offset_right = 1076.0
+offset_bottom = 604.0
+text = "Start Game"
 
 [connection signal="pressed" from="OpenServer" to="." method="host_game"]
 [connection signal="pressed" from="JoinServer" to="." method="join_game"]
