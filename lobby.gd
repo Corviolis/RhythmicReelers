@@ -15,7 +15,8 @@ func _process(_delta):
 	PlayerManager.handle_join_input()
 
 func add_player(player: int, authority: int):
-	var player_card := player_card_scene.instantiate() as PlayerCard
+	PlayerManager.set_player_data(player, &"multiplayer_authority", authority)
+	var player_card = player_card_scene.instantiate() as PlayerCard
 	player_card.set_multiplayer_authority(authority)
 	player_card.init(player)
 	player_card.name = StringName(str(player))
@@ -28,10 +29,18 @@ func delete_player(player: int):
 	player_card.queue_free()
 
 func host_game():
+	$OpenServer.disabled = true
+	$JoinServer.disabled = true
 	NetworkManager.host_game()
 
 func join_game():
+	$OpenServer.disabled = true
+	$JoinServer.disabled = true
+	$StartGame.disabled = true
 	NetworkManager.join_game($ServerIP.text)
+
+func start_game():
+	GlobalUtils.goto_scene.rpc("res://game.tscn")
 
 func player_connected(id: int):
 	print("Recieved connection from %d" % id)
@@ -43,4 +52,3 @@ func player_connected(id: int):
 	if multiplayer.is_server():
 		for player in PlayerManager.get_player_indexes():
 			PlayerManager.join_game_puppet.rpc_id(id, player, -2 if (PlayerManager.get_player_device(player) == -1) else -3)
-			

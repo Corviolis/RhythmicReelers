@@ -7,8 +7,6 @@ extends Node
 signal player_joined(player: int, authority: int)
 signal player_left(player: int)
 
-var is_multiplayer: bool = false
-
 # map from player integer to dictionary of data
 # the existence of a key in this dictionary means this player is joined.
 # use get_player_data() and set_player_data() to use this dictionary.
@@ -55,7 +53,7 @@ func join_game(device: int, player: int):
 
 func join(device: int):
 	var player: int
-	if is_multiplayer:
+	if NetworkManager.is_multiplayer:
 		next_player_rpc.rpc_id(1, device)
 		return
 	player = next_player()
@@ -112,7 +110,7 @@ func set_player_data(player: int, key: StringName, value: Variant):
 # this is an example of how to look for an action on all devices
 func handle_join_input():
 	for device in get_unjoined_devices():
-		# for testing controller (TODO remove later)
+		# for testing controller (TODO remember to remove after game is done)
 		# if device == -1 or multiplayer.is_server():
 		if MultiplayerInput.is_action_just_pressed(device, &"join"):
 			join(device)

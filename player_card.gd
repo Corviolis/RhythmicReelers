@@ -45,8 +45,7 @@ func _process(_delta):
 	if is_multiplayer_authority():
 		if input.is_action_just_pressed(&"join"):
 			PlayerManager.leave.rpc(player)
-			print("leave called by device: %d" % device)
-		if input.is_action_just_pressed(&"ui_left"):
+		if input.is_action_just_pressed(&"move_left"):
 			decrease_char_icon()
-		if input.is_action_just_pressed(&"ui_right"):
+		if input.is_action_just_pressed(&"move_right"):
 			increase_char_icon()

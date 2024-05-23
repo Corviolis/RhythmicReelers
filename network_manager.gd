@@ -1,9 +1,10 @@
 extends Node
 
 var upnp: UPNP
-var peer: ENetMultiplayerPeer
+var peer: MultiplayerPeer
 var port: int
 var thread := Thread.new()
+var is_multiplayer: bool = false
 
 const DEFAULT_PORT: int = 38426
 
@@ -32,14 +33,14 @@ func host_game():
 	peer = ENetMultiplayerPeer.new()
 	peer.create_server(get_port(), 4)
 	multiplayer.multiplayer_peer = peer
-	PlayerManager.is_multiplayer = true
+	is_multiplayer = true
 
 func join_game(server_ip: String):
 	PlayerManager.drop_all_players()
 	peer = ENetMultiplayerPeer.new()
 	peer.create_client(server_ip, get_port())
 	multiplayer.multiplayer_peer = peer
-	PlayerManager.is_multiplayer = true
+	is_multiplayer = true
 
 func _exit_tree():
 	thread.wait_to_finish()

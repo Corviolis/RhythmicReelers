@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://bd1u1x4hdhi0s"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_w3w7u"]
+[ext_resource type="Texture2D" uid="uid://baroktadgapan" path="res://characters/happy_guy/idle.png" id="2_2w3id"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mr022"]
+size = Vector2(8, 8)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gdxd3"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(49, 52)
+floor_stop_on_slope = false
+script = ExtResource("1_w3w7u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_mr022")
+disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_2w3id")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_gdxd3")

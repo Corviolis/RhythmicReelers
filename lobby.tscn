@@ -118,13 +118,14 @@ offset_bottom = 611.0
 text = "localhost"
 placeholder_text = "0.0.0.0"
 
-[node name="Button" type="Button" parent="."]
+[node name="StartGame" type="Button" parent="."]
 layout_mode = 0
-offset_left = 980.0
-offset_top = 573.0
-offset_right = 1076.0
-offset_bottom = 604.0
+offset_left = 981.0
+offset_top = 580.0
+offset_right = 1077.0
+offset_bottom = 611.0
 text = "Start Game"
 
 [connection signal="pressed" from="OpenServer" to="." method="host_game"]
 [connection signal="pressed" from="JoinServer" to="." method="join_game"]
+[connection signal="pressed" from="StartGame" to="." method="start_game"]
