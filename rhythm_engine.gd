@@ -1,17 +1,20 @@
 extends Node
 
-signal future_beat(player_id: int, length: float)
-signal current_beat(player_id: int, length: float)
+signal future_beat(player_id: int, length: float, name: String)
+signal current_beat(player_id: int, length: float, name: String)
 
 var audio = AudioStreamPlayer.new()
 
 var delay: float
 var song_position: float
-var beatmaps: Dictionary
+static var beat_maps: Dictionary
 var sessions = []
 
 class Session:
-	var tracks: Array[Track]
+	var tracks: Dictionary
+	
+	func _init(map: String):
+		tracks = RhythmEngine.beat_maps[map]
 	
 	class Track:
 		var beat_map: Array[float]
@@ -40,7 +43,7 @@ func _ready():
 	var folder = chars_dir.get_next()
 	
 	while folder != "":
-		var assets = {}
+		var maps = {}
 		var char_dir = DirAccess.open("res://music/beatmaps" + folder)
 		char_dir.list_dir_begin()
 		var asset = char_dir.get_next()
@@ -64,10 +67,10 @@ func _ready():
 				while end > offset:
 					beat_map.append(bytes.decode_float(offset))
 					offset += 4
-				assets[name] = beat_map
+				maps[name] = beat_map
 			asset = char_dir.get_next()
 		
-		beatmaps[folder] = assets
+		beat_maps[folder] = maps
 		folder = chars_dir.get_next()
 		
 	audio.play()
@@ -80,19 +83,20 @@ func _process(_delta):
 		if session == null:
 			continue
 		
-		for track in session.tracks:
+		for name in session.tracks:
+			var track = session.tracks[name]
 			# Scan for position in beatmap
 			var beat = track.get_beat()
 			while song_position > beat[0]:
 				beat = track.next_beat()
 			
 			if song_position >= beat[0]:
-				current_beat.emit(id, beat[1])
+				current_beat.emit(id, beat[1], name)
 				track.next_beat()
 				continue
 
 			if !track.beat_sent && GlobalUtils.equal_approx(beat[0] - track.future_beat_offset, song_position):
-				future_beat.emit(id, beat[1])
+				future_beat.emit(id, beat[1], name)
 				track.future_beat_sent = true
 
 func start_session(player_id: int, beat_map):
