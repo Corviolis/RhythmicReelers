@@ -74,7 +74,8 @@ text = ">"
 [node name="DeviceName" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.650128, 0.650128, 0.650128, 1)
-text = "Device"
+theme_override_font_sizes/font_size = 12
+text = "Authority"
 horizontal_alignment = 1
 
 [node name="DeviceIcon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer"]

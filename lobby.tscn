@@ -111,9 +111,9 @@ text = "Join Server"
 
 [node name="ServerIP" type="LineEdit" parent="."]
 layout_mode = 0
-offset_left = 387.0
+offset_left = 377.0
 offset_top = 580.0
-offset_right = 547.0
+offset_right = 537.0
 offset_bottom = 611.0
 text = "localhost"
 placeholder_text = "0.0.0.0"
@@ -126,6 +126,16 @@ offset_right = 1077.0
 offset_bottom = 611.0
 text = "Start Game"
 
+[node name="LeaveServer" type="Button" parent="."]
+layout_mode = 0
+offset_left = 648.0
+offset_top = 580.0
+offset_right = 744.0
+offset_bottom = 611.0
+disabled = true
+text = "Leave Server"
+
 [connection signal="pressed" from="OpenServer" to="." method="host_game"]
 [connection signal="pressed" from="JoinServer" to="." method="join_game"]
 [connection signal="pressed" from="StartGame" to="." method="start_game"]
+[connection signal="pressed" from="LeaveServer" to="." method="leave_server"]

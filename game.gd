@@ -15,7 +15,7 @@ func _create_players():
 	for player_index in PlayerManager.get_player_indexes():
 		var device = PlayerManager.get_player_device(player_index)
 		var player = player_scene.instantiate() as Player
-		player.set_multiplayer_authority(PlayerManager.get_player_data(player_index, &"multiplayer_authority"))
+		player.set_multiplayer_authority(PlayerManager.get_player_authority(player_index))
 		player.set_device(device)
 		player.name = str(player_index)
 		boat.add_child(player)

@@ -2,7 +2,7 @@ extends Node
 
 @onready var current_scene := get_tree().current_scene
 
-static func equal_approx(a: float, b: float) -> bool:
+func equal_approx(a: float, b: float) -> bool:
 	return abs(a - b) < 1
 
 @rpc("call_local", "reliable")

@@ -1,9 +1,7 @@
+class_name Player
 extends CharacterBody2D
 
-class_name Player
-
 const SPEED = 100
-
 var input : DeviceInput
 
 func _physics_process(_delta):
