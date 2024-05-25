@@ -14,7 +14,8 @@ func init(player_num: int):
 	icon = get_node(^"PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/CharacterTexture") as TextureRect
 	
 	_set_device_icon()
-	set_char_icon.rpc(PlayerManager.get_player_data(player, "character_index"))
+
+	set_char_icon(PlayerManager.get_player_data(player, "character_index"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -26,7 +27,6 @@ func _process(_delta):
 		if input.is_action_just_pressed(&"move_right"):
 			increase_char_icon()
 
-# BUG: initial state is reflected remotely but not locally
 @rpc("any_peer", "call_local", "reliable")
 func set_char_icon(dir: int):
 	char_index = (dir) % PlayerManager.get_character_asset_count()

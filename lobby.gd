@@ -23,6 +23,8 @@ func add_player(player: int, authority: int):
 	player_list.add_child(player_card)
 	player_card.init(player)
 
+# BUG: this causes an error when a remote client with at least one player card disconnects but I don't know why
+#		is this error showing on the server or on the client?
 func delete_player(player: int):
 	var player_card := player_list.get_node(str(player))
 	player_card.queue_free()
@@ -62,5 +64,6 @@ func player_connected(id: int):
 		for player in PlayerManager.get_player_indexes():
 			PlayerManager.create_empty_player.rpc_id(id,
 				player,
-				-2 if (PlayerManager.get_player_device(player) == -1) else -3,
-				PlayerManager.get_player_data(player, "character_index"))
+				-2 if (PlayerManager.get_player_device(player) == -1 or PlayerManager.get_player_device(player == -2)) else -3,
+				PlayerManager.get_player_data(player, "character_index"),
+				PlayerManager.get_player_authority(player))

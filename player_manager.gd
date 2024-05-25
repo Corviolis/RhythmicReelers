@@ -106,18 +106,18 @@ func _attempt_to_join(device: int):
 	if NetworkManager.is_multiplayer:
 		_next_player_rpc.rpc_id(1, device)
 		return
-	_join_game(device, _next_player())
+	_join_game(device, _next_player(), randi() % get_character_asset_count())
 
 # called by the server after verifying that a player spot exists
 # or called locally if not multiplayer (or if server)
 @rpc("call_local", "reliable")
-func _join_game(device: int, player: int):
-	create_empty_player.rpc(player, -2 if (device == -1) else -3)
+func _join_game(device: int, player: int, character_index: int):
+	create_empty_player.rpc(player, -2 if (device == -1) else -3, character_index)
 	if player >= 0:
 		# initialize default player data here
 		player_data[player] = {
 			"device": device,
-			"character_index": randi() % get_character_asset_count()
+			"character_index": character_index
 		}
 		player_joined.emit(player, multiplayer.get_unique_id())
 
@@ -141,14 +141,15 @@ func _next_player() -> int:
 #	lol who am I kidding it works so it will never be touched again
 # device -2 = keyboard, -3 = controller
 @rpc("any_peer", "reliable")
-func create_empty_player(player: int, device: int, character_index: int = 0):
+func create_empty_player(player: int, device: int, character_index: int, multiplayer_authority: int = multiplayer.get_remote_sender_id()):
 	if player >= 0:
 		# initialize default player data here
 		player_data[player] = {
 			"device": device,
-			"character_index": character_index
+			"character_index": character_index,
+			"multiplayer_authority": multiplayer_authority
 		}
-		player_joined.emit(player, multiplayer.get_remote_sender_id())
+		player_joined.emit(player, multiplayer_authority)
 
 func get_player_authority(player: int) -> int:
 	return get_player_data(player, "multiplayer_authority")
@@ -157,11 +158,12 @@ func get_player_authority(player: int) -> int:
 # returns -1 if there is no room for a new player.
 @rpc("any_peer", "call_local", "reliable")
 func _next_player_rpc(device:int):
+	var character_index = randi() % get_character_asset_count() as int
 	for i in MAX_PLAYERS:
 		if !player_data.has(i): 
-			_join_game.rpc_id(multiplayer.get_remote_sender_id(), device, i)
+			_join_game.rpc_id(multiplayer.get_remote_sender_id(), device, i, character_index)
 			return
-	_join_game.rpc_id(multiplayer.get_remote_sender_id(), device, -1)
+	_join_game.rpc_id(multiplayer.get_remote_sender_id(), device, -1, character_index)
 
 #=== SIGNAL CALLBACKS ===
 
