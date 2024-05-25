@@ -34,7 +34,7 @@ project/assembly_name="Rhythmic Reelers"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/multiplayer_input/plugin.cfg")
+enabled=PackedStringArray("res://addons/beat_map/plugin.cfg", "res://addons/multiplayer_input/plugin.cfg")
 
 [filesystem]
 
