@@ -1,6 +1,6 @@
 extends Node2D
 
-var player_scene = load("res://player.tscn") as Resource
+var player_scene = load("res://scenes/game/player.tscn") as Resource
 @onready var boat = $Boat as StaticBody2D
 
 # Called when the node enters the scene tree for the first time.
@@ -13,7 +13,7 @@ func _process(_delta):
 	pass
 
 func _go_to_lobby():
-	GlobalUtils.goto_scene(^"res://lobby.tscn")
+	GlobalUtils.goto_scene(^"res://scenes/lobby/lobby.tscn")
 
 func _error_to_lobby():
 	PlayerManager.drop_all_players()

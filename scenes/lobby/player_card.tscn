@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bs76obxtrcy46"]
 
-[ext_resource type="Script" path="res://player_card.gd" id="1_3yjdh"]
-[ext_resource type="Texture2D" uid="uid://baroktadgapan" path="res://characters/happy_guy/idle.png" id="2_8tejb"]
+[ext_resource type="Script" path="res://scenes/lobby/player_card.gd" id="1_el046"]
+[ext_resource type="Texture2D" uid="uid://baroktadgapan" path="res://art/characters/happy_guy/idle.png" id="2_pjvdb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yk6p1"]
 bg_color = Color(0, 0, 0, 1)
@@ -20,7 +20,7 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 0
-script = ExtResource("1_3yjdh")
+script = ExtResource("1_el046")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -62,7 +62,7 @@ text = "<"
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("2_8tejb")
+texture = ExtResource("2_pjvdb")
 expand_mode = 4
 stretch_mode = 4
 

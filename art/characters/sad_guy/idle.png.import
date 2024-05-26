@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baroktadgapan"
-path="res://.godot/imported/idle.png-501d3f62bcbe3dc18eb718fd09e20691.ctex"
+uid="uid://bnowygylf74uo"
+path="res://.godot/imported/idle.png-5a6a83d6a3362d73ed70e7400ef53dc5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://characters/happy_guy/idle.png"
-dest_files=["res://.godot/imported/idle.png-501d3f62bcbe3dc18eb718fd09e20691.ctex"]
+source_file="res://art/characters/sad_guy/idle.png"
+dest_files=["res://.godot/imported/idle.png-5a6a83d6a3362d73ed70e7400ef53dc5.ctex"]
 
 [params]
 

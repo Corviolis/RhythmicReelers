@@ -1,6 +1,6 @@
 extends Control
 
-var player_card_scene = load("res://player_card.tscn") as Resource
+var player_card_scene = load("res://scenes/lobby/player_card.tscn") as Resource
 @onready var lobby_list = $LobbyList as HBoxContainer
 @onready var player_list = $PlayerList as HBoxContainer
 
@@ -43,7 +43,7 @@ func join_game():
 	NetworkManager.join_game($ServerIP.text)
 
 func start_game():
-	GlobalUtils.goto_scene.rpc("res://game.tscn")
+	GlobalUtils.goto_scene.rpc("res://scenes/game/game.tscn")
 
 func leave_server():
 	NetworkManager.leave_server()

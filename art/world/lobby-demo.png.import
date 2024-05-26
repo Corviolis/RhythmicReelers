@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnowygylf74uo"
-path="res://.godot/imported/idle.png-37a120767d9627c4687902ecec3a039a.ctex"
+uid="uid://bj26gwmslnykm"
+path="res://.godot/imported/lobby-demo.png-fd622a40d9a365e7eb37c3b8d086e333.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://characters/sad_guy/idle.png"
-dest_files=["res://.godot/imported/idle.png-37a120767d9627c4687902ecec3a039a.ctex"]
+source_file="res://art/world/lobby-demo.png"
+dest_files=["res://.godot/imported/lobby-demo.png-fd622a40d9a365e7eb37c3b8d086e333.ctex"]
 
 [params]
 

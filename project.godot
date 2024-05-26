@@ -11,17 +11,21 @@ config_version=5
 [application]
 
 config/name="Rhythmic Reelers"
-run/main_scene="res://lobby.tscn"
+run/main_scene="res://scenes/lobby/lobby.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout="res://music/music_busses/default_bus_layout.tres"
 
 [autoload]
 
 MultiplayerInput="*res://addons/multiplayer_input/multiplayer_input.gd"
-PlayerManager="*res://player_manager.gd"
-NetworkManager="*res://network_manager.gd"
-GlobalUtils="*res://global_utils.gd"
-RhythmEngine="*res://rhythm_engine.gd"
+PlayerManager="*res://singletons/player_manager.gd"
+NetworkManager="*res://singletons/network_manager.gd"
+GlobalUtils="*res://singletons/global_utils.gd"
+RhythmEngine="*res://singletons/rhythm_engine.gd"
 
 [display]
 

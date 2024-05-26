@@ -44,8 +44,8 @@ func _set_device_icon():
 	device_name.text = "authority: %d" % get_multiplayer_authority()
 	var device_icon = get_node(^"PanelContainer/MarginContainer/VBoxContainer/DeviceIcon") as TextureRect
 	if (device == -1 or device == -2):
-		var keyboard_icon = load("res://keyboard_icon.tres") as CompressedTexture2D
+		var keyboard_icon = load("res://art/ui/keyboard_icon.tres") as CompressedTexture2D
 		device_icon.texture = keyboard_icon
 	else:
-		var controller_icon = load("res://controller_icon.tres") as CompressedTexture2D
+		var controller_icon = load("res://art/ui/controller_icon.tres") as CompressedTexture2D
 		device_icon.texture = controller_icon

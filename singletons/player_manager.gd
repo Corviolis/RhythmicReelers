@@ -53,18 +53,18 @@ func set_player_data(player: int, key: StringName, value: Variant):
 	player_data[player][key] = value
 
 func catalogue_player_assets():
-	var characters_directory = DirAccess.open("res://characters")
+	var characters_directory = DirAccess.open("res://art/characters")
 	characters_directory.list_dir_begin()
 	var character_file = characters_directory.get_next() as String
 
 	while character_file != "":
 		var unit_assets = {}
-		var character_path := DirAccess.open("res://characters/" + character_file)
+		var character_path := DirAccess.open("res://art/characters/" + character_file)
 		character_path.list_dir_begin()
 
 		var asset = character_path.get_next() as String
 		while asset != "" && asset.ends_with(".png"):
-			unit_assets[asset] = load("res://characters/" + character_file + "/" + asset)
+			unit_assets[asset] = load("res://art/characters/" + character_file + "/" + asset)
 			asset = character_path.get_next()
 		
 		character_assets.append(unit_assets)

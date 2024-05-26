@@ -1,10 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://cel1gsnerksoe"]
 
-[ext_resource type="Script" path="res://game.gd" id="1_pyewx"]
+[ext_resource type="Script" path="res://scenes/game/game.gd" id="1_eu407"]
 
 [node name="Game" type="Node2D"]
 texture_filter = 1
-script = ExtResource("1_pyewx")
+script = ExtResource("1_eu407")
 
 [node name="Boat" type="StaticBody2D" parent="."]
 
