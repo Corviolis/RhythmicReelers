@@ -29,6 +29,8 @@ RhythmEngine="*res://singletons/rhythm_engine.gd"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="viewport"
 window/vsync/vsync_mode=0
 
@@ -44,6 +46,13 @@ enabled=PackedStringArray("res://addons/beat_map/plugin.cfg", "res://addons/mult
 
 import/blender/enabled=false
 import/fbx/enabled=false
+
+[gui]
+
+theme/custom_font="res://art/fonts/Pixel_4x4-Regular.ttf"
+theme/default_font_antialiasing=0
+theme/default_font_hinting=0
+theme/default_font_subpixel_positioning=0
 
 [input]
 

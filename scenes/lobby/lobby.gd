@@ -7,6 +7,7 @@ var player_card_scene = load("res://scenes/lobby/player_card.tscn") as Resource
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	multiplayer.peer_connected.connect(player_connected)
+	multiplayer.peer_disconnected.connect(player_disconnected)
 	PlayerManager.player_joined.connect(add_player)
 	PlayerManager.player_left.connect(delete_player)
 
@@ -30,17 +31,17 @@ func delete_player(player: int):
 	player_card.queue_free()
 
 func host_game():
-	$OpenServer.disabled = true
-	$JoinServer.disabled = true
-	$LeaveServer.disabled = false
+	$Buttons/OpenServer.disabled = true
+	$Buttons/JoinServer.disabled = true
+	$Buttons/LeaveServer.disabled = false
 	NetworkManager.host_game()
 
 func join_game():
-	$OpenServer.disabled = true
-	$JoinServer.disabled = true
-	$StartGame.disabled = true
-	$LeaveServer.disabled = false
-	NetworkManager.join_game($ServerIP.text)
+	$Buttons/OpenServer.disabled = true
+	$Buttons/JoinServer.disabled = true
+	$Buttons/StartGame.disabled = true
+	$Buttons/LeaveServer.disabled = false
+	NetworkManager.join_game($Buttons/ServerIP.text)
 
 func start_game():
 	GlobalUtils.goto_scene.rpc("res://scenes/game/game.tscn")
@@ -48,15 +49,17 @@ func start_game():
 func leave_server():
 	NetworkManager.leave_server()
 	PlayerManager.drop_all_players()
-	$OpenServer.disabled = false
-	$JoinServer.disabled = false
-	$StartGame.disabled = false
-	$LeaveServer.disabled = true
+	lobby_list.get_children().map(func (node): if (node.name != &"Label"): node.queue_free())
+	$Buttons/OpenServer.disabled = false
+	$Buttons/JoinServer.disabled = false
+	$Buttons/StartGame.disabled = false
+	$Buttons/LeaveServer.disabled = true
 
 func player_connected(id: int):
 	print("Recieved connection from %d" % id)
 	var player_label := Label.new()
 	player_label.text = str(id)
+	player_label.name = str(id)
 	lobby_list.add_child(player_label)
 
 	# allow late players to see the current player list
@@ -67,3 +70,7 @@ func player_connected(id: int):
 				-2 if (PlayerManager.get_player_device(player) == -1 or PlayerManager.get_player_device(player == -2)) else -3,
 				PlayerManager.get_player_data(player, "character_index"),
 				PlayerManager.get_player_authority(player))
+
+func player_disconnected(id: int):
+	var player_label = lobby_list.get_node(str(id))
+	player_label.queue_free()
