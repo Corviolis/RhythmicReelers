@@ -6,12 +6,11 @@ signal current_beat(player_id: int, length: float, name: String)
 var beat_maps: Dictionary
 var song: String
 var audio = AudioStreamPlayer.new()
-var delay: float
 var song_position: float
 var sessions = []
 
 class Session:
-	var tracks: Array[BeatMap.Track]
+	var tracks: Array
 	var future_beat_offset: int
 	var future_beat_sent: Dictionary
 	
@@ -22,9 +21,10 @@ class Session:
 		tracks = beat_map.get_tracks()
 		for track in tracks:
 			future_beat_sent[track.name] = false
+			
 
 func _ready():
-	delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
+	sessions.resize(4)
 	
 	var music_dir = DirAccess.open("res://music")
 	music_dir.list_dir_begin()
@@ -36,22 +36,23 @@ func _ready():
 		beat_dir.list_dir_begin()
 		var asset = beat_dir.get_next()
 		
-		while asset != "" && asset.ends_with(".beat"):
-			maps[asset.replace(".beat", "")] = load("res://music/" + folder + "/" + asset) as BeatMap
+		while asset != "":
+			if asset.ends_with(".beat"):
+				maps[asset.replace(".beat", "")] = load("res://music/" + folder + "/" + asset) as BeatMap
 			asset = beat_dir.get_next()
-			
-		beat_maps[folder] = maps
+		
+		if !maps.is_empty():
+			beat_maps[folder] = maps
 		folder = music_dir.get_next()
 	
 	add_child(audio)
 	song = "song"
-	
 	audio.stream = load("res://music/" + song + "/" + song + ".mp3")
 	audio.play()
 
 func _process(_delta):
-	song_position = audio.get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
-
+	song_position = (audio.get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()) * 1000
+	
 	for id in range(sessions.size()):
 		var session = sessions[id]
 		if session == null:
@@ -60,15 +61,16 @@ func _process(_delta):
 		for track in session.tracks:
 			# Scan for position in beatmap
 			var beat = track.get_beat()
-			while song_position > beat.pos:
-				beat = track.next_beat()
+			#while song_position > beat.pos:
+				#beat = track.next()
 			
 			if song_position >= beat.pos:
 				current_beat.emit(id, beat.len, track.name)
-				track.next_beat()
+				session.future_beat_sent[track.name] = false
+				track.next()
 				continue
 
-			if !session.future_beat_sent[track.name] && GlobalUtils.equal_approx(beat.pos - session.future_beat_offset, song_position):
+			if !session.future_beat_sent[track.name] && song_position >= beat.pos - session.future_beat_offset:
 				future_beat.emit(id, beat.len, track.name)
 				session.future_beat_sent[track.name] = true
 

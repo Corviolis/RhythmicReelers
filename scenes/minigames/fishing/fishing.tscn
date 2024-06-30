@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://coxwf0j7ifo2"]
+
+[ext_resource type="Script" path="res://scenes/minigames/fishing/fishing.gd" id="1_cwcie"]
+[ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="1_lfjkg"]
+
+[node name="Fishing" type="Node2D"]
+script = ExtResource("1_cwcie")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(393, 309)
+scale = Vector2(0.0703125, 4.25)
+texture = ExtResource("1_lfjkg")
+
+[node name="Icon2" type="Sprite2D" parent="."]
+position = Vector2(394, 386)
+scale = Vector2(1.19531, 0.078125)
+texture = ExtResource("1_lfjkg")
+
+[node name="Icon3" type="Sprite2D" parent="."]
+position = Vector2(395, 473)
+scale = Vector2(1.19531, 0.078125)
+texture = ExtResource("1_lfjkg")
+
+[node name="Icon4" type="Sprite2D" parent="."]
+position = Vector2(395, 137)
+scale = Vector2(6.03125, 0.101562)
+texture = ExtResource("1_lfjkg")

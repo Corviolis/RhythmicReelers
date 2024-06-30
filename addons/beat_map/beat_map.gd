@@ -5,12 +5,12 @@ var raw_tracks: Dictionary
 
 class Track:
 	var name: String
-	var beat_map: Array[int]
+	var beat_map: Array
 	var beat_index: int = 0
 	
 	class Beat:
-		var pos: int
-		var len: int
+		var pos: float
+		var len: float
 		
 		func _init(p, l):
 			pos = p
@@ -24,7 +24,10 @@ class Track:
 		return Beat.new(beat_map[beat_index], beat_map[beat_index + 1])
 
 	func next():
-		beat_index += 1
+		if beat_index + 2 >= len(beat_map):
+			beat_index = 0
+		else:
+			beat_index += 2
 		return get_beat()
 		
 	func reset():

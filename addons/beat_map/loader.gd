@@ -26,7 +26,7 @@ func _load(path, original_path, use_sub_threads, cache_mode):
 		# Track data
 		var beat_map = []
 		while end - 1 > offset:
-			beat_map.append(bytes.decode_u32(offset))
+			beat_map.append(bytes.decode_float(offset))
 			offset += 4
 		tracks[track_name] = beat_map
 	return BeatMap.new(tracks)
