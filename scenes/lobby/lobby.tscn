@@ -4,6 +4,7 @@
 [ext_resource type="FontFile" uid="uid://bwgwydyxtemyj" path="res://art/fonts/Pixel_4x4-Bold.ttf" id="2_byybb"]
 
 [node name="Lobby" type="Control"]
+texture_filter = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
