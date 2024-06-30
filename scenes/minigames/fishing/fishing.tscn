@@ -7,21 +7,16 @@
 script = ExtResource("1_cwcie")
 
 [node name="Icon" type="Sprite2D" parent="."]
-position = Vector2(393, 309)
+position = Vector2(159, 197)
 scale = Vector2(0.0703125, 4.25)
 texture = ExtResource("1_lfjkg")
 
-[node name="Icon2" type="Sprite2D" parent="."]
-position = Vector2(394, 386)
-scale = Vector2(1.19531, 0.078125)
-texture = ExtResource("1_lfjkg")
-
-[node name="Icon3" type="Sprite2D" parent="."]
-position = Vector2(395, 473)
-scale = Vector2(1.19531, 0.078125)
-texture = ExtResource("1_lfjkg")
-
 [node name="Icon4" type="Sprite2D" parent="."]
-position = Vector2(395, 137)
-scale = Vector2(6.03125, 0.101562)
+position = Vector2(165, 27)
+scale = Vector2(3.29687, 0.0585934)
+texture = ExtResource("1_lfjkg")
+
+[node name="Beat" type="Sprite2D" parent="."]
+position = Vector2(159, 192)
+scale = Vector2(0.542814, 0.10022)
 texture = ExtResource("1_lfjkg")
