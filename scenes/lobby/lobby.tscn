@@ -9,8 +9,11 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 960.0
+offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.25, 0.25)
 script = ExtResource("1_g0qk4")
 
 [node name="LobbyList" type="HBoxContainer" parent="."]
@@ -25,7 +28,9 @@ metadata/_edit_use_anchors_ = true
 [node name="Label" type="Label" parent="LobbyList"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_byybb")
+theme_override_font_sizes/font_size = 20
 text = "Connected to Lobby:"
+justification_flags = 35
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 0
@@ -109,7 +114,8 @@ anchor_bottom = 0.0617284
 metadata/_edit_use_anchors_ = true
 
 [node name="OpenServer" type="Button" parent="Buttons"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 1.55
 anchor_top = 14.5
 anchor_right = 4.15
