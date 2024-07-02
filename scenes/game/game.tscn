@@ -44,7 +44,5 @@ texture = ExtResource("5_qjdk3")
 position = Vector2(-1.5, 2)
 shape = SubResource("RectangleShape2D_bfln0")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Boat"]
-
 [node name="WindowManager" type="Node2D" parent="."]
 script = ExtResource("6_4c43f")
