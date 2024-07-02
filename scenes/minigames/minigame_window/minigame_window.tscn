@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4m5i8x4l2hc5"]
+
+[ext_resource type="Script" path="res://scenes/minigames/minigame_window/minigame_window.gd" id="1_ih84e"]
+[ext_resource type="Texture2D" uid="uid://dqaq61kcqls28" path="res://art/world/minigames/minigame-ninepatch.png" id="1_vhcp1"]
+
+[node name="MinigameWindow" type="NinePatchRect"]
+texture_filter = 1
+offset_right = 10.0
+offset_bottom = 10.0
+texture = ExtResource("1_vhcp1")
+region_rect = Rect2(2, 0, 3, 3)
+patch_margin_left = 1
+patch_margin_top = 1
+patch_margin_right = 1
+patch_margin_bottom = 1
+script = ExtResource("1_ih84e")

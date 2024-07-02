@@ -1,12 +1,16 @@
 extends Node2D
 
-var player_scene = load("res://scenes/game/player.tscn") as Resource
+var player_scene = load("res://scenes/game/player.tscn") as PackedScene
+var window_scene = load("res://scenes/minigames/minigame_window/minigame_window.tscn") as PackedScene
 @onready var boat = $Boat as StaticBody2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	multiplayer.server_disconnected.connect(_error_to_lobby)
 	_create_players()
+	# var fishing_game = window_scene.instantiate() as MinigameWindow
+	# add_child(fishing_game)
+	# fishing_game.place_window(Vector2(0, 40), 30, 15, MinigameWindow.Minigames.Fishing)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
