@@ -20,9 +20,9 @@ func setup_direction(window_size: Vector2i):
 		progress_bar.fill_mode = ProgressBar.FILL_BOTTOM_TO_TOP
 	progress_bar.value = 15
 
-func place_window(window_position: Vector2i, window_size: Vector2i, _minigame_scene: PackedScene):
-	size = Vector2(window_size.x, window_size.y)
-	position = Vector2i(window_position.x - window_size.x / 2, window_position.y - window_size.y / 2)
+func place_window(window_center: Vector2i, window_size: Vector2i, _minigame_scene: PackedScene):
+	size = Vector2i(window_size.x, window_size.y)
+	position = Vector2i(window_center.x - window_size.x / 2, window_center.y - window_size.y / 2)
 	# var minigame = minigame_scene.instantiate() as Node2D
 	# add_child(minigame)
 	setup_direction(window_size)

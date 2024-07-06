@@ -10,6 +10,7 @@ func _ready():
 	_create_players()
 	window_manager.create_window(Vector2i(0,0), WindowManager.Minigames.Cutting)
 	window_manager.create_window(Vector2i(5,-20), WindowManager.Minigames.Cutting)
+	window_manager.create_window(Vector2i(-20,-20), WindowManager.Minigames.Cutting)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
