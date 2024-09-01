@@ -4,6 +4,8 @@ extends CharacterBody2D
 const SPEED = 100
 var input : DeviceInput
 
+@onready var window_manager := get_node("/root/Game/WindowManager") as WindowManager
+
 func _physics_process(_delta):
 	if !input:
 		return
@@ -17,6 +19,10 @@ func _physics_process(_delta):
 		velocity = velocity.move_toward(Vector2.ZERO, 100)
 	
 	move_and_slide()
+
+func _input(event):
+	if event.is_action_pressed("test_input"):
+		window_manager.create_window(position, WindowManager.Minigames.Cutting)
 
 func set_device(device: int):
 	input = DeviceInput.new(device)

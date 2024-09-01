@@ -12,7 +12,6 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D"]
-position = Vector2(49, 52)
 floor_stop_on_slope = false
 script = ExtResource("1_q2gu7")
 
