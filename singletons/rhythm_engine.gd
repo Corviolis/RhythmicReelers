@@ -1,7 +1,6 @@
 extends Node
 
-signal future_beat(player_id: int, length: float, name: String)
-signal current_beat(player_id: int, length: float, name: String)
+signal beat_sig(player_id: int, length: float, track: String)
 
 var beat_maps: Dictionary
 var song: String
@@ -65,13 +64,12 @@ func _process(_delta):
 				#beat = track.next()
 			
 			if song_position >= beat.pos:
-				current_beat.emit(id, beat.len, track.name)
 				session.future_beat_sent[track.name] = false
 				track.next()
 				continue
 
 			if !session.future_beat_sent[track.name] && song_position >= beat.pos - session.future_beat_offset:
-				future_beat.emit(id, beat.len, track.name)
+				beat_sig.emit(id, beat.len, track.name)
 				session.future_beat_sent[track.name] = true
 
 func start_session(player_id: int, map: String, difficulty: int, offset: int):
@@ -79,3 +77,10 @@ func start_session(player_id: int, map: String, difficulty: int, offset: int):
 
 func end_session(player_id: int):
 	sessions[player_id] = null
+
+func hit(player_id: int, track_name: String, accuracy: float):
+	for track in sessions[player_id].tracks:
+		if track.name == track_name:
+			print(track.get_time_to_closest(song_position))
+			return track.get_time_to_closest(song_position) - accuracy <= 0
+	

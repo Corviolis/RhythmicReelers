@@ -22,7 +22,7 @@ func _physics_process(_delta):
 
 func _input(event):
 	if event.is_action_pressed("test_input"):
-		window_manager.create_window(position, WindowManager.Minigames.Cutting)
+		window_manager.create_window(position, WindowManager.Minigames.Fishing)
 
 func set_device(device: int):
 	input = DeviceInput.new(device)

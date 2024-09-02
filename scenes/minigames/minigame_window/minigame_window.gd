@@ -23,6 +23,8 @@ func setup_direction(window_size: Vector2i):
 func place_window(window_center: Vector2i, window_size: Vector2i, _minigame_scene: PackedScene):
 	size = Vector2i(window_size.x, window_size.y)
 	position = Vector2i(window_center.x - window_size.x / 2, window_center.y - window_size.y / 2)
-	# var minigame = minigame_scene.instantiate() as Node2D
-	# add_child(minigame)
+	var minigame = _minigame_scene.instantiate() as Node2D
+	minigame.apply_scale(Vector2(0.2, 0.2))
+	
+	add_child(minigame)
 	setup_direction(window_size)
