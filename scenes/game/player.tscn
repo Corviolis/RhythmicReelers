@@ -12,12 +12,15 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D"]
+y_sort_enabled = true
 floor_stop_on_slope = false
 script = ExtResource("1_q2gu7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = 1
+z_as_relative = false
+y_sort_enabled = true
 shape = SubResource("RectangleShape2D_mr022")
-disabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_cyswk")

@@ -9,6 +9,8 @@
 bg_color = Color(0, 0, 0, 1)
 
 [node name="MinigameWindow" type="NinePatchRect"]
+z_index = 2
+z_as_relative = false
 texture_filter = 1
 offset_right = 10.0
 offset_bottom = 10.0
