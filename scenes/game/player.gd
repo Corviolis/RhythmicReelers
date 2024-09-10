@@ -3,8 +3,14 @@ extends CharacterBody2D
 
 const SPEED = 100
 var input: DeviceInput
+var color: Color
 
 @onready var window_manager := get_node("/root/Game/WindowManager") as WindowManager
+@onready var sprite: Sprite2D = $Sprite2D
+
+
+func _ready():
+	color = sprite.material.get_shader_parameter("foreground_color")
 
 
 func _physics_process(_delta):

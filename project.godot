@@ -11,10 +11,14 @@ config_version=5
 [application]
 
 config/name="Rhythmic Reelers"
+config/version="1.0-prealpha"
 run/main_scene="res://scenes/lobby/lobby.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-boot_splash/bg_color=Color(0.25098, 0.192157, 0.556863, 1)
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0.533333, 0.843137, 0.870588, 1)
+boot_splash/use_filter=false
+config/icon="res://icon.png"
+config/windows_native_icon="res://icon-small.ico"
+config/transparent_background=true
 
 [audio]
 
@@ -155,8 +159,19 @@ interact={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_2="player"
+
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.533333, 0.843137, 0.870588, 1)
 2d/snap/snap_2d_transforms_to_pixel=true
 2d/snap/snap_2d_vertices_to_pixel=true
+
+[shader_globals]
+
+background_color={
+"type": "color",
+"value": Color(0.533333, 0.843137, 0.870588, 1)
+}
