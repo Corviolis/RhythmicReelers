@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://cel1gsnerksoe"]
+[gd_scene load_steps=18 format=3 uid="uid://cel1gsnerksoe"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_eu407"]
 [ext_resource type="Material" uid="uid://c2bdahsrkh6xb" path="res://art/materials/base_color.tres" id="1_vul7a"]
 [ext_resource type="Texture2D" uid="uid://bnah5klb2hw5k" path="res://art/world/game-placeholder/full-image.png" id="2_4pu4i"]
 [ext_resource type="Texture2D" uid="uid://b3tgxpa8lhts3" path="res://art/world/game-placeholder/boat.png" id="2_el6o1"]
 [ext_resource type="Texture2D" uid="uid://dkx2a1dm377hm" path="res://art/world/game-placeholder/still-background.png" id="3_fyev7"]
+[ext_resource type="Texture2D" uid="uid://ct21luvxm50sy" path="res://art/world/minigames/1pixel.png" id="3_wu3rc"]
 [ext_resource type="Shader" path="res://art/shaders/outline.gdshader" id="5_i06nm"]
 [ext_resource type="Script" path="res://scenes/game/station_interactable.gd" id="5_mpawt"]
 [ext_resource type="Texture2D" uid="uid://bcwm4hy0chuve" path="res://art/world/game-placeholder/cutting-station.png" id="5_qjdk3"]
@@ -38,6 +39,14 @@ script = ExtResource("1_eu407")
 metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Background" type="Sprite2D" parent="Camera2D"]
+z_index = -3
+material = ExtResource("1_vul7a")
+position = Vector2(-160, -90)
+scale = Vector2(320, 180)
+texture = ExtResource("3_wu3rc")
+metadata/_edit_lock_ = true
 
 [node name="reference" type="Sprite2D" parent="."]
 visible = false
