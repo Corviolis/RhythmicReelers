@@ -58,7 +58,8 @@ disabled = true
 [node name="CuttingStation" type="StaticBody2D" parent="Boat"]
 y_sort_enabled = true
 position = Vector2(93, -4)
-collision_mask = 3
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("5_mpawt")
 
 [node name="Sprite2D" type="Sprite2D" parent="Boat/CuttingStation"]
@@ -71,8 +72,8 @@ position = Vector2(-0.5, 4)
 shape = SubResource("RectangleShape2D_bfln0")
 
 [node name="Area2D" type="Area2D" parent="Boat/CuttingStation"]
-collision_layer = 0
-collision_mask = 2
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/CuttingStation/Area2D"]
 position = Vector2(-0.5, 4)
@@ -81,8 +82,9 @@ debug_color = Color(0.968435, 0, 0.467885, 0.42)
 
 [node name="CuttingStation2" type="StaticBody2D" parent="Boat"]
 y_sort_enabled = true
-position = Vector2(-58, 7)
-collision_mask = 3
+position = Vector2(76, -10)
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("5_mpawt")
 
 [node name="Sprite2D" type="Sprite2D" parent="Boat/CuttingStation2"]
@@ -95,8 +97,8 @@ position = Vector2(-0.5, 4)
 shape = SubResource("RectangleShape2D_bfln0")
 
 [node name="Area2D" type="Area2D" parent="Boat/CuttingStation2"]
-collision_layer = 0
-collision_mask = 2
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/CuttingStation2/Area2D"]
 position = Vector2(-0.5, 4)
