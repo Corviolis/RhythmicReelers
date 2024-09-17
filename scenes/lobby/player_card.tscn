@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://baroktadgapan" path="res://art/characters/happy_guy/idle.png" id="2_pjvdb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yk6p1"]
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(0.533333, 0.843137, 0.870588, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
