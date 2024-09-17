@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://cel1gsnerksoe"]
+[gd_scene load_steps=17 format=3 uid="uid://cel1gsnerksoe"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_eu407"]
+[ext_resource type="Material" uid="uid://c2bdahsrkh6xb" path="res://art/materials/base_color.tres" id="1_vul7a"]
 [ext_resource type="Texture2D" uid="uid://bnah5klb2hw5k" path="res://art/world/game-placeholder/full-image.png" id="2_4pu4i"]
 [ext_resource type="Texture2D" uid="uid://b3tgxpa8lhts3" path="res://art/world/game-placeholder/boat.png" id="2_el6o1"]
 [ext_resource type="Texture2D" uid="uid://dkx2a1dm377hm" path="res://art/world/game-placeholder/still-background.png" id="3_fyev7"]
@@ -8,18 +9,25 @@
 [ext_resource type="Script" path="res://scenes/game/station_interactable.gd" id="5_mpawt"]
 [ext_resource type="Texture2D" uid="uid://bcwm4hy0chuve" path="res://art/world/game-placeholder/cutting-station.png" id="5_qjdk3"]
 [ext_resource type="Script" path="res://scenes/minigames/minigame_window/window_manager.gd" id="6_4c43f"]
+[ext_resource type="Texture2D" uid="uid://bqvokucqm2qns" path="res://art/world/game-placeholder/fishing-station.png" id="9_ebsoi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_flfl6"]
 shader = ExtResource("5_i06nm")
 shader_parameter/outline_color = Color(0, 0, 0, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bfln0"]
-size = Vector2(17, 8)
+size = Vector2(16, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j7gkv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1at6i"]
+shader = ExtResource("5_i06nm")
+shader_parameter/outline_color = Color(0, 0, 0, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ueeo"]
-size = Vector2(19, 20)
+size = Vector2(7, 7)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_30uxb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k3j50"]
 shader = ExtResource("5_i06nm")
 shader_parameter/outline_color = Color(0, 0, 0, 0)
 
@@ -38,6 +46,7 @@ metadata/_edit_lock_ = true
 
 [node name="StaticBackground" type="Sprite2D" parent="."]
 z_index = -2
+material = ExtResource("1_vul7a")
 texture = ExtResource("3_fyev7")
 metadata/_edit_lock_ = true
 
@@ -47,7 +56,8 @@ y_sort_enabled = true
 [node name="Boat" type="Sprite2D" parent="Boat"]
 z_index = -1
 y_sort_enabled = true
-position = Vector2(-5, 5)
+material = ExtResource("1_vul7a")
+position = Vector2(-3, 5)
 texture = ExtResource("2_el6o1")
 
 [node name="MovementHitbox" type="CollisionPolygon2D" parent="Boat"]
@@ -61,6 +71,7 @@ position = Vector2(93, -4)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("5_mpawt")
+minigame = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="Boat/CuttingStation"]
 y_sort_enabled = true
@@ -77,31 +88,58 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/CuttingStation/Area2D"]
 position = Vector2(-0.5, 4)
-shape = SubResource("RectangleShape2D_3ueeo")
+shape = SubResource("RectangleShape2D_j7gkv")
 debug_color = Color(0.968435, 0, 0.467885, 0.42)
 
-[node name="CuttingStation2" type="StaticBody2D" parent="Boat"]
+[node name="FishingStation" type="StaticBody2D" parent="Boat"]
 y_sort_enabled = true
-position = Vector2(76, -10)
+position = Vector2(-18, -24)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("5_mpawt")
+minigame = null
 
-[node name="Sprite2D" type="Sprite2D" parent="Boat/CuttingStation2"]
+[node name="Sprite2D" type="Sprite2D" parent="Boat/FishingStation"]
 y_sort_enabled = true
-material = SubResource("ShaderMaterial_30uxb")
-texture = ExtResource("5_qjdk3")
+material = SubResource("ShaderMaterial_1at6i")
+texture = ExtResource("9_ebsoi")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/CuttingStation2"]
-position = Vector2(-0.5, 4)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/FishingStation"]
+position = Vector2(1, 12)
 shape = SubResource("RectangleShape2D_bfln0")
 
-[node name="Area2D" type="Area2D" parent="Boat/CuttingStation2"]
+[node name="Area2D" type="Area2D" parent="Boat/FishingStation"]
 collision_layer = 4
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/CuttingStation2/Area2D"]
-position = Vector2(-0.5, 4)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/FishingStation/Area2D"]
+position = Vector2(0.5, 20.5)
+shape = SubResource("RectangleShape2D_3ueeo")
+debug_color = Color(0.968435, 0, 0.467885, 0.42)
+
+[node name="FishingStation2" type="StaticBody2D" parent="Boat"]
+y_sort_enabled = true
+position = Vector2(43, -24)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("5_mpawt")
+minigame = null
+
+[node name="Sprite2D" type="Sprite2D" parent="Boat/FishingStation2"]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_k3j50")
+texture = ExtResource("9_ebsoi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/FishingStation2"]
+position = Vector2(1, 12)
+shape = SubResource("RectangleShape2D_bfln0")
+
+[node name="Area2D" type="Area2D" parent="Boat/FishingStation2"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/FishingStation2/Area2D"]
+position = Vector2(0.5, 20.5)
 shape = SubResource("RectangleShape2D_3ueeo")
 debug_color = Color(0.968435, 0, 0.467885, 0.42)
 

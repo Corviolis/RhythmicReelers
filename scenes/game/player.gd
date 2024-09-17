@@ -34,10 +34,10 @@ func _physics_process(_delta):
 
 func _input(event):
 	if event.is_action_pressed("test_input"):
-		window_manager.create_window(position, WindowManager.Minigames.Fishing)
+		window_manager.create_window(position, WindowManager.Minigames.Fishing, sprite.material)
 	elif event.is_action_pressed("interact"):
 		if not nearby_interactables.is_empty():
-			nearby_interactables.back().interact()
+			nearby_interactables.back().interact(self)
 
 
 func set_device(device: int):

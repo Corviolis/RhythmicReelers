@@ -188,6 +188,9 @@ func load_minigame(minigame: Minigames) -> PackedScene:
 	match minigame:
 		Minigames.Fishing:
 			return load("res://scenes/minigames/fishing/fishing.tscn")
+		Minigames.Cutting:
+			push_error("Using a test scene for Cutting")
+			return load("res://scenes/minigames/cutting/cutting_test.tscn")
 		_:
 			push_error("No minigame scene provided for " + Minigames.keys()[minigame])
 			return load("")
@@ -206,8 +209,9 @@ func get_window_size(minigame: Minigames) -> Vector2:
 			return Vector2.ZERO
 
 
-func create_window(initial_center: Vector2i, minigame: Minigames):
+func create_window(initial_center: Vector2i, minigame: Minigames, minigame_material: Material):
 	var minigame_window = window_scene.instantiate() as MinigameWindow
+	minigame_window.material = minigame_material
 	add_child(minigame_window)
 
 	var window_size: Vector2i = get_window_size(minigame)

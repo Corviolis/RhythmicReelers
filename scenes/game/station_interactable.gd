@@ -3,12 +3,14 @@ extends Node2D
 
 var nearby_players: Array[Player] = []
 
+@export var minigame: WindowManager.Minigames
+
+@onready var window_manager := get_node("/root/Game/WindowManager") as WindowManager
 @onready var interaction_area: Area2D = $Area2D
 @onready var sprite: Sprite2D = $Sprite2D
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _ready() -> void:
 	pass
 
 
@@ -36,5 +38,5 @@ func remove_nearby_player(player: Player) -> void:
 	set_outline_color(calculate_color())
 
 
-func interact() -> void:
-	print("test")
+func interact(player: Player) -> void:
+	window_manager.create_window(position, minigame, player.sprite.material)
