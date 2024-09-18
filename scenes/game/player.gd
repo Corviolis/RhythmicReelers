@@ -33,6 +33,8 @@ func _physics_process(_delta):
 
 
 func _input(event):
+	if !is_multiplayer_authority():
+		return
 	if event.is_action_pressed("test_input"):
 		window_manager.create_window(position, WindowManager.Minigames.Fishing, sprite.material)
 	elif event.is_action_pressed("interact"):

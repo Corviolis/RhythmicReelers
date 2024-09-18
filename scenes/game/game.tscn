@@ -106,7 +106,6 @@ position = Vector2(-18, -24)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("5_mpawt")
-minigame = null
 
 [node name="Sprite2D" type="Sprite2D" parent="Boat/FishingStation"]
 y_sort_enabled = true
@@ -132,7 +131,6 @@ position = Vector2(43, -24)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("5_mpawt")
-minigame = null
 
 [node name="Sprite2D" type="Sprite2D" parent="Boat/FishingStation2"]
 y_sort_enabled = true
