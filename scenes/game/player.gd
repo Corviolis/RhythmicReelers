@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const SPEED = 100
 var input: DeviceInput
+var player_id: int
 var color: Color
 var nearby_interactables: Array[StationInteractable]
 
@@ -12,6 +13,8 @@ var nearby_interactables: Array[StationInteractable]
 
 
 func _ready():
+	if is_multiplayer_authority():
+		print(self.name, " ", multiplayer.get_unique_id())
 	color = sprite.material.get_shader_parameter("foreground_color")
 	interaction_area.area_entered.connect(add_interactable)
 	interaction_area.area_exited.connect(remove_interactable)
@@ -35,8 +38,6 @@ func _physics_process(_delta):
 func _input(event):
 	if !is_multiplayer_authority():
 		return
-	if event.is_action_pressed("test_input"):
-		window_manager.create_window(position, WindowManager.Minigames.Fishing, sprite.material)
 	elif event.is_action_pressed("interact"):
 		if not nearby_interactables.is_empty():
 			nearby_interactables.back().interact(self)

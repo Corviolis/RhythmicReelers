@@ -39,4 +39,4 @@ func remove_nearby_player(player: Player) -> void:
 
 
 func interact(player: Player) -> void:
-	window_manager.create_window.rpc(position, minigame, player.sprite.material)
+	window_manager.create_window.rpc(position, minigame, player.player_id)

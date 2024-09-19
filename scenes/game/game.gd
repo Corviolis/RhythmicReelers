@@ -33,6 +33,7 @@ func _create_players():
 		var player_sprite := player.get_node(^"Sprite2D") as Sprite2D
 		player.set_multiplayer_authority(PlayerManager.get_player_authority(player_index))
 		player.set_device(device)
+		player.player_id = player_index
 		player.name = str(player_index)
 		player_sprite.texture = PlayerManager.get_character_assets(char_index)["idle.png"]
 		player_sprite.material = PlayerManager.get_character_assets(char_index)["material.tres"]
