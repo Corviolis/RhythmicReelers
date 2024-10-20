@@ -6,6 +6,7 @@ var char_index: int
 var input: DeviceInput
 var device: int
 var color_replace_shader := preload("res://art/shaders/color_replace.gdshader") as Shader
+var available_icons: Array[bool] = []
 
 @onready
 var sprite: TextureRect = get_node("PanelContainer/MarginContainer/VBoxContainer/CharacterTexture")
@@ -23,7 +24,6 @@ func init(player_num: int):
 	if !is_multiplayer_authority():
 		$PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchLeft.visible = false
 		$PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchRight.visible = false
-		$PanelContainer/MarginContainer/VBoxContainer/ReadyUp.visible = false
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -39,6 +39,7 @@ func _process(_delta):
 
 @rpc("authority", "call_local", "reliable")
 func set_char_icon(dir: int):
+	print("icon updated")
 	char_index = (dir) % PlayerManager.get_character_asset_count()
 	sprite.texture = PlayerManager.get_character_assets(char_index)["idle.png"]
 	sprite.material = PlayerManager.get_character_assets(char_index)["material.tres"]
@@ -56,7 +57,7 @@ func decrease_char_icon():
 
 func _show_player_authority():
 	var device_name = get_node(^"PanelContainer/MarginContainer/VBoxContainer/DeviceName") as Label
-	device_name.text = "authority:\n%d" % get_multiplayer_authority()
+	device_name.text = "authority\n%d" % get_multiplayer_authority()
 
 
 func _set_device_icon():

@@ -211,12 +211,6 @@ func get_window_size(minigame: Minigames) -> Vector2:
 
 @rpc("any_peer", "call_local", "reliable")
 func create_window(initial_center: Vector2i, minigame: Minigames, player_id: int):
-	print(
-		"I am : ",
-		multiplayer.get_unique_id(),
-		" -- window generated from: ",
-		multiplayer.get_remote_sender_id()
-	)
 	var minigame_window = window_scene.instantiate() as MinigameWindow
 	var character_index = PlayerManager.get_player_data(player_id, "character_index")
 	minigame_window.material = (

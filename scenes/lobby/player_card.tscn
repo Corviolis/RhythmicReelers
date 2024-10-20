@@ -107,10 +107,5 @@ label_settings = SubResource("LabelSettings_o4wf7")
 horizontal_alignment = 1
 max_lines_visible = 2
 
-[node name="ReadyUp" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
-material = ExtResource("3_ioyuo")
-layout_mode = 2
-text = "Ready Up"
-
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchLeft" to="." method="decrease_char_icon"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchRight" to="." method="increase_char_icon"]

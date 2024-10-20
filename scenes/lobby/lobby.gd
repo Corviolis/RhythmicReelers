@@ -20,7 +20,6 @@ func add_player(player: int, authority: int):
 	var player_card = player_card_scene.instantiate() as PlayerCard
 	player_card.set_multiplayer_authority(authority)
 	player_card.name = StringName(str(player))
-	player_card.get_node(^"PanelContainer/MarginContainer/VBoxContainer/PlayerName").text = "Player %d" % (player + 1)
 	player_list.add_child(player_card)
 	player_card.init(player)
 
@@ -60,6 +59,7 @@ func player_connected(id: int):
 	var player_label := Label.new()
 	player_label.text = str(id)
 	player_label.name = str(id)
+	player_label.use_parent_material = true
 	lobby_list.add_child(player_label)
 
 	# allow late players to see the current player list

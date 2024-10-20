@@ -29,6 +29,7 @@ grow_vertical = 2
 texture = ExtResource("3_jvwwu")
 
 [node name="LobbyList" type="HBoxContainer" parent="."]
+material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.08125
