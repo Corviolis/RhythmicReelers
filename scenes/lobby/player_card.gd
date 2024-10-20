@@ -3,25 +3,22 @@ extends Control
 
 var player: int
 var char_index: int
-var icon: TextureRect
 var input: DeviceInput
 var device: int
 var color_replace_shader := preload("res://art/shaders/color_replace.gdshader") as Shader
 
-@onready var sprite: TextureRect = get_node(
-	"PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/CharacterTexture"
-)
+@onready
+var sprite: TextureRect = get_node("PanelContainer/MarginContainer/VBoxContainer/CharacterTexture")
+@onready var name_tag: Label = get_node("PanelContainer/MarginContainer/VBoxContainer/PlayerName")
 
 
 func init(player_num: int):
 	player = player_num
 	device = PlayerManager.get_player_device(player_num)
 	input = DeviceInput.new(device)
-	icon = (
-		get_node(^"PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/CharacterTexture")
-		as TextureRect
-	)
-	_set_device_icon()
+	name_tag.text = ("Player %d" % (player + 1))
+	_show_player_authority()
+	# _set_device_icon()
 	set_char_icon(PlayerManager.get_player_data(player, "character_index"))
 	if !is_multiplayer_authority():
 		$PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchLeft.visible = false
@@ -43,7 +40,7 @@ func _process(_delta):
 @rpc("authority", "call_local", "reliable")
 func set_char_icon(dir: int):
 	char_index = (dir) % PlayerManager.get_character_asset_count()
-	icon.texture = PlayerManager.get_character_assets(char_index)["idle.png"]
+	sprite.texture = PlayerManager.get_character_assets(char_index)["idle.png"]
 	sprite.material = PlayerManager.get_character_assets(char_index)["material.tres"]
 	PlayerManager.set_player_data(player, "character_index", char_index)
 
@@ -57,9 +54,12 @@ func decrease_char_icon():
 	set_char_icon.rpc(char_index - 1)
 
 
-func _set_device_icon():
+func _show_player_authority():
 	var device_name = get_node(^"PanelContainer/MarginContainer/VBoxContainer/DeviceName") as Label
-	device_name.text = "authority: %d" % get_multiplayer_authority()
+	device_name.text = "authority:\n%d" % get_multiplayer_authority()
+
+
+func _set_device_icon():
 	var device_icon = (
 		get_node(^"PanelContainer/MarginContainer/VBoxContainer/DeviceIcon") as TextureRect
 	)

@@ -47,7 +47,7 @@ func _ready():
 	add_child(audio)
 	song = "song"
 	audio.stream = load("res://music/" + song + "/" + song + ".mp3")
-	audio.play()
+	# audio.play()
 
 func _process(_delta):
 	song_position = (audio.get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()) * 1000

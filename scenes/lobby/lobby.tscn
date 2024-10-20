@@ -1,109 +1,147 @@
-[gd_scene load_steps=3 format=3 uid="uid://iaqenejaldyp"]
+[gd_scene load_steps=7 format=3 uid="uid://iaqenejaldyp"]
 
+[ext_resource type="Theme" uid="uid://cbn5kvlo4neru" path="res://art/ui/4x4ui.tres" id="1_2jmq4"]
 [ext_resource type="Script" path="res://scenes/lobby/lobby.gd" id="1_g0qk4"]
 [ext_resource type="FontFile" uid="uid://bwgwydyxtemyj" path="res://art/fonts/Pixel_4x4-Bold.ttf" id="2_byybb"]
+[ext_resource type="Texture2D" uid="uid://ct21luvxm50sy" path="res://art/world/minigames/1pixel.png" id="3_jvwwu"]
+[ext_resource type="Material" uid="uid://c2bdahsrkh6xb" path="res://art/materials/base_color.tres" id="4_rm4i8"]
+[ext_resource type="Material" uid="uid://bqv7e2yagptbi" path="res://art/materials/base_color_UI.tres" id="5_hc4wr"]
 
 [node name="Lobby" type="Control"]
+texture_filter = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 960.0
-offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.25, 0.25)
+theme = ExtResource("1_2jmq4")
 script = ExtResource("1_g0qk4")
 
+[node name="TextureRect" type="TextureRect" parent="."]
+material = ExtResource("4_rm4i8")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_jvwwu")
+
 [node name="LobbyList" type="HBoxContainer" parent="."]
-layout_mode = 0
-anchor_left = 0.0798611
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.08125
 anchor_top = 0.0555556
-anchor_right = 0.217882
-anchor_bottom = 0.117284
+anchor_right = 1.35
+anchor_bottom = 0.172222
 offset_right = -119.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="LobbyList"]
+material = ExtResource("5_hc4wr")
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_byybb")
-theme_override_font_sizes/font_size = 20
 text = "Connected to Lobby:"
 justification_flags = 35
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 0
-anchor_left = 0.09375
-anchor_top = 0.179012
-anchor_right = 0.276042
-anchor_bottom = 0.82716
+material = ExtResource("5_hc4wr")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.177778
+anchor_right = 0.284375
+anchor_bottom = 0.827778
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="PanelContainer"]
+material = ExtResource("5_hc4wr")
 layout_mode = 2
-theme_override_colors/font_color = Color(0.695503, 0.695503, 0.695503, 1)
-text = "Press [Space] or
-[E] or Menu to Join"
+text = "Press
+[Space] 
+or [E] 
+or Menu 
+to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PanelContainer2" type="PanelContainer" parent="."]
-layout_mode = 0
-anchor_left = 0.304688
-anchor_top = 0.179012
-anchor_right = 0.486979
-anchor_bottom = 0.82716
+material = ExtResource("5_hc4wr")
+layout_mode = 2
+anchor_left = 0.20625
+anchor_right = 0.20625
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 91.0
+offset_bottom = 149.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="PanelContainer2"]
+material = ExtResource("5_hc4wr")
 layout_mode = 2
-theme_override_colors/font_color = Color(0.695503, 0.695503, 0.695503, 1)
-text = "Press [Space] or
-[E] or Menu to Join"
+text = "Press
+[Space] 
+or [E] 
+or Menu 
+to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PanelContainer3" type="PanelContainer" parent="."]
-layout_mode = 0
-anchor_left = 0.517361
-anchor_top = 0.179012
-anchor_right = 0.699653
-anchor_bottom = 0.82716
+material = ExtResource("5_hc4wr")
+layout_mode = 2
+anchor_left = 0.20625
+anchor_right = 0.20625
+offset_left = 98.0
+offset_top = 32.0
+offset_right = 157.0
+offset_bottom = 149.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="PanelContainer3"]
+material = ExtResource("5_hc4wr")
 layout_mode = 2
-theme_override_colors/font_color = Color(0.695503, 0.695503, 0.695503, 1)
-text = "Press [Space] or
-[E] or Menu to Join"
+text = "Press
+[Space] 
+or [E] 
+or Menu 
+to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PanelContainer4" type="PanelContainer" parent="."]
-layout_mode = 0
-anchor_left = 0.728299
-anchor_top = 0.179012
-anchor_right = 0.91059
-anchor_bottom = 0.82716
+material = ExtResource("5_hc4wr")
+layout_mode = 2
+anchor_left = 0.203125
+anchor_right = 0.203125
+offset_left = 164.0
+offset_top = 32.0
+offset_right = 223.0
+offset_bottom = 149.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="PanelContainer4"]
+material = ExtResource("5_hc4wr")
 layout_mode = 2
-theme_override_colors/font_color = Color(0.695503, 0.695503, 0.695503, 1)
-text = "Press [Space] or
-[E] or Menu to Join"
+text = "Press
+[Space] 
+or [E] 
+or Menu 
+to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PlayerList" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0898438
+anchor_left = 0.1125
 anchor_top = 0.191667
-anchor_right = 0.917188
+anchor_right = 1.05
 anchor_bottom = 0.808333
 grow_vertical = 2
-theme_override_constants/separation = 32
+theme_override_constants/separation = 15
 metadata/_edit_use_anchors_ = true
 
 [node name="Buttons" type="Control" parent="."]
@@ -113,53 +151,69 @@ anchor_bottom = 0.0617284
 metadata/_edit_use_anchors_ = true
 
 [node name="OpenServer" type="Button" parent="Buttons"]
+material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.55
-anchor_top = 14.5
-anchor_right = 4.15
-anchor_bottom = 15.275
-text = "Open Server"
+anchor_left = 0.990001
+anchor_top = 14.49
+anchor_right = 3.69
+anchor_bottom = 15.75
+theme = ExtResource("1_2jmq4")
+text = "Host"
 metadata/_edit_use_anchors_ = true
 
 [node name="JoinServer" type="Button" parent="Buttons"]
-layout_mode = 0
-anchor_left = 6.65
-anchor_top = 14.5
-anchor_right = 9.25
-anchor_bottom = 15.275
-text = "Join Server"
+material = ExtResource("5_hc4wr")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 4.5
+anchor_top = 14.49
+anchor_right = 7.02
+anchor_bottom = 15.75
+text = "Join"
 metadata/_edit_use_anchors_ = true
 
 [node name="ServerIP" type="LineEdit" parent="Buttons"]
+material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 10.305
-anchor_top = 14.5
-anchor_right = 14.305
-anchor_bottom = 15.275
+anchor_left = 7.2
+anchor_top = 14.49
+anchor_right = 12.87
+anchor_bottom = 15.75
 text = "localhost"
-placeholder_text = "0.0.0.0"
 metadata/_edit_use_anchors_ = true
 
 [node name="StartGame" type="Button" parent="Buttons"]
-layout_mode = 0
+material = ExtResource("5_hc4wr")
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 24.525
 anchor_top = 14.5
 anchor_right = 26.925
 anchor_bottom = 15.275
+offset_left = -11.0
+offset_right = 17.3333
+offset_bottom = 5.38889
 text = "Start Game"
-metadata/_edit_use_anchors_ = true
 
 [node name="LeaveServer" type="Button" parent="Buttons"]
-layout_mode = 0
-anchor_left = 16.2
+material = ExtResource("5_hc4wr")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 18.45
 anchor_top = 14.5
-anchor_right = 18.875
-anchor_bottom = 15.275
+anchor_right = 24.3
+anchor_bottom = 15.76
+offset_left = 19.0
+offset_top = -0.111115
+offset_right = -13.0
+offset_bottom = -0.111115
 disabled = true
-text = "Leave Server"
-metadata/_edit_use_anchors_ = true
+text = "Leave"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(160, 90)
 
 [connection signal="pressed" from="Buttons/OpenServer" to="." method="host_game"]
 [connection signal="pressed" from="Buttons/JoinServer" to="." method="join_game"]

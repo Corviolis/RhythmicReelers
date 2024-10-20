@@ -20,7 +20,7 @@ func add_player(player: int, authority: int):
 	var player_card = player_card_scene.instantiate() as PlayerCard
 	player_card.set_multiplayer_authority(authority)
 	player_card.name = StringName(str(player))
-	player_card.get_node(^"PanelContainer/MarginContainer/VBoxContainer/PlayerName").text = "Player %d" % player
+	player_card.get_node(^"PanelContainer/MarginContainer/VBoxContainer/PlayerName").text = "Player %d" % (player + 1)
 	player_list.add_child(player_card)
 	player_card.init(player)
 
