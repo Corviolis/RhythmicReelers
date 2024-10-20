@@ -121,7 +121,8 @@ func _attempt_to_join(device: int):
 	if NetworkManager.is_multiplayer:
 		_next_player_rpc.rpc_id(1, device)
 		return
-	_join_game(device, _next_player(), randi() % get_character_asset_count())
+
+	_join_game(device, _next_player(), _get_random_available_player_icon())
 
 
 # called by the server after verifying that a player spot exists
@@ -150,6 +151,15 @@ func _next_player() -> int:
 		if !player_data.has(i):
 			return i
 	return -1
+
+
+func _get_random_available_player_icon() -> int:
+	var available_icons = get_node("/root/Lobby").available_icons
+	var possible_icons: Array[int]
+	for i in len(available_icons):
+		if available_icons[i]:
+			possible_icons.append(i)
+	return possible_icons[randi() % len(possible_icons)]
 
 
 #=== NETWORKING UTILITIES ===
@@ -183,7 +193,7 @@ func get_player_authority(player: int) -> int:
 # returns -1 if there is no room for a new player.
 @rpc("any_peer", "call_local", "reliable")
 func _next_player_rpc(device: int):
-	var character_index = randi() % get_character_asset_count() as int
+	var character_index: int = _get_random_available_player_icon()
 	for i in MAX_PLAYERS:
 		if !player_data.has(i):
 			_join_game.rpc_id(multiplayer.get_remote_sender_id(), device, i, character_index)
