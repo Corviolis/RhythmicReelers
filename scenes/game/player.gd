@@ -6,6 +6,7 @@ var input: DeviceInput
 var player_id: int
 var color: Color
 var nearby_interactables: Array[StationInteractable]
+var in_minigame: bool
 
 @onready var window_manager := get_node("/root/Game/WindowManager") as WindowManager
 @onready var sprite: Sprite2D = $Sprite2D
@@ -13,8 +14,6 @@ var nearby_interactables: Array[StationInteractable]
 
 
 func _ready():
-	if is_multiplayer_authority():
-		print(self.name, " ", multiplayer.get_unique_id())
 	color = sprite.material.get_shader_parameter("foreground_color")
 	interaction_area.area_entered.connect(add_interactable)
 	interaction_area.area_exited.connect(remove_interactable)
@@ -23,7 +22,8 @@ func _ready():
 func _physics_process(_delta):
 	if !input:
 		return
-
+	if in_minigame:
+		return
 	var direction := Vector2.ZERO
 	if is_multiplayer_authority():
 		direction = input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -38,9 +38,12 @@ func _physics_process(_delta):
 func _input(event):
 	if !is_multiplayer_authority():
 		return
+	if in_minigame:
+		return
 	elif event.is_action_pressed("interact"):
 		if not nearby_interactables.is_empty():
 			nearby_interactables.back().interact(self)
+			in_minigame = true
 
 
 func set_device(device: int):
