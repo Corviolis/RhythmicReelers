@@ -1,19 +1,25 @@
 extends ResourceFormatLoader
 class_name BeatMapLoader
 
+
 func _get_recognized_extensions():
 	return ["beat"]
-	
+
+
 func _get_resource_script_class(path):
 	return "beat_map.gd"
-	
+
+
 func _get_resource_type(path):
 	return "BeatMap"
-	
+
+
 func _load(path, original_path, use_sub_threads, cache_mode):
+	print("loading: " + path)
 	var all_bytes: PackedByteArray = FileAccess.get_file_as_bytes(original_path)
 	var tracks = {}
 	var track_offset = 1
+	var beats_count = 0
 	# Loop through all the tracks
 	for i in range(all_bytes.decode_u8(0)):
 		var end = all_bytes.find(0x0b)
@@ -26,7 +32,9 @@ func _load(path, original_path, use_sub_threads, cache_mode):
 		# Track data
 		var beat_map = []
 		while end - 1 > offset:
+			beats_count += 1
 			beat_map.append(bytes.decode_float(offset))
 			offset += 4
 		tracks[track_name] = beat_map
+	print("beat count: " + str(beats_count))
 	return BeatMap.new(tracks)
