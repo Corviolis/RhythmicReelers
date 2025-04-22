@@ -24,6 +24,7 @@ func _ready():
 	)
 
 
+
 func _exit_tree():
 	minigame_player.in_minigame = false
 	RhythmEngine.end_session(minigame_player.player_id)
@@ -35,7 +36,3 @@ func _process(_delta):
 			print("Hit!")
 		else:
 			print("BAD!")
-
-
-func _physics_process(_delta):
-	pass

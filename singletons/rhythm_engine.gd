@@ -11,6 +11,7 @@ var song_position: float
 var sessions: Array[Session] = []
 
 
+
 class Session:
 	var tracks: Array
 	var future_beat_offset: int
@@ -33,6 +34,7 @@ func _ready():
 	beatmaps = _get_filesystem_beatmaps()
 	add_child(audio)
 	play_song("test_song")
+
 
 
 func _process(_delta):
@@ -75,6 +77,7 @@ func _process(_delta):
 
 func start_session(player_id: int, minigame: WindowManager.Minigames, difficulty: int, offset: int):
 	sessions[player_id] = Session.new(minigame, difficulty, offset)
+
 
 
 func end_session(player_id: int):
