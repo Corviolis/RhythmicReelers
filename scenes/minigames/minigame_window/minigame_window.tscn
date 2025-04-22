@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b4m5i8x4l2hc5"]
 
-[ext_resource type="Script" path="res://scenes/minigames/minigame_window/minigame_window.gd" id="1_ih84e"]
+[ext_resource type="Script" uid="uid://b2ps4ohy8t8ev" path="res://scenes/minigames/minigame_window/minigame_window.gd" id="1_ih84e"]
 [ext_resource type="Texture2D" uid="uid://dqaq61kcqls28" path="res://art/world/minigames/minigame-ninepatch.png" id="1_vhcp1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fjsv1"]

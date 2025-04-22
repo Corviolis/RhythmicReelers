@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://coxwf0j7ifo2"]
 
-[ext_resource type="Script" path="res://scenes/minigames/fishing/fishing.gd" id="1_cwcie"]
+[ext_resource type="Script" uid="uid://bj3jvq4v0kg5o" path="res://scenes/minigames/fishing/fishing.gd" id="1_cwcie"]
 [ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="1_lfjkg"]
 
 [node name="Fishing" type="Node2D"]
