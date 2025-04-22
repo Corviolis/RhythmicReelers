@@ -2,11 +2,14 @@ extends Node
 
 signal beat_sig(player_id: int, length: float, track: String)
 
-var beat_maps: Dictionary
+# see _get_filesystem_beatmaps() documentation
+var beatmaps: Dictionary
+
 var song: String
 var audio = AudioStreamPlayer.new()
 var song_position: float
-var sessions = []
+var sessions: Array[Session] = []
+
 
 
 class Session:
@@ -14,43 +17,24 @@ class Session:
 	var future_beat_offset: int
 	var future_beat_sent: Dictionary
 
-	func _init(map: String, difficulty: int, offset: int):
+	func _init(minigame: WindowManager.Minigames, difficulty: int, offset: int):
 		future_beat_offset = offset
 
-		var beat_map = RhythmEngine.beat_maps[RhythmEngine.song][str(map, "-", difficulty)]
-		tracks = beat_map.get_tracks()
+		var minigame_name: String = WindowManager.Minigames.keys()[minigame]  # pulls the name of the enum
+		var beatmap_name: String = minigame_name.to_lower() + "-" + str(difficulty)
+		print("looking for beatmaps[" + RhythmEngine.song + "][" + beatmap_name + "]")
+		var beatmap = RhythmEngine.beatmaps[RhythmEngine.song][beatmap_name]
+		tracks = beatmap.get_tracks()
 		for track in tracks:
 			future_beat_sent[track.name] = false
 
 
 func _ready():
 	sessions.resize(4)
-
-	var music_dir = DirAccess.open("res://music")
-	music_dir.list_dir_begin()
-	var folder = music_dir.get_next()
-
-	while folder != "":
-		var maps = {}
-		var beat_dir = DirAccess.open("res://music/" + folder)
-		beat_dir.list_dir_begin()
-		var asset = beat_dir.get_next()
-
-		while asset != "":
-			if asset.ends_with(".beat"):
-				maps[asset.replace(".beat", "")] = (
-					load("res://music/" + folder + "/" + asset) as BeatMap
-				)
-			asset = beat_dir.get_next()
-
-		if !maps.is_empty():
-			beat_maps[folder] = maps
-		folder = music_dir.get_next()
-
+	beatmaps = _get_filesystem_beatmaps()
 	add_child(audio)
-	song = "song"
-	audio.stream = load("res://music/" + song + "/" + song + ".mp3")
-	# audio.play()
+	play_song("test_song")
+
 
 
 func _process(_delta):
@@ -83,16 +67,24 @@ func _process(_delta):
 				!session.future_beat_sent[track.name]
 				&& song_position >= beat.pos - session.future_beat_offset
 			):
+				print("beat hit")
 				beat_sig.emit(id, beat.len, track.name)
 				session.future_beat_sent[track.name] = true
 
 
-func start_session(player_id: int, map: String, difficulty: int, offset: int):
-	sessions[player_id] = Session.new(map, difficulty, offset)
+#===== Session Management =====
+
+
+func start_session(player_id: int, minigame: WindowManager.Minigames, difficulty: int, offset: int):
+	sessions[player_id] = Session.new(minigame, difficulty, offset)
+
 
 
 func end_session(player_id: int):
 	sessions[player_id] = null
+
+
+#===== Gameplay / State Management =====
 
 
 func hit(player_id: int, track_name: String, accuracy: float):
@@ -100,3 +92,38 @@ func hit(player_id: int, track_name: String, accuracy: float):
 		if track.name == track_name:
 			print(track.get_time_to_closest(song_position))
 			return track.get_time_to_closest(song_position) - accuracy <= 0
+
+
+func play_song(song_name: String):
+	song = song_name
+	audio.stream = load("res://music/" + song_name + "/" + song_name + ".mp3")
+	audio.play()
+
+
+#===== File Reading =====
+
+
+# returns a dictionary of dictionaries
+# organized like: beatmaps_return["song_name"]: Dictionary = song_name["fishing_1"]: BeatMap = beatmap
+func _get_filesystem_beatmaps() -> Dictionary:
+	var beatmaps_return := {}
+	var music_dir := DirAccess.open("res://music")
+	music_dir.list_dir_begin()
+	var song_dir_name := music_dir.get_next()
+	while song_dir_name != "":
+		var song_beatmaps := {}
+		var song_dir_reference := DirAccess.open("res://music/" + song_dir_name)
+		song_dir_reference.list_dir_begin()
+		var song_dir_file := song_dir_reference.get_next()
+		while song_dir_file != "":
+			if song_dir_file.ends_with(".beat"):
+				print("found beatmap " + song_dir_file + " in " + song_dir_name)
+				song_beatmaps[song_dir_file.replace(".beat", "")] = (
+					load("res://music/beatmaps/" + song_dir_name + "/" + song_dir_file) as BeatMap
+				)
+			song_dir_file = song_dir_reference.get_next()
+		if !song_beatmaps.is_empty():
+			beatmaps_return[song_dir_name] = song_beatmaps
+		song_dir_name = music_dir.get_next()
+	print(beatmaps_return["test_song"]["cutting-1"].raw_tracks)  # raw tracks is somehow empty???
+	return beatmaps_return

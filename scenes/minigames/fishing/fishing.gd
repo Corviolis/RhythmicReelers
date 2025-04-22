@@ -1,13 +1,11 @@
-extends Node2D
+extends Minigame
 
 @export var beat_offset = 1000
 @export var accuracy = 50
 
-var player_id = 1
 
-
-func on_beat(id: int, _length: float, _track: String):
-	if player_id != id:
+func on_beat(player: Player, _length: float, _track: String):
+	if minigame_player != player:
 		return
 
 	$Beat.position.x = 159
@@ -21,16 +19,20 @@ func on_beat(id: int, _length: float, _track: String):
 
 func _ready():
 	RhythmEngine.beat_sig.connect(on_beat)
-	RhythmEngine.start_session(player_id, "fishing", 1, beat_offset)
+	RhythmEngine.start_session(
+		minigame_player.player_id, WindowManager.Minigames.Cutting, 1, beat_offset
+	)
+
 
 
 func _exit_tree():
-	RhythmEngine.end_session(player_id)
+	minigame_player.in_minigame = false
+	RhythmEngine.end_session(minigame_player.player_id)
 
 
 func _process(_delta):
 	if Input.is_action_just_pressed("beat"):
-		if RhythmEngine.hit(player_id, "Electric Piano", accuracy):
+		if RhythmEngine.hit(minigame_player.player_id, "Electric Piano", accuracy):
 			print("Hit!")
 		else:
 			print("BAD!")
