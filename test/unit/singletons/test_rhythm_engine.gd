@@ -11,8 +11,8 @@ func test_get_filesystem_beatmaps():
 	assert_has(beat_maps["test_song"], "fishing-1", "'test_song' should contain 'fishing-1'")
 
 	# Check if the beat map has the expected tracks
-	#var test_map = beat_maps["test_song"]["test_map-1"]
-	#assert(test_map.get_track_names().size() > 0)
+	var test_map = beat_maps["test_song"]["fishing-1"]
+	assert(test_map.get_track_names().size() > 0)
 
 
 func test_play_song():
@@ -31,22 +31,35 @@ func test_play_song():
 
 func test_start_session():
 	# Check if a session is started correctly
-	RhythmEngine.start_session(0, WindowManager.Minigames.Cutting, 1, 5)
+	RhythmEngine.start_session(0, WindowManager.Minigames.Fishing, 1, 5)
 	var session = RhythmEngine.sessions[0]
 	assert_ne(session, null, "Session should not be null")
-	for track in session.tracks:
-		print("Track: ", track.name)
 	assert_eq(session.future_beat_offset, 5, "Session future beat offset should be 5")
 
 	# Check if the session has tracks
 	assert_gt(session.tracks.size(), 0, "Session should have tracks")
 
-# class TestSession:
-# 	extends GutTest
-#
-# 	func test_init():
-# 		# Create a new session with a beat map and difficulty
-# 		var session = RhythmEngine.Session.new("test_map", 1, 5)
-# 		assert(session != null)
-# 		assert(session.future_beat_offset == 5)
-# 		assert(session.tracks.size() > 0)
+
+func test_end_session():
+	# Check if a session is ended correctly
+	RhythmEngine.end_session(0)
+	var session = RhythmEngine.sessions[0]
+	assert_eq(session, null, "Session should be null")
+
+
+func test_hit():
+	# Check if a hit is registered correctly
+	RhythmEngine.start_session(0, WindowManager.Minigames.Fishing, 1, 5)
+	var session = RhythmEngine.sessions[0]
+	var track_name = session.tracks[0].name
+	var accuracy = 0.1
+
+	var time_to_closest = session.tracks[0].get_time_to_closest(RhythmEngine.song_position)
+	assert_eq(time_to_closest - accuracy <= 0, true, "Hit accuracy should be within range")
+
+	var result_hit = RhythmEngine.hit(0, track_name, accuracy)
+	assert_eq(result_hit, true, "Hit should be successful if accuracy is within range")
+
+	await wait_seconds(0.2)
+	var result_fail = RhythmEngine.hit(0, track_name, accuracy)
+	assert_eq(result_fail, false, "Hit should be unsuccessful if time is incorrect")

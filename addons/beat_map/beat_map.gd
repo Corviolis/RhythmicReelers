@@ -49,7 +49,6 @@ class Track:
 
 
 func _init(t):
-	print("hit init " + str(len(t.keys())))
 	raw_tracks = t
 
 

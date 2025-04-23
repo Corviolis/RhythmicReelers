@@ -21,7 +21,6 @@ class Session:
 
 		var minigame_name: String = WindowManager.Minigames.keys()[minigame]
 		var beatmap_name: String = minigame_name.to_lower() + "-" + str(difficulty)
-		print("looking for beatmaps[" + RhythmEngine.song + "][" + beatmap_name + "]")
 		var beatmap: BeatMap = RhythmEngine.beatmaps[RhythmEngine.song][beatmap_name]
 		tracks = beatmap.get_tracks()
 		for track in tracks:
@@ -65,7 +64,6 @@ func _process(_delta):
 				!session.future_beat_sent[track.name]
 				&& song_position >= beat.pos - session.future_beat_offset
 			):
-				print("beat hit")
 				beat_sig.emit(id, beat.len, track.name)
 				session.future_beat_sent[track.name] = true
 
@@ -87,7 +85,6 @@ func end_session(player_id: int):
 func hit(player_id: int, track_name: String, accuracy: float):
 	for track in sessions[player_id].tracks:
 		if track.name == track_name:
-			print(track.get_time_to_closest(song_position))
 			return track.get_time_to_closest(song_position) - accuracy <= 0
 
 
@@ -114,13 +111,11 @@ func _get_filesystem_beatmaps() -> Dictionary:
 		var song_dir_file := song_dir_reference.get_next()
 		while song_dir_file != "":
 			if song_dir_file.ends_with(".beat"):
-				print("found beatmap " + song_dir_file + " in " + song_dir_name)
 				song_beatmaps[song_dir_file.replace(".beat", "")] = (
-					load("res://music/beatmaps/" + song_dir_name + "/" + song_dir_file) as BeatMap
+					load("res://music/" + song_dir_name + "/" + song_dir_file) as BeatMap
 				)
 			song_dir_file = song_dir_reference.get_next()
 		if !song_beatmaps.is_empty():
 			beatmaps_return[song_dir_name] = song_beatmaps
 		song_dir_name = music_dir.get_next()
-	# print(beatmaps_return["test_song"]["cutting-1"].raw_tracks)  # raw tracks is somehow empty???
 	return beatmaps_return

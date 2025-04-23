@@ -20,9 +20,8 @@ func on_beat(player: Player, _length: float, _track: String):
 func _ready():
 	RhythmEngine.beat_sig.connect(on_beat)
 	RhythmEngine.start_session(
-		minigame_player.player_id, WindowManager.Minigames.Cutting, 1, beat_offset
+		minigame_player.player_id, WindowManager.Minigames.Fishing, 1, beat_offset
 	)
-
 
 
 func _exit_tree():
