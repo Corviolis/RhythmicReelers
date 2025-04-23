@@ -73,7 +73,7 @@ func catalogue_player_assets():
 		character_path.list_dir_begin()
 
 		var asset = character_path.get_next() as String
-		while not asset.is_empty():
+		while not asset.is_empty() and not asset.ends_with(".import"):
 			unit_assets[asset] = load("res://art/characters/" + character_file + "/" + asset)
 			asset = character_path.get_next()
 

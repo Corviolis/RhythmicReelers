@@ -11,7 +11,6 @@ var song_position: float
 var sessions: Array[Session] = []
 
 
-
 class Session:
 	var tracks: Array
 	var future_beat_offset: int
@@ -20,10 +19,10 @@ class Session:
 	func _init(minigame: WindowManager.Minigames, difficulty: int, offset: int):
 		future_beat_offset = offset
 
-		var minigame_name: String = WindowManager.Minigames.keys()[minigame]  # pulls the name of the enum
+		var minigame_name: String = WindowManager.Minigames.keys()[minigame]
 		var beatmap_name: String = minigame_name.to_lower() + "-" + str(difficulty)
 		print("looking for beatmaps[" + RhythmEngine.song + "][" + beatmap_name + "]")
-		var beatmap = RhythmEngine.beatmaps[RhythmEngine.song][beatmap_name]
+		var beatmap: BeatMap = RhythmEngine.beatmaps[RhythmEngine.song][beatmap_name]
 		tracks = beatmap.get_tracks()
 		for track in tracks:
 			future_beat_sent[track.name] = false
@@ -34,7 +33,6 @@ func _ready():
 	beatmaps = _get_filesystem_beatmaps()
 	add_child(audio)
 	play_song("test_song")
-
 
 
 func _process(_delta):
@@ -79,7 +77,6 @@ func start_session(player_id: int, minigame: WindowManager.Minigames, difficulty
 	sessions[player_id] = Session.new(minigame, difficulty, offset)
 
 
-
 func end_session(player_id: int):
 	sessions[player_id] = null
 
@@ -104,7 +101,7 @@ func play_song(song_name: String):
 
 
 # returns a dictionary of dictionaries
-# organized like: beatmaps_return["song_name"]: Dictionary = song_name["fishing_1"]: BeatMap = beatmap
+# organized like: beatmaps_return["song_name"]: Dictionary = song_name["fishing-1"]: BeatMap = beatmap
 func _get_filesystem_beatmaps() -> Dictionary:
 	var beatmaps_return := {}
 	var music_dir := DirAccess.open("res://music")
@@ -125,5 +122,5 @@ func _get_filesystem_beatmaps() -> Dictionary:
 		if !song_beatmaps.is_empty():
 			beatmaps_return[song_dir_name] = song_beatmaps
 		song_dir_name = music_dir.get_next()
-	print(beatmaps_return["test_song"]["cutting-1"].raw_tracks)  # raw tracks is somehow empty???
+	# print(beatmaps_return["test_song"]["cutting-1"].raw_tracks)  # raw tracks is somehow empty???
 	return beatmaps_return
