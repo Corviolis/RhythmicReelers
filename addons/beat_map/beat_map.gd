@@ -30,12 +30,11 @@ class Track:
 		return Beat.new(beat_map[beat_index - 2], beat_map[beat_index - 1])
 
 	func get_time_to_closest(time) -> float:
-		var time_to_next: float = abs(get_beat().pos - time)
-		var time_to_prev: float = abs(get_prev_beat().pos - time)
-		if time_to_next < time_to_prev:
+		var time_to_next: float = get_beat().pos - time
+		var time_to_prev: float = get_prev_beat().pos - time
+		if abs(time_to_next) < abs(time_to_prev):
 			return time_to_next
-		else:
-			return time_to_prev
+		return time_to_prev
 
 	func next() -> Beat:
 		if beat_index + 2 >= len(beat_map) - 1:

@@ -27,7 +27,7 @@ func place_window(
 ):
 	size = Vector2i(window_size.x, window_size.y)
 	position = Vector2i(window_center.x - window_size.x / 2, window_center.y - window_size.y / 2)
-	var minigame = minigame_scene.instantiate() as Minigame
+	var minigame: Minigame = minigame_scene.instantiate() as Minigame
 	minigame.apply_scale(Vector2(0.2, 0.2))
 	minigame.minigame_player = player
 
