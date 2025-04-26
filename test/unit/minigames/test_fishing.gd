@@ -1,0 +1,52 @@
+extends GutTest
+
+# func test_process():
+# 	assert(ResourceLoader.exists("res://scenes/minigames/fishing/fishing.tscn"))
+#
+# 	var sender = InputSender.new(Input)
+# 	var fishing_double = (
+# 		double(load("res://scenes/minigames/fishing/fishing.tscn")).new() as Minigame
+# 	)
+# 	fishing_double.minigame_player = Player.new()
+#
+# 	await wait_seconds(0.5)
+# 	sender.action_down("beat").hold_for(0.5).wait(0.5).action_up("beat")
+# 	await (sender.idle)
+#
+# 	assert_called(fishing_double, "_beat")
+#
+# 	sender.release_all()
+# 	sender.clear()
+
+var fishing_minigame: Minigame
+
+
+func before_each():
+	assert(ResourceLoader.exists("res://scenes/minigames/fishing/fishing.tscn"))
+	fishing_minigame = (
+		load("res://scenes/minigames/fishing/fishing.tscn").instantiate() as Minigame
+	)
+	var player := Player.new()
+	player.player_id = 1
+	fishing_minigame.minigame_player = player
+	add_child_autofree(fishing_minigame)
+
+
+func test_onbeat():
+	assert_eq(len(fishing_minigame.beats), 0, "Fishing minigame should have no beats initially")
+	fishing_minigame.on_beat(1, 1, "Electric Piano")
+	assert_eq(
+		len(fishing_minigame.beats), 1, "Fishing minigame should have one beat after on_beat()"
+	)
+
+
+func test_beat():
+	assert_null(fishing_minigame._beat(), "_beat() should return null if no beats are set")
+	fishing_minigame.on_beat(1, 1, "Electric Piano")
+	assert(len(fishing_minigame.beats) == 1)
+	assert_typeof(
+		fishing_minigame._beat(),
+		TYPE_FLOAT,
+		"_beat() should return the distance to the closest beat if there are beats"
+	)
+	assert_eq(len(fishing_minigame.beats), 0, "Fishing minigame should have no beats after _beat()")

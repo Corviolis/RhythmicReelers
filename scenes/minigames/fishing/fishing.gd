@@ -1,20 +1,14 @@
 extends Minigame
 
+const START_POS = Vector2(159, 192)
+const TARGET_POS = Vector2(159, 27)
+const STOP_POS = Vector2(159, 0)
+
 @export var beat_offset = 1000
 @export var accuracy = 50
 
-
-func on_beat(player: Player, _length: float, _track: String):
-	if minigame_player != player:
-		return
-
-	$Beat.position.x = 159
-	$Beat.position.y = 192
-	var tween = create_tween()
-	tween.tween_property($Beat, "position", Vector2(159, 27), beat_offset / 1000).set_trans(
-		Tween.TRANS_LINEAR
-	)
-	tween.play()
+var beats: Array[Tween] = []
+var time_to_target: float = beat_offset / 1000
 
 
 func _ready():
@@ -24,24 +18,66 @@ func _ready():
 	)
 
 
+func _input(event):
+	if event.is_action_pressed("beat"):
+		_beat()
+
+
 func _exit_tree():
 	minigame_player.in_minigame = false
 	RhythmEngine.end_session(minigame_player.player_id)
 
 
-func _process(_delta):
-	if Input.is_action_just_pressed("beat"):
-		var hit_time = RhythmEngine.hit(minigame_player.player_id, "Electric Piano")
-		match true:
-			_ when abs(hit_time) <= accuracy:
-				print("Nice! %s" % hit_time)
-			_ when hit_time < 0 and abs(hit_time) <= accuracy + 100:
-				print("Slightly Slow! %s" % hit_time)
-			_ when hit_time > 0 and abs(hit_time) <= accuracy + 100:
-				print("Slightly Fast! %s" % hit_time)
-			_ when hit_time < 0 and abs(hit_time) > accuracy + 100:
-				print("Very Slow! %s" % hit_time)
-			_ when hit_time > 0 and abs(hit_time) > accuracy + 100:
-				print("Very Fast! %s" % hit_time)
-			_:
-				printerr("Impossible hit time! %s" % hit_time)
+# ==== Helper Functions ====
+
+
+# Assumes TARGET_POS is necessarily a point on a straight line between START_POS and STOP_POS
+func _calc_tween_time():
+	var tween_speed := START_POS.distance_to(TARGET_POS) / time_to_target
+	var total_distance := START_POS.distance_to(STOP_POS)
+	var total_time := total_distance / tween_speed
+	return total_time
+
+
+# Check how close the oldest alive beat is to the target
+func _beat():
+	if len(beats) == 0:
+		return
+	beats.pop_front().kill()
+	$Beat.hide()
+	var hit_time: float = RhythmEngine.hit(minigame_player.player_id, "Electric Piano")
+	hit_time = snappedf(hit_time, 0.01)
+	match true:
+		_ when abs(hit_time) <= accuracy:
+			print("Nice! %s" % hit_time)
+		_ when hit_time < 0 and abs(hit_time) <= accuracy + 100:
+			print("Slightly Slow! %s" % hit_time)
+		_ when hit_time > 0 and abs(hit_time) <= accuracy + 100:
+			print("Slightly Fast! %s" % hit_time)
+		_ when hit_time < 0 and abs(hit_time) > accuracy + 100:
+			print("Very Slow! %s" % hit_time)
+		_ when hit_time > 0 and abs(hit_time) > accuracy + 100:
+			print("Very Fast! %s" % hit_time)
+		_:
+			printerr("Impossible hit time! %s" % hit_time)
+	return hit_time
+
+
+# ==== Callback Functions ====
+
+
+# Updates BEAT game object when a beat is received
+# TODO: Assumes there will never be more than one active beat at a time -- fix this
+func on_beat(player_id: int, _length: float, _track: String):
+	if minigame_player.player_id != player_id:
+		return
+
+	$Beat.position = START_POS
+	$Beat.show()
+	var tween := create_tween()
+	tween.tween_property($Beat, "position", STOP_POS, _calc_tween_time()).set_trans(
+		Tween.TRANS_LINEAR
+	)
+	tween.tween_callback(_beat)
+	tween.play()
+	beats.append(tween)
