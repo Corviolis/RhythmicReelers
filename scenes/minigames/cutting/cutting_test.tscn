@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://bl4k5dsq2egoy"]
+[gd_scene load_steps=2 format=3 uid="uid://bl4k5dsq2egoy"]
+
+[ext_resource type="Script" uid="uid://dnnq1kr072twh" path="res://scenes/minigames/cutting/cutting.gd" id="1_5m8ox"]
 
 [node name="CuttingTest" type="Node2D"]
+script = ExtResource("1_5m8ox")

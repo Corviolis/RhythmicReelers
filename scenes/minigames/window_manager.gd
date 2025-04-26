@@ -13,7 +13,8 @@ const WINDOW_PADDING: int = 1
 var viewport_height: int = ProjectSettings.get_setting("display/window/size/viewport_height")
 @onready var viewport_width: int = ProjectSettings.get_setting("display/window/size/viewport_width")
 
-# === Window Manager
+
+# ==== Window Manager ====
 
 
 class BitmapWindow:
@@ -60,7 +61,8 @@ class BitmapWindow:
 
 var bitmap_windows: Array[BitmapWindow] = []
 
-# === Pixel Grid Management
+
+# ==== Pixel Grid Management ====
 
 
 func _ready():
@@ -181,7 +183,7 @@ func find_nearest_space(initial_center: Vector2i, window_size: Vector2i) -> Vect
 	return Vector2i.ZERO
 
 
-# === Window Management
+# ==== Window Management ====
 
 
 func load_minigame(minigame: Minigames) -> PackedScene:
