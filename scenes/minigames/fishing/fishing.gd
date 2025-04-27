@@ -19,6 +19,8 @@ func _ready():
 
 
 func _input(event):
+	if !is_multiplayer_authority():
+		return
 	if event.is_action_pressed("beat"):
 		_beat()
 

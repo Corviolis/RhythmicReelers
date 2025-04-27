@@ -19,6 +19,10 @@ func _ready():
 	interaction_area.area_exited.connect(remove_interactable)
 
 
+func _process(_delta: float) -> void:
+	_handle_input()
+
+
 func _physics_process(_delta):
 	if !input:
 		return
@@ -35,12 +39,13 @@ func _physics_process(_delta):
 	move_and_slide()
 
 
-func _input(event):
+# custom input handling
+func _handle_input():
 	if !is_multiplayer_authority():
 		return
 	if in_minigame:
 		return
-	elif event.is_action_pressed("interact"):
+	if input.is_action_just_pressed(&"interact"):
 		if not nearby_interactables.is_empty():
 			nearby_interactables.back().interact(self)
 			in_minigame = true

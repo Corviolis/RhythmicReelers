@@ -2,7 +2,7 @@ class_name PlayerCard
 extends Control
 
 var player: int
-var char_index: int
+var char_index: int = -1
 var input: DeviceInput
 var device: int
 var color_replace_shader := preload("res://art/shaders/color_replace.gdshader") as Shader
@@ -26,7 +26,6 @@ func init(player_num: int):
 		$PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchRight.visible = false
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if is_multiplayer_authority():
 		if input.is_action_just_pressed(&"join"):
@@ -39,7 +38,8 @@ func _process(_delta):
 
 @rpc("authority", "call_local", "reliable")
 func set_char_icon(dir: int):
-	lobby.available_icons[char_index] = true
+	if char_index != -1:
+		lobby.available_icons[char_index] = true
 	char_index = (dir) % PlayerManager.get_character_asset_count()
 	lobby.available_icons[char_index] = false
 	sprite.texture = PlayerManager.get_character_assets(char_index)["idle.png"]
@@ -48,23 +48,19 @@ func set_char_icon(dir: int):
 
 
 func increase_char_icon():
-	var next_available_icon := char_index
-	next_available_icon = (next_available_icon + 1) % PlayerManager.get_character_asset_count()
-	while !lobby.available_icons[next_available_icon]:
-		next_available_icon = (
-			(next_available_icon + 1) % PlayerManager.get_character_asset_count()
-		)
-		if next_available_icon == char_index:
-			return
-	set_char_icon.rpc(next_available_icon)
+	_change_char_icon(1)
 
 
 func decrease_char_icon():
+	_change_char_icon(-1)
+
+
+func _change_char_icon(amount: int):
 	var next_available_icon := char_index
-	next_available_icon = (next_available_icon - 1) % PlayerManager.get_character_asset_count()
+	next_available_icon = (next_available_icon + amount) % PlayerManager.get_character_asset_count()
 	while !lobby.available_icons[next_available_icon]:
 		next_available_icon = (
-			(next_available_icon - 1) % PlayerManager.get_character_asset_count()
+			(next_available_icon + amount) % PlayerManager.get_character_asset_count()
 		)
 		if next_available_icon == char_index:
 			return
