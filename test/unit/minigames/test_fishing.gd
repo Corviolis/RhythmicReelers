@@ -1,23 +1,5 @@
 extends GutTest
 
-# func test_process():
-# 	assert(ResourceLoader.exists("res://scenes/minigames/fishing/fishing.tscn"))
-#
-# 	var sender = InputSender.new(Input)
-# 	var fishing_double = (
-# 		double(load("res://scenes/minigames/fishing/fishing.tscn")).new() as Minigame
-# 	)
-# 	fishing_double.minigame_player = Player.new()
-#
-# 	await wait_seconds(0.5)
-# 	sender.action_down("beat").hold_for(0.5).wait(0.5).action_up("beat")
-# 	await (sender.idle)
-#
-# 	assert_called(fishing_double, "_beat")
-#
-# 	sender.release_all()
-# 	sender.clear()
-
 var fishing_minigame: Minigame
 
 

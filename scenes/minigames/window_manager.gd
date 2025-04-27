@@ -13,7 +13,6 @@ const WINDOW_PADDING: int = 1
 var viewport_height: int = ProjectSettings.get_setting("display/window/size/viewport_height")
 @onready var viewport_width: int = ProjectSettings.get_setting("display/window/size/viewport_width")
 
-
 # ==== Window Manager ====
 
 
@@ -60,7 +59,6 @@ class BitmapWindow:
 
 
 var bitmap_windows: Array[BitmapWindow] = []
-
 
 # ==== Pixel Grid Management ====
 
@@ -212,9 +210,9 @@ func get_window_size(minigame: Minigames) -> Vector2:
 
 
 @rpc("any_peer", "call_local", "reliable")
-func create_window(initial_center: Vector2i, minigame: Minigames, player: Player):
+func create_window(initial_center: Vector2i, minigame: Minigames, player_id: int):
 	var minigame_window = window_scene.instantiate() as MinigameWindow
-	var character_index = PlayerManager.get_player_data(player.player_id, "character_index")
+	var character_index = PlayerManager.get_player_data(player_id, "character_index")
 	minigame_window.material = (
 		PlayerManager.get_character_assets(character_index)["material.tres"]
 	)
@@ -228,4 +226,4 @@ func create_window(initial_center: Vector2i, minigame: Minigames, player: Player
 	reserve_window(window_position, window_size)
 	window_position = array_to_screenspace(window_position)
 
-	minigame_window.place_window(window_position, window_size, load_minigame(minigame), player)
+	minigame_window.place_window(window_position, window_size, load_minigame(minigame), player_id)

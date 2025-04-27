@@ -100,9 +100,9 @@ func drop_all_players():
 func handle_join_input():
 	for device in get_unjoined_devices():
 		# for testing controller (TODO remember to remove after game is done)
-		# if device == -1 or multiplayer.is_server():
-		if MultiplayerInput.is_action_just_pressed(device, &"join"):
-			_attempt_to_join(device)
+		if device == -1 or multiplayer.is_server():
+			if MultiplayerInput.is_action_just_pressed(device, &"join"):
+				_attempt_to_join(device)
 
 
 # returns an array of all valid devices that are *not* associated with a joined player

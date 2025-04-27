@@ -33,8 +33,6 @@ func add_player(player: int, authority: int):
 	player_card.init(player)
 
 
-# BUG: this causes an error when a remote client with at least one player card disconnects
-#		is this error showing on the server or on the client?
 func delete_player(player: int):
 	var player_card := player_list.get_node(str(player))
 	available_icons[player_card.char_index] = true

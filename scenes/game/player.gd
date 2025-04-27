@@ -47,7 +47,7 @@ func _handle_input():
 		return
 	if input.is_action_just_pressed(&"interact"):
 		if not nearby_interactables.is_empty():
-			nearby_interactables.back().interact(self)
+			nearby_interactables.back().interact(player_id)
 			in_minigame = true
 
 

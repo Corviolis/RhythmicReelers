@@ -7,7 +7,7 @@ uniform vec4 outline_color : source_color = vec4(0);
 
 void fragment() {
 	vec4 replaced_color = get_replaced_color(TEXTURE, UV, default_foreground_color, background_color);
-	
+
 	float size_x = 1.0 / float(textureSize(TEXTURE, 0).x);
 	float size_y = 1.0 / float(textureSize(TEXTURE, 0).y);
 	vec4 sprite_color = texture(TEXTURE, UV);
@@ -21,6 +21,6 @@ void fragment() {
 	alpha += texture(TEXTURE, UV + vec2(-size_x, size_y)).a;
 	alpha += texture(TEXTURE, UV + vec2(size_x, -size_y)).a;
 	vec4 final_color = mix(replaced_color, outline_color, clamp(alpha, 0.0, 1.0));
-	
+
 	COLOR = final_color;
 }

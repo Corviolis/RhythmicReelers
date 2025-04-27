@@ -18,10 +18,9 @@ func calculate_color() -> Color:
 	var nearby_player_count := nearby_players.size()
 	if nearby_player_count == 0:
 		return Color.TRANSPARENT
-	elif nearby_player_count == 1:
+	if nearby_player_count == 1:
 		return nearby_players[0].color
-	else:
-		return Color.WHITE
+	return Color.WHITE
 
 
 func set_outline_color(color: Color) -> void:
@@ -38,5 +37,5 @@ func remove_nearby_player(player: Player) -> void:
 	set_outline_color(calculate_color())
 
 
-func interact(player: Player) -> void:
-	window_manager.create_window.rpc(position, minigame, player)
+func interact(player_id: int) -> void:
+	window_manager.create_window.rpc(position, minigame, player_id)

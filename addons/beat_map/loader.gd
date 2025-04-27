@@ -21,6 +21,7 @@ func _load(path, original_path, _use_sub_threads, _cache_mode) -> BeatMap:
 	var track_offset = 1
 	# Loop through all the tracks
 	for i in range(all_bytes.decode_u8(0)):
+		# error-ignore
 		var end = all_bytes.find(0x0b)
 		var bytes = all_bytes.slice(track_offset, end)
 		track_offset += end

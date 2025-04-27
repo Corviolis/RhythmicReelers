@@ -1,5 +1,5 @@
 class_name Minigame
 extends Node2D
 
-var minigame_player: Player
+var player_id: int
 var input: DeviceInput

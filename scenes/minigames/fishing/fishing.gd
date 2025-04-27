@@ -11,11 +11,16 @@ var beats: Array[Tween] = []
 var time_to_target: float = beat_offset / 1000
 
 
+func _enter_tree() -> void:
+	set_multiplayer_authority(PlayerManager.get_player_authority(player_id))
+
+
 func _ready():
 	RhythmEngine.player_beat.connect(on_beat)
-	RhythmEngine.start_session(
-		minigame_player.player_id, WindowManager.Minigames.Fishing, 1, beat_offset
-	)
+	RhythmEngine.start_session(player_id, WindowManager.Minigames.Fishing, 1, beat_offset)
+
+	var device = PlayerManager.get_player_device(player_id)
+	input = DeviceInput.new(device)
 
 
 func _process(_delta: float):
@@ -30,8 +35,8 @@ func _handle_input():
 
 
 func _exit_tree():
-	minigame_player.in_minigame = false
-	RhythmEngine.end_session(minigame_player.player_id)
+	#minigame_player.in_minigame = false
+	RhythmEngine.end_session(player_id)
 
 
 # ==== Helper Functions ====
@@ -51,7 +56,7 @@ func _beat():
 		return
 	beats.pop_front().kill()
 	$Beat.hide()
-	var hit_time: float = RhythmEngine.hit(minigame_player.player_id, "Electric Piano")
+	var hit_time: float = RhythmEngine.hit(player_id, "Electric Piano")
 	hit_time = snappedf(hit_time, 0.01)
 	match true:
 		_ when abs(hit_time) <= accuracy:
@@ -74,8 +79,8 @@ func _beat():
 
 # Updates BEAT game object when a beat is received
 # TODO: Assumes there will never be more than one active beat at a time -- fix this
-func on_beat(player_id: int, _length: float, _track: String):
-	if minigame_player.player_id != player_id:
+func on_beat(minigame_player_id: int, _length: float, _track: String):
+	if minigame_player_id != player_id:
 		return
 
 	$Beat.position = START_POS
