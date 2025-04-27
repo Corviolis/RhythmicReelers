@@ -10,9 +10,8 @@
 [node name="Lobby" type="Control"]
 texture_filter = 1
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 0.25
+anchor_bottom = 0.25
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_2jmq4")
@@ -215,6 +214,7 @@ text = "Leave"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(160, 90)
+zoom = Vector2(4, 4)
 
 [connection signal="pressed" from="Buttons/OpenServer" to="." method="host_game"]
 [connection signal="pressed" from="Buttons/JoinServer" to="." method="join_game"]

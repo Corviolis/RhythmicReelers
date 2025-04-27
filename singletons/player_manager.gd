@@ -165,7 +165,7 @@ func _get_random_available_player_icon() -> int:
 #=== NETWORKING UTILITIES ===
 
 # creates a 'fake' player on remote clients (including the server if we are not the server)
-# the device here is just to make the controller / keyboard icon work (feeling cute might remove later)
+# the device here is just to make the controller / keyboard icon work (might remove later)
 #	lol who am I kidding it works so it will never be touched again
 # device -2 = keyboard, -3 = controller
 @rpc("any_peer", "reliable")
