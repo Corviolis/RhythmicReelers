@@ -30,6 +30,7 @@ func place_window(
 	var minigame: Minigame = minigame_scene.instantiate() as Minigame
 	minigame.apply_scale(Vector2(0.2, 0.2))
 	minigame.minigame_player = player
+	minigame.input = player.input
 
 	add_child(minigame)
 	setup_direction(window_size)

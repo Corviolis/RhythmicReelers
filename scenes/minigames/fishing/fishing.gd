@@ -18,10 +18,14 @@ func _ready():
 	)
 
 
-func _input(event):
+func _process(_delta: float):
+	_handle_input()
+
+
+func _handle_input():
 	if !is_multiplayer_authority():
 		return
-	if event.is_action_pressed("beat"):
+	if input.is_action_pressed("beat"):
 		_beat()
 
 
