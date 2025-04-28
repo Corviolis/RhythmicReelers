@@ -15,7 +15,6 @@ func _get_resource_type(_path) -> String:
 
 
 func _load(path, original_path, _use_sub_threads, _cache_mode) -> BeatMap:
-	print("loading: " + path)
 	var all_bytes: PackedByteArray = FileAccess.get_file_as_bytes(original_path)
 	var tracks = {}
 	var track_offset = 1

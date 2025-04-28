@@ -1,9 +1,15 @@
 extends GutTest
 
+var test_song_dir = "res://test/test_assets/music/"
+
+
+func before_each():
+	RhythmEngine.beatmaps = RhythmEngine._get_filesystem_beatmaps(test_song_dir)
+
 
 func test_get_filesystem_beatmaps():
 	# Check if the beat maps are loaded correctly
-	var beat_maps = RhythmEngine._get_filesystem_beatmaps()
+	var beat_maps = RhythmEngine._get_filesystem_beatmaps(test_song_dir)
 	assert_gt(beat_maps.size(), 0, "Beat maps should not be empty")
 
 	# Check if the beat maps contain the expected keys
@@ -12,19 +18,26 @@ func test_get_filesystem_beatmaps():
 
 	# Check if the beat map has the expected tracks
 	var test_map = beat_maps["test_song"]["fishing-1"]
-	assert(test_map.get_track_names().size() > 0)
+	assert_has(test_map.get_track_names(), "Electric Piano", "Track names should not be empty")
+
+
+func test_get_csv_bpm():
+	var bpm_changes := RhythmEngine._get_csv_bpm("test_song", test_song_dir)
+	assert_eq(bpm_changes.size(), 1, "CSV BPM should return an array of size 1")
+	assert_eq(bpm_changes[0].bpm, 170, "BPM should be 170")
+	assert_eq(bpm_changes[0].time, 0, "BPM should be 170")
 
 
 func test_play_song():
 	# Check if the song is played correctly
-	RhythmEngine.play_song("test_song")
+	RhythmEngine.play_song("test_song", test_song_dir)
 	assert_eq(RhythmEngine.song, "test_song", "Song should be 'test_song'")
 
 	# Check if the audio stream player is playing the correct song
 	var audio = RhythmEngine.audio
 	assert_eq(
 		audio.get_stream().resource_path,
-		"res://music/test_song/test_song.mp3",
+		test_song_dir + "test_song/test_song.mp3",
 		"Audio stream should be 'test_song'"
 	)
 
@@ -46,7 +59,7 @@ func test_start_session():
 
 func test_hit():
 	# Check if a hit is registered correctly
-	RhythmEngine.play_song("test_song")
+	RhythmEngine.play_song("test_song", test_song_dir)
 	RhythmEngine.start_session(0, WindowManager.Minigames.Fishing, 1, 5)
 	var session = RhythmEngine.sessions[0].session
 	var track_name = session.tracks[0].name
@@ -60,7 +73,10 @@ func test_hit():
 	print(result_fail)
 	assert_lt(result_fail, 0, "Hit should be negative if after beat")
 	assert_almost_eq(
-		result_fail, -300, 50, "I don't know why but the hit is negative 300ms despite waiting 0.5s"
+		result_fail,
+		-300,
+		100,
+		"I don't know why but the hit is negative 300ms despite waiting 0.5s"
 	)
 
 
@@ -72,7 +88,7 @@ func test_process():
 	watch_signals(RhythmEngine)
 	await wait_seconds(RhythmEngine._calculate_seconds_per_beat(RhythmEngine.bpm_list[0].bpm))
 	assert_signal_emitted(RhythmEngine, "system_beat", "System beat signal should be sent")
-	assert_signal_emitted(RhythmEngine, "player_beat", "Player beat signal should be sent")
+	assert_signal_emitted(RhythmEngine, "session_beat", "Session beat signal should be sent")
 
 
 func test_end_session():

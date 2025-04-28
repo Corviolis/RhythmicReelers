@@ -1,10 +1,12 @@
 extends Node
 
-signal player_beat(player_id: int, length: float, track: String)
+signal session_beat(player_id: int, length: float, track: String)
 signal system_beat
+# TODO: create a dynamic measure / time signature system
+#signal system_measure
 
 # see _get_filesystem_beatmaps() documentation
-var beatmaps: Dictionary
+var beatmaps: Dictionary[String, Dictionary] = {}
 
 var song: String
 var bpm_list: Array[BPM]
@@ -15,9 +17,6 @@ var sessions: Array[ThreadSession] = []
 
 
 class ThreadSession:
-	# Thread class to run the song in a separate thread
-	# This is necessary to avoid blocking the main thread
-	# while waiting for the song to finish playing
 	var thread: Thread
 	var is_active: bool = false
 	var session: Session
@@ -53,6 +52,9 @@ class Session:
 		tracks = beatmap.get_tracks()
 		for track in tracks:
 			future_beat_sent[track.name] = false
+	# Thread class to run the song in a separate thread
+	# This is necessary to avoid blocking the main thread
+	# while waiting for the song to finish playing
 
 
 func _ready():
@@ -61,7 +63,6 @@ func _ready():
 		sessions[i] = ThreadSession.new()
 	beatmaps = _get_filesystem_beatmaps()
 	add_child(audio)
-	play_song("test_song")
 
 
 func _process(_delta):
@@ -73,10 +74,10 @@ func _process(_delta):
 		)
 		* 1000
 	)
-	_report_beat()
+	_report_system_beat()
 
 
-func _report_beat():
+func _report_system_beat():
 	if song_position_in_ms >= next_system_beat_position:
 		next_system_beat_position = (
 			song_position_in_ms
@@ -137,21 +138,22 @@ func _run_song(session: Session, player_id: int):
 				not session.future_beat_sent[track.name]
 				and song_position_in_ms >= beat.pos - session.future_beat_offset
 			):
-				player_beat.emit.call_deferred(player_id, beat.len, track.name)
+				session_beat.emit.call_deferred(player_id, beat.len, track.name)
 				session.future_beat_sent[track.name] = true
 
 
 # returns time to beat in ms, negative if after the beat
+# BUG: the returned hit time is very irregular and has a wide margin of error
 func hit(player_id: int, track_name: String):
 	for track in sessions[player_id].session.tracks:
 		if track.name == track_name:
 			return track.get_time_to_closest(song_position_in_ms)
 
 
-func play_song(song_name: String):
+func play_song(song_name: String, path: String = "res://music/songs/"):
 	song = song_name
-	bpm_list = _get_csv_bpm(song_name)
-	audio.stream = load("res://music/" + song_name + "/" + song_name + ".mp3")
+	bpm_list = _get_csv_bpm(song_name, path)
+	audio.stream = load(path + song_name + "/" + song_name + ".mp3")
 	audio.play()
 
 
@@ -161,20 +163,22 @@ func play_song(song_name: String):
 # returns a dictionary of dictionaries
 # organized like: beatmaps_return["song_name"]: Dictionary =
 #   song_name["fishing-1"]: BeatMap = beatmap
-func _get_filesystem_beatmaps() -> Dictionary:
-	var beatmaps_return := {}
-	var music_dir := DirAccess.open("res://music")
+func _get_filesystem_beatmaps(
+	path: String = "res://music/songs/"
+) -> Dictionary[String, Dictionary]:
+	var beatmaps_return: Dictionary[String, Dictionary] = {}
+	var music_dir := DirAccess.open(path)
 	music_dir.list_dir_begin()
 	var song_dir_name := music_dir.get_next()
 	while song_dir_name != "":
 		var song_beatmaps := {}
-		var song_dir_reference := DirAccess.open("res://music/" + song_dir_name)
+		var song_dir_reference := DirAccess.open(path + song_dir_name)
 		song_dir_reference.list_dir_begin()
 		var song_dir_file := song_dir_reference.get_next()
 		while song_dir_file != "":
 			if song_dir_file.ends_with(".beat"):
 				song_beatmaps[song_dir_file.replace(".beat", "")] = (
-					load("res://music/" + song_dir_name + "/" + song_dir_file) as BeatMap
+					load(path + song_dir_name + "/" + song_dir_file) as BeatMap
 				)
 			song_dir_file = song_dir_reference.get_next()
 		if !song_beatmaps.is_empty():
@@ -192,9 +196,9 @@ class BPM:
 		self.bpm = bpm_input
 
 
-func _get_csv_bpm(song_name: String) -> Array[BPM]:
+func _get_csv_bpm(song_name: String, path: String = "res://music/songs/") -> Array[BPM]:
 	var result: Array[BPM] = []
-	var file_path = "res://music/" + song_name + "/bpm.csv"
+	var file_path = path + song_name + "/bpm.csv"
 
 	# Open the file
 	if ResourceLoader.exists(file_path):

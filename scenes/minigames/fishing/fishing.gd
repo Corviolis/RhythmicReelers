@@ -4,8 +4,10 @@ const START_POS = Vector2(159, 192)
 const TARGET_POS = Vector2(159, 27)
 const STOP_POS = Vector2(159, 0)
 
+# TODO: change beat_offset to use RhythmEngine's system_beat
 @export var beat_offset = 1000
-@export var accuracy = 50
+@export var high_accuracy = 50
+@export var low_accuracy = 100
 
 var beats: Array[Tween] = []
 var time_to_target: float = beat_offset / 1000
@@ -16,7 +18,7 @@ func _enter_tree() -> void:
 
 
 func _ready():
-	RhythmEngine.player_beat.connect(on_beat)
+	RhythmEngine.session_beat.connect(on_beat)
 	RhythmEngine.start_session(player_id, WindowManager.Minigames.Fishing, 1, beat_offset)
 
 	var device = PlayerManager.get_player_device(player_id)
@@ -58,20 +60,26 @@ func _beat():
 	$Beat.hide()
 	var hit_time: float = RhythmEngine.hit(player_id, "Electric Piano")
 	hit_time = snappedf(hit_time, 0.01)
+	_handle_beat_result.rpc(hit_time)
+	return hit_time
+
+
+@rpc("any_peer", "call_local", "reliable")
+func _handle_beat_result(hit_time: float):
+	print(player_id)
 	match true:
-		_ when abs(hit_time) <= accuracy:
+		_ when abs(hit_time) <= high_accuracy:
 			print("Nice! %s" % hit_time)
-		_ when hit_time < 0 and abs(hit_time) <= accuracy + 100:
+		_ when hit_time < 0 and abs(hit_time) <= high_accuracy + 100:
 			print("Slightly Slow! %s" % hit_time)
-		_ when hit_time > 0 and abs(hit_time) <= accuracy + 100:
+		_ when hit_time > 0 and abs(hit_time) <= high_accuracy + 100:
 			print("Slightly Fast! %s" % hit_time)
-		_ when hit_time < 0 and abs(hit_time) > accuracy + 100:
+		_ when hit_time < 0 and abs(hit_time) > high_accuracy + 100:
 			print("Very Slow! %s" % hit_time)
-		_ when hit_time > 0 and abs(hit_time) > accuracy + 100:
+		_ when hit_time > 0 and abs(hit_time) > high_accuracy + 100:
 			print("Very Fast! %s" % hit_time)
 		_:
 			printerr("Impossible hit time! %s" % hit_time)
-	return hit_time
 
 
 # ==== Callback Functions ====

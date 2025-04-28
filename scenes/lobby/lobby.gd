@@ -18,6 +18,8 @@ func _ready():
 	for i in range(0, PlayerManager.get_character_asset_count()):
 		available_icons[i] = true
 
+	RhythmEngine.play_song("demo_song")
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

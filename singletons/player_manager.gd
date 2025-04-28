@@ -62,19 +62,19 @@ func set_player_data(player: int, key: StringName, value: Variant):
 	player_data[player][key] = value
 
 
-func catalogue_player_assets():
-	var characters_directory = DirAccess.open("res://art/characters")
+func catalogue_player_assets(path: String = "res://art/characters/"):
+	var characters_directory = DirAccess.open(path)
 	characters_directory.list_dir_begin()
 	var character_file = characters_directory.get_next() as String
 
 	while character_file != "":
 		var unit_assets = {}
-		var character_path := DirAccess.open("res://art/characters/" + character_file)
+		var character_path := DirAccess.open(path + character_file)
 		character_path.list_dir_begin()
 
 		var asset = character_path.get_next() as String
 		while not asset.is_empty() and not asset.ends_with(".import"):
-			unit_assets[asset] = load("res://art/characters/" + character_file + "/" + asset)
+			unit_assets[asset] = load(path + character_file + "/" + asset)
 			asset = character_path.get_next()
 
 		character_assets.append(unit_assets)
