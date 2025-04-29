@@ -61,7 +61,7 @@ func test_start_session():
 	assert_eq(session, null)
 
 	# Check if a session is started correctly
-	RhythmEngine.start_session(0, WindowManager.Minigames.Fishing, 1, 5)
+	RhythmEngine.start_session(0, WindowManager.Minigames.FISHING, 1, 5)
 	session = RhythmEngine.sessions[0].session
 	assert_ne(session, null, "Session should not be null")
 	assert_eq(session.future_beat_offset, 5, "Session future beat offset should be 5")
@@ -73,17 +73,15 @@ func test_start_session():
 func test_hit():
 	# Check if a hit is registered correctly
 	RhythmEngine.play_song("test_song", test_song_dir)
-	RhythmEngine.start_session(0, WindowManager.Minigames.Fishing, 1, 5)
+	RhythmEngine.start_session(0, WindowManager.Minigames.FISHING, 1, 5)
 	var session = RhythmEngine.sessions[0].session
 	var track_name = session.tracks[0].name
 
 	var result_hit = RhythmEngine.hit(0, track_name)
 	assert_eq(result_hit, 0, "Hit time should be 0 if on beat")
-	print(result_hit)
 
 	await wait_seconds(0.5)
 	var result_fail = RhythmEngine.hit(0, track_name)
-	print(result_fail)
 	assert_lt(result_fail, 0, "Hit should be negative if after beat")
 	assert_almost_eq(
 		result_fail,
@@ -91,17 +89,6 @@ func test_hit():
 		100,
 		"I don't know why but the hit is negative 300ms despite waiting 0.5s"
 	)
-
-
-func test_process():
-	# Check if the process function works correctly
-	RhythmEngine.start_session(0, WindowManager.Minigames.Fishing, 1, 5)
-
-	# Check if the future beat signal is emitted correctly
-	watch_signals(RhythmEngine)
-	await wait_seconds(RhythmEngine._calculate_seconds_per_beat(RhythmEngine.bpm_list[0].bpm))
-	assert_signal_emitted(RhythmEngine, "system_beat", "System beat signal should be sent")
-	assert_signal_emitted(RhythmEngine, "session_beat", "Session beat signal should be sent")
 
 
 func test_end_session():

@@ -1,7 +1,7 @@
 class_name WindowManager
 extends Node
 
-enum Minigames { Fishing, Cutting, Packaging }
+enum Minigames { FISHING, CUTTING, PACKAGING, SHOOTING }
 
 var window_scene = (
 	load("res://scenes/minigames/minigame_window/minigame_window.tscn") as PackedScene
@@ -186,9 +186,9 @@ func find_nearest_space(initial_center: Vector2i, window_size: Vector2i) -> Vect
 
 func load_minigame(minigame: Minigames) -> PackedScene:
 	match minigame:
-		Minigames.Fishing:
+		Minigames.FISHING:
 			return load("res://scenes/minigames/fishing/fishing.tscn")
-		Minigames.Cutting:
+		Minigames.CUTTING:
 			push_error("Using a test scene for Cutting")
 			return load("res://scenes/minigames/cutting/cutting_test.tscn")
 		_:
@@ -200,9 +200,9 @@ func load_minigame(minigame: Minigames) -> PackedScene:
 # Currently all windows need to be an odd size so they have a center pixel
 func get_window_size(minigame: Minigames) -> Vector2:
 	match minigame:
-		Minigames.Fishing:
+		Minigames.FISHING:
 			return Vector2i(31, 55)
-		Minigames.Cutting:
+		Minigames.CUTTING:
 			return Vector2i(55, 31)
 		_:
 			push_error("No minigame size provided for " + Minigames.keys()[minigame])

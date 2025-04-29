@@ -2,8 +2,7 @@ extends Node
 
 signal session_beat(player_id: int, length: float, track: String)
 signal system_beat
-# TODO: create a dynamic measure / time signature system
-#signal system_measure
+signal system_measure
 
 # see _get_filesystem_beatmaps() documentation
 var beatmaps: Dictionary[String, Dictionary] = {}
@@ -11,6 +10,7 @@ var beatmaps: Dictionary[String, Dictionary] = {}
 var song: String
 var bpm_list: Array[SongChanges] = []
 var next_system_beat_position: float = 0
+var current_measure_beats: int = 0
 var audio = AudioStreamPlayer.new()
 var song_position_in_ms: float
 var sessions: Array[ThreadSession] = []
@@ -43,8 +43,8 @@ class Session:
 	var future_beat_offset: int
 	var future_beat_sent: Dictionary
 
-	func _init(minigame: WindowManager.Minigames, difficulty: int, offset: int):
-		future_beat_offset = offset
+	func _init(minigame: WindowManager.Minigames, difficulty: int, beat_offset: int):
+		future_beat_offset = beat_offset
 
 		var minigame_name: String = WindowManager.Minigames.keys()[minigame]
 		var beatmap_name: String = minigame_name.to_lower() + "-" + str(difficulty)
@@ -81,31 +81,45 @@ func _report_system_beat():
 	if song_position_in_ms >= next_system_beat_position:
 		next_system_beat_position = (
 			song_position_in_ms
-			+ _calculate_seconds_per_beat(_get_current_bpm(song_position_in_ms)) * 1000
+			+ (calculate_seconds_per_beat(get_current_song_changes(song_position_in_ms).bpm) * 1000)
 		)
-
+		print("system beat")
 		system_beat.emit()
+
+		current_measure_beats -= 1
+		if current_measure_beats <= 0:
+			print("measure")
+			current_measure_beats = (
+				get_current_song_changes(song_position_in_ms).time_signature_numerator
+			)
+			system_measure.emit()
 
 
 #===== Helper Functions =====
 
 
-func _calculate_seconds_per_beat(bpm: float) -> float:
+func calculate_seconds_per_beat(bpm: float) -> float:
 	return (60 * 4) / bpm
 
 
-func _get_current_bpm(song_pos: float) -> float:
+func calculate_seconds_per_measure(bpm: float, beats_per_measure: int) -> float:
+	return calculate_seconds_per_beat(bpm) * beats_per_measure
+
+
+func get_current_song_changes(song_pos: float) -> SongChanges:
 	for i in range(bpm_list.size()):
 		if song_pos > bpm_list[i].time:
-			return bpm_list[i].bpm
-	return bpm_list[bpm_list.size() - 1].bpm
+			return bpm_list[i]
+	return bpm_list[bpm_list.size() - 1]
 
 
 #===== Session Management =====
 
 
-func start_session(player_id: int, minigame: WindowManager.Minigames, difficulty: int, offset: int):
-	sessions[player_id].start(Session.new(minigame, difficulty, offset), player_id)
+func start_session(
+	player_id: int, minigame: WindowManager.Minigames, difficulty: int, beat_offset: int
+):
+	sessions[player_id].start(Session.new(minigame, difficulty, beat_offset), player_id)
 
 
 func end_session(player_id: int):
@@ -126,17 +140,25 @@ func _run_song(session: Session, player_id: int):
 		for track in session.tracks:
 			# Scan for position in beatmap
 			var beat = track.get_beat()
-			#while song_position_in_ms > beat.pos:
-			#beat = track.next()
 
 			if song_position_in_ms >= beat.pos:
 				session.future_beat_sent[track.name] = false
 				track.next()
 				continue
 
+			var song_changes = get_current_song_changes(song_position_in_ms)
 			if (
 				not session.future_beat_sent[track.name]
-				and song_position_in_ms >= beat.pos - session.future_beat_offset
+				and (
+					song_position_in_ms
+					>= (
+						beat.pos
+						- (
+							calculate_seconds_per_beat(song_changes.bpm)
+							* session.future_beat_offset
+						)
+					)
+				)
 			):
 				session_beat.emit.call_deferred(player_id, beat.len, track.name)
 				session.future_beat_sent[track.name] = true
