@@ -3,6 +3,8 @@ extends GutTest
 var fishing_minigame: Minigame
 var test_song_dir = "res://test/test_assets/music/"
 
+# TODO: this test creates 2 orphans, attempt to fix this?
+
 
 func before_each():
 	RhythmEngine.beatmaps = RhythmEngine._get_filesystem_beatmaps(test_song_dir)

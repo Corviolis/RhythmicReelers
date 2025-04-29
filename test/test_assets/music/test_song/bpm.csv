@@ -1,2 +1,4 @@
-Time (seconds),BPM
-0.0,170.0
+Time (seconds),BPM,Time Signature Numerator,Time Signature Denominator
+0,120.0,4,4
+10.0,100.0,5,8
+13.0,170.0,5,8

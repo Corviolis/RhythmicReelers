@@ -2,7 +2,8 @@ extends Node
 
 # player is 0-3
 # device is -1 for keyboard/mouse, 0+ for joypads
-# these concepts seem similar but it is useful to separate them so for example, device 6 could control player 1.
+# these concepts seem similar but it is useful to separate them
+#    for example, device 6 could control player 1
 
 signal player_joined(player: int, authority: int)
 signal player_left(player: int)

@@ -23,9 +23,22 @@ func test_get_filesystem_beatmaps():
 
 func test_get_csv_bpm():
 	var bpm_changes := RhythmEngine._get_csv_bpm("test_song", test_song_dir)
-	assert_eq(bpm_changes.size(), 1, "CSV BPM should return an array of size 1")
-	assert_eq(bpm_changes[0].bpm, 170, "BPM should be 170")
-	assert_eq(bpm_changes[0].time, 0, "BPM should be 170")
+	assert_eq(bpm_changes.size(), 3)
+
+	assert_eq(bpm_changes[0].bpm, 120)
+	assert_eq(bpm_changes[0].time, 0)
+	assert_eq(bpm_changes[0].time_signature_numerator, 4)
+	assert_eq(bpm_changes[0].time_signature_denominator, 4)
+
+	assert_eq(bpm_changes[1].bpm, 100)
+	assert_eq(bpm_changes[1].time, 10)
+	assert_eq(bpm_changes[1].time_signature_numerator, 5)
+	assert_eq(bpm_changes[1].time_signature_denominator, 8)
+
+	assert_eq(bpm_changes[2].bpm, 170)
+	assert_eq(bpm_changes[2].time, 13)
+	assert_eq(bpm_changes[2].time_signature_numerator, 5)
+	assert_eq(bpm_changes[2].time_signature_denominator, 8)
 
 
 func test_play_song():

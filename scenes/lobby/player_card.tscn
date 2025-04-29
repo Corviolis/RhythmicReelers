@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dho6twd6gf4w" path="res://scenes/lobby/player_card.gd" id="1_el046"]
 [ext_resource type="Theme" uid="uid://cr57qof47xvw8" path="res://art/ui/4x4ui.tres" id="1_jls5p"]
-[ext_resource type="Texture2D" uid="uid://bbuxy32rge4nt" path="res://art/characters/happy_guy/idle.png" id="2_pjvdb"]
+[ext_resource type="Texture2D" uid="uid://bbuxy32rge4nt" path="res://test/test_assets/characters/happy_guy/idle.png" id="2_pjvdb"]
 [ext_resource type="Theme" uid="uid://bhjax4m6jyp3m" path="res://art/ui/3x3ui.tres" id="3_hfcqh"]
 [ext_resource type="Material" uid="uid://bqv7e2yagptbi" path="res://art/materials/base_color_UI.tres" id="3_ioyuo"]
 [ext_resource type="FontFile" uid="uid://lfrxraujgfkl" path="res://art/fonts/Pixel_3x3.ttf" id="5_tvuhl"]

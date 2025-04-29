@@ -9,7 +9,7 @@ signal system_beat
 var beatmaps: Dictionary[String, Dictionary] = {}
 
 var song: String
-var bpm_list: Array[BPM]
+var bpm_list: Array[SongChanges] = []
 var next_system_beat_position: float = 0
 var audio = AudioStreamPlayer.new()
 var song_position_in_ms: float
@@ -187,17 +187,21 @@ func _get_filesystem_beatmaps(
 	return beatmaps_return
 
 
-class BPM:
+class SongChanges:
 	var time: float
 	var bpm: float
+	var time_signature_numerator: int
+	var time_signature_denominator: int
 
-	func _init(song_time: float, bpm_input: float):
+	func _init(song_time: float, bpm_input: float, numerator: int, denominator: int):
 		self.time = song_time
 		self.bpm = bpm_input
+		self.time_signature_numerator = numerator
+		self.time_signature_denominator = denominator
 
 
-func _get_csv_bpm(song_name: String, path: String = "res://music/songs/") -> Array[BPM]:
-	var result: Array[BPM] = []
+func _get_csv_bpm(song_name: String, path: String = "res://music/songs/") -> Array[SongChanges]:
+	var result: Array[SongChanges] = []
 	var file_path = path + song_name + "/bpm.csv"
 
 	# Open the file
@@ -208,7 +212,14 @@ func _get_csv_bpm(song_name: String, path: String = "res://music/songs/") -> Arr
 		# Read the file line by line
 		while file.get_position() < file.get_length():
 			var columns = file.get_csv_line()
-			result.append(BPM.new(columns[0].to_float(), columns[1].to_float()))
+			result.append(
+				SongChanges.new(
+					columns[0].to_float(),
+					columns[1].to_float(),
+					columns[2].to_int(),
+					columns[3].to_int()
+				)
+			)
 
 		file.close()
 	else:
