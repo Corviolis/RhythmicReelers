@@ -46,6 +46,18 @@ func get_player_device(player: int) -> int:
 	return get_player_data(player, "device")
 
 
+func get_player_in_minigame(player: int) -> bool:
+	return get_player_data(player, "in_minigame")
+
+
+func start_player_minigame(player: int) -> void:
+	set_player_data(player, "in_minigame", true)
+
+
+func stop_player_minigame(player: int) -> void:
+	set_player_data(player, "in_minigame", false)
+
+
 # get player data.
 # null means it doesn't exist.
 func get_player_data(player: int, key: StringName):

@@ -2,6 +2,11 @@ class_name MinigameWindow
 extends NinePatchRect
 
 var progress_bar: ProgressBar
+var window: WindowManager.BitmapWindow
+
+
+func _exit_tree() -> void:
+	WindowManager.free_window(window)
 
 
 func setup_direction(window_size: Vector2i):

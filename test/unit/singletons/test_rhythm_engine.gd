@@ -74,14 +74,14 @@ func test_hit():
 	# Check if a hit is registered correctly
 	RhythmEngine.play_song("test_song", test_song_dir)
 	RhythmEngine.start_session(0, WindowManager.Minigames.FISHING, 1, 5)
-	var session = RhythmEngine.sessions[0].session
+	var session = RhythmEngine.sesions[0].session
 	var track_name = session.tracks[0].name
 
-	var result_hit = RhythmEngine.hit(0, track_name)
+	var result_hit = RhythmEngine.hit(0, track_name, 0, 0)
 	assert_eq(result_hit, 0, "Hit time should be 0 if on beat")
 
 	await wait_seconds(0.5)
-	var result_fail = RhythmEngine.hit(0, track_name)
+	var result_fail = RhythmEngine.hit(0, track_name, 0, 0)
 	assert_lt(result_fail, 0, "Hit should be negative if after beat")
 	assert_almost_eq(
 		result_fail,

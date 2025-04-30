@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://bd1u1x4hdhi0s"]
 
 [ext_resource type="Script" uid="uid://y6en4kibnuoi" path="res://scenes/game/player.gd" id="1_q2gu7"]
-[ext_resource type="Texture2D" uid="uid://bbuxy32rge4nt" path="res://art/characters/happy_guy/idle.png" id="2_cyswk"]
-[ext_resource type="Material" uid="uid://dvcv4aghrt2aq" path="res://art/characters/happy_guy/material.tres" id="2_p0d16"]
+[ext_resource type="Texture2D" uid="uid://bbuxy32rge4nt" path="res://test/test_assets/characters/happy_guy/idle.png" id="2_cyswk"]
+[ext_resource type="Material" uid="uid://dvcv4aghrt2aq" path="res://test/test_assets/characters/happy_guy/material.tres" id="2_p0d16"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mr022"]
 size = Vector2(8, 8)

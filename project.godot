@@ -31,6 +31,7 @@ PlayerManager="*res://singletons/player_manager.gd"
 NetworkManager="*res://singletons/network_manager.gd"
 GlobalUtils="*res://singletons/global_utils.gd"
 RhythmEngine="*res://singletons/rhythm_engine.gd"
+WindowManager="*res://singletons/window_manager.gd"
 
 [debug]
 

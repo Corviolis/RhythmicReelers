@@ -1,7 +1,6 @@
 extends Node2D
 
 var player_scene = load("res://scenes/game/player.tscn") as PackedScene
-@onready var window_manager = $WindowManager as WindowManager
 @onready var boat = $Boat as StaticBody2D
 
 

@@ -7,44 +7,41 @@ var raw_tracks: Dictionary
 class Track:
 	var name: String
 	var beat_map: Array
-	var beat_index: int = 0
+	var current_beat_index: int = 0
 
 	class Beat:
 		var pos: float
 		var len: float
+		var index: int
 
-		func _init(p, l):
+		func _init(p, l, i):
 			pos = p
 			len = l
+			index = i
 
 	func _init(n, map):
 		name = n
 		beat_map = map
 
-	func get_beat() -> Beat:
-		return Beat.new(beat_map[beat_index], beat_map[beat_index + 1])
+	func get_next_beat() -> Beat:
+		return Beat.new(
+			beat_map[current_beat_index], beat_map[current_beat_index + 1], current_beat_index
+		)
 
-	func get_prev_beat() -> Beat:
-		if beat_index == 0:
-			return get_beat()
-		return Beat.new(beat_map[beat_index - 2], beat_map[beat_index - 1])
+	func get_beat_by_index(beat_index: int) -> Beat:
+		return Beat.new(beat_map[beat_index], beat_map[beat_index + 1], beat_index)
 
-	func get_time_to_closest(time) -> float:
-		var time_to_next: float = get_beat().pos - time
-		var time_to_prev: float = get_prev_beat().pos - time
-		if abs(time_to_next) < abs(time_to_prev):
-			return time_to_next
-		return time_to_prev
+	func get_time_to_beat(beat_index: int, time: float) -> float:
+		return beat_map[beat_index] - time
 
-	func next() -> Beat:
-		if beat_index + 2 >= len(beat_map) - 1:
+	func next() -> void:
+		if current_beat_index + 2 >= len(beat_map) - 1:
 			reset()
 		else:
-			beat_index += 2
-		return get_beat()
+			current_beat_index += 2
 
 	func reset():
-		beat_index = 0
+		current_beat_index = 0
 
 
 func _init(t):
@@ -59,8 +56,8 @@ func get_track(name: String) -> Track:
 	return Track.new(name, raw_tracks[name])
 
 
-func get_tracks() -> Array:
-	var tracks = []
+func get_tracks() -> Array[Track]:
+	var tracks: Array[Track] = []
 	for name in raw_tracks:
 		tracks.append(get_track(name))
 	return tracks

@@ -1,11 +1,10 @@
 class_name StationInteractable
 extends Node2D
 
-var nearby_players: Array[Player] = []
-
 @export var minigame: WindowManager.Minigames
 
-@onready var window_manager := get_node("/root/Game/WindowManager") as WindowManager
+var nearby_players: Array[Player] = []
+
 @onready var interaction_area: Area2D = $Area2D
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -38,4 +37,4 @@ func remove_nearby_player(player: Player) -> void:
 
 
 func interact(player_id: int) -> void:
-	window_manager.create_window.rpc(position, minigame, player_id)
+	WindowManager.create_window.rpc(position, minigame, player_id)

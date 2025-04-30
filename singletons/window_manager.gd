@@ -1,13 +1,15 @@
-class_name WindowManager
 extends Node
 
 enum Minigames { FISHING, CUTTING, PACKAGING, SHOOTING }
 
+const WINDOW_PADDING: int = 1
+
 var window_scene = (
 	load("res://scenes/minigames/minigame_window/minigame_window.tscn") as PackedScene
 )
-var pixel_mapping: BitMap  # 2d grid of booleans, representing the available space for windows. true is occupied
-const WINDOW_PADDING: int = 1
+# 2d grid of booleans, representing the available space for windows. true is occupied
+var pixel_mapping: BitMap
+var bitmap_windows: Array[BitmapWindow] = []
 
 @onready
 var viewport_height: int = ProjectSettings.get_setting("display/window/size/viewport_height")
@@ -58,8 +60,6 @@ class BitmapWindow:
 		return ret
 
 
-var bitmap_windows: Array[BitmapWindow] = []
-
 # ==== Pixel Grid Management ====
 
 
@@ -68,8 +68,9 @@ func _ready():
 	pixel_mapping.create(Vector2i(viewport_width, viewport_height))
 
 
-func reserve_window(window_center: Vector2i, window_size: Vector2i):
-	bitmap_windows.push_back(BitmapWindow.new(window_center, window_size))
+func reserve_window(window_center: Vector2i, window_size: Vector2i) -> BitmapWindow:
+	var new_window = BitmapWindow.new(window_center, window_size)
+	bitmap_windows.push_back(new_window)
 	var window = Rect2i(
 		window_center.x - window_size.x / 2,
 		window_center.y - window_size.y / 2,
@@ -77,12 +78,14 @@ func reserve_window(window_center: Vector2i, window_size: Vector2i):
 		window_size.y
 	)
 	pixel_mapping.set_bit_rect(window, true)
+	return new_window
 
 
 func free_window(bitmap_window: BitmapWindow):
-	assert(!bitmap_windows.has(bitmap_window))  # pop the bitmap window from bitmap_windows
-	var window = Rect2i(bitmap_window.window_center, bitmap_window.window_size)
-	pixel_mapping.set_bt_rect(window, false)
+	bitmap_windows.erase(bitmap_window)
+	assert(!bitmap_windows.has(bitmap_window))
+	var window = Rect2i(bitmap_window.center, bitmap_window.size)
+	pixel_mapping.set_bit_rect(window, false)
 
 
 func array_to_screenspace(position: Vector2i) -> Vector2i:
@@ -223,7 +226,8 @@ func create_window(initial_center: Vector2i, minigame: Minigames, player_id: int
 
 	var window_position: Vector2i = find_nearest_space(initial_center, window_size)
 	assert(window_position != Vector2i.ZERO)
-	reserve_window(window_position, window_size)
+	var window = reserve_window(window_position, window_size)
 	window_position = array_to_screenspace(window_position)
+	minigame_window.window = window
 
 	minigame_window.place_window(window_position, window_size, load_minigame(minigame), player_id)

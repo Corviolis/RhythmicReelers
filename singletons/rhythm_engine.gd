@@ -1,6 +1,6 @@
 extends Node
 
-signal session_beat(player_id: int, length: float, track: String)
+signal session_beat(player_id: int, length: float, track: String, index: int)
 signal system_beat
 signal system_measure
 
@@ -10,7 +10,7 @@ var beatmaps: Dictionary[String, Dictionary] = {}
 var song: String
 var bpm_list: Array[SongChanges] = []
 var next_system_beat_position: float = 0
-var current_measure_beats: int = 0
+var beats_left_in_measure: int = 0
 var audio = AudioStreamPlayer.new()
 var song_position_in_ms: float
 var sessions: Array[ThreadSession] = []
@@ -27,11 +27,12 @@ class ThreadSession:
 	func stop():
 		is_active = false
 		session = null
+		thread.wait_to_finish()
 
 	func start(sess: Session, player_id: int):
 		is_active = true
 		self.session = sess
-		thread.start(RhythmEngine._run_song.bind(sess, player_id))
+		thread.start(RhythmEngine._run_session.bind(sess, player_id))
 
 
 # tracks: array of tracks in a minigame, pulled from the track names in the beatmap midi file
@@ -39,7 +40,7 @@ class ThreadSession:
 #   the minigame will show the beat this far before it is checked
 # future_beat_sent: dictionary of bools tracking if the next beat has been sent for a given track
 class Session:
-	var tracks: Array
+	var tracks: Array[BeatMap.Track]
 	var future_beat_offset: int
 	var future_beat_sent: Dictionary
 
@@ -83,16 +84,15 @@ func _report_system_beat():
 			song_position_in_ms
 			+ (calculate_seconds_per_beat(get_current_song_changes(song_position_in_ms).bpm) * 1000)
 		)
-		print("system beat")
-		system_beat.emit()
 
-		current_measure_beats -= 1
-		if current_measure_beats <= 0:
-			print("measure")
-			current_measure_beats = (
+		beats_left_in_measure -= 1
+		if beats_left_in_measure <= 0:
+			beats_left_in_measure = (
 				get_current_song_changes(song_position_in_ms).time_signature_numerator
 			)
 			system_measure.emit()
+
+		system_beat.emit()
 
 
 #===== Helper Functions =====
@@ -111,6 +111,10 @@ func get_current_song_changes(song_pos: float) -> SongChanges:
 		if song_pos > bpm_list[i].time:
 			return bpm_list[i]
 	return bpm_list[bpm_list.size() - 1]
+
+
+func get_beats_left_in_measure() -> int:
+	return beats_left_in_measure
 
 
 #===== Session Management =====
@@ -135,18 +139,17 @@ func _exit_tree():
 #===== Gameplay / State Management =====
 
 
-func _run_song(session: Session, player_id: int):
+func _run_session(session: Session, player_id: int):
 	while sessions[player_id].is_active:
 		for track in session.tracks:
-			# Scan for position in beatmap
-			var beat = track.get_beat()
+			var song_changes = get_current_song_changes(song_position_in_ms)
+			var beat: BeatMap.Track.Beat = track.get_next_beat()
 
 			if song_position_in_ms >= beat.pos:
 				session.future_beat_sent[track.name] = false
 				track.next()
 				continue
 
-			var song_changes = get_current_song_changes(song_position_in_ms)
 			if (
 				not session.future_beat_sent[track.name]
 				and (
@@ -160,16 +163,31 @@ func _run_song(session: Session, player_id: int):
 					)
 				)
 			):
-				session_beat.emit.call_deferred(player_id, beat.len, track.name)
+				session_beat.emit.call_deferred(player_id, beat.len, track.name, beat.index)
 				session.future_beat_sent[track.name] = true
 
 
 # returns time to beat in ms, negative if after the beat
 # BUG: the returned hit time is very irregular and has a wide margin of error
-func hit(player_id: int, track_name: String):
+# BUG: is beat_offset really needed here?
+func hit(player_id: int, track_name: String, beat_index: int, beat_offset: int) -> float:
 	for track in sessions[player_id].session.tracks:
 		if track.name == track_name:
-			return track.get_time_to_closest(song_position_in_ms)
+			return track.get_time_to_beat(
+				beat_index,
+				(
+					song_position_in_ms
+					- (
+						beat_offset
+						* calculate_seconds_per_beat(
+							get_current_song_changes(song_position_in_ms).bpm
+						)
+						* 1000
+					)
+				)
+			)
+	push_error("Hit called on non-existent track %s" % track_name)
+	return 0.0
 
 
 func play_song(song_name: String, path: String = "res://music/songs/"):

@@ -24,7 +24,7 @@ func before_each():
 
 func test_onbeat():
 	assert_eq(len(fishing_minigame.beats), 0, "Fishing minigame should have no beats initially")
-	fishing_minigame.on_beat(1, 1, "Electric Piano")
+	fishing_minigame.on_beat(1, 1, "Electric Piano", 0)
 	assert_eq(
 		len(fishing_minigame.beats), 1, "Fishing minigame should have one beat after on_beat()"
 	)
@@ -32,7 +32,7 @@ func test_onbeat():
 
 func test_beat():
 	assert_null(fishing_minigame._beat(), "_beat() should return null if no beats are set")
-	fishing_minigame.on_beat(1, 1, "Electric Piano")
+	fishing_minigame.on_beat(1, 1, "Electric Piano", 0)
 	assert(len(fishing_minigame.beats) == 1)  # technically part of test_onbeat() but sanity check
 	assert_typeof(
 		fishing_minigame._beat(),
