@@ -213,12 +213,19 @@ func get_window_size(minigame: Minigames) -> Vector2:
 
 
 @rpc("any_peer", "call_local", "reliable")
-func create_window(initial_center: Vector2i, minigame: Minigames, player_id: int):
+func create_window(
+	initial_center: Vector2i,
+	minigame: Minigames,
+	player_id: int,
+	minigame_station: StationInteractable
+) -> void:
+	minigame_station.playing = true
 	var minigame_window = window_scene.instantiate() as MinigameWindow
 	var character_index = PlayerManager.get_player_data(player_id, "character_index")
 	minigame_window.material = (
 		PlayerManager.get_character_assets(character_index)["material.tres"]
 	)
+	minigame_window.interactable = minigame_station
 	add_child(minigame_window)
 
 	var window_size: Vector2i = get_window_size(minigame)

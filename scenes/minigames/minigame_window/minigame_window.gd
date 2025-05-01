@@ -3,10 +3,12 @@ extends NinePatchRect
 
 var progress_bar: ProgressBar
 var window: WindowManager.BitmapWindow
+var interactable: StationInteractable
 
 
 func _exit_tree() -> void:
 	WindowManager.free_window(window)
+	interactable.playing = false
 
 
 func setup_direction(window_size: Vector2i):

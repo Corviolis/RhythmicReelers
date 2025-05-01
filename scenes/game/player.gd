@@ -50,7 +50,6 @@ func _handle_input():
 	if input.is_action_just_pressed(&"interact"):
 		if not nearby_interactables.is_empty():
 			nearby_interactables.back().interact(player_id)
-			PlayerManager.start_player_minigame(player_id)
 
 
 func set_device(device: int):

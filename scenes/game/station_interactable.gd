@@ -4,6 +4,7 @@ extends Node2D
 @export var minigame: WindowManager.Minigames
 
 var nearby_players: Array[Player] = []
+var playing: bool = false
 
 @onready var interaction_area: Area2D = $Area2D
 @onready var sprite: Sprite2D = $Sprite2D
@@ -37,4 +38,7 @@ func remove_nearby_player(player: Player) -> void:
 
 
 func interact(player_id: int) -> void:
-	WindowManager.create_window.rpc(position, minigame, player_id)
+	if playing:
+		return
+	PlayerManager.start_player_minigame(player_id)
+	WindowManager.create_window.rpc(position, minigame, player_id, self)
