@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cel1gsnerksoe"]
+[gd_scene load_steps=17 format=3 uid="uid://cel1gsnerksoe"]
 
 [ext_resource type="Script" uid="uid://dcb8p66xuxcnh" path="res://scenes/game/game.gd" id="1_eu407"]
 [ext_resource type="Material" uid="uid://c2bdahsrkh6xb" path="res://art/materials/base_color.tres" id="1_vul7a"]
@@ -9,7 +9,6 @@
 [ext_resource type="Shader" uid="uid://b047bg5iehwfq" path="res://art/shaders/outline.gdshader" id="5_i06nm"]
 [ext_resource type="Script" uid="uid://bakuxkss34iii" path="res://scenes/game/station_interactable.gd" id="5_mpawt"]
 [ext_resource type="Texture2D" uid="uid://bcwm4hy0chuve" path="res://art/world/game-placeholder/cutting-station.png" id="5_qjdk3"]
-[ext_resource type="Script" uid="uid://bked6bwpauxiq" path="res://singletons/window_manager.gd" id="6_4c43f"]
 [ext_resource type="Texture2D" uid="uid://bqvokucqm2qns" path="res://art/world/game-placeholder/fishing-station.png" id="9_ebsoi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tuou4"]
@@ -150,6 +149,3 @@ collision_mask = 0
 position = Vector2(0.5, 20.5)
 shape = SubResource("RectangleShape2D_3ueeo")
 debug_color = Color(0.968435, 0, 0.467885, 0.42)
-
-[node name="WindowManager" type="Node2D" parent="."]
-script = ExtResource("6_4c43f")

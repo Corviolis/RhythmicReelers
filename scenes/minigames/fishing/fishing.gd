@@ -30,14 +30,9 @@ class BeatAnimation:
 		self.beat_index = beat_index_in
 
 
-func _enter_tree():
-	set_multiplayer_authority(PlayerManager.get_player_authority(player_id))
-
-
 func _ready():
-	RhythmEngine.system_measure.connect(on_system_measure)
-	RhythmEngine.session_beat.connect(on_beat)
-	RhythmEngine.start_session(player_id, WindowManager.Minigames.FISHING, 1, beat_offset)
+	rhythm_engine.session_beat.connect(on_beat)
+	rhythm_engine.start_session(player_id, WindowManager.Minigames.FISHING, 1, beat_offset)
 
 	var device = PlayerManager.get_player_device(player_id)
 	input = DeviceInput.new(device)
@@ -56,7 +51,7 @@ func _handle_input():
 
 func _exit_tree():
 	PlayerManager.stop_player_minigame(player_id)
-	RhythmEngine.end_session(player_id)
+	rhythm_engine.end_session(player_id)
 	for beat in beats:
 		beat.tween.kill()
 		beat.beat_object.queue_free()
@@ -78,10 +73,13 @@ func _beat():
 	if len(beats) == 0:
 		return
 	var beat_animation: BeatAnimation = beats.front()
-	var hit_time: float = RhythmEngine.hit(
+	var hit_time: float = rhythm_engine.hit(
 		player_id, "Electric Piano", beat_animation.beat_index, beat_offset
 	)
 	_handle_beat_result.rpc(hit_time)
+	if len(beats) == 0:
+		if measures_alive >= minigame_duration_in_measures:
+			get_tree().create_timer(0.5).timeout.connect(func(): get_parent().queue_free())
 	return snappedf(hit_time, 0.01)
 
 
@@ -113,13 +111,23 @@ func _handle_beat_result(hit_time: float):
 func on_beat(minigame_player_id: int, _length: float, _track: String, index: int):
 	if minigame_player_id != player_id:
 		return
-	if RhythmEngine.get_beats_left_in_measure() == 1:
+
+	# if this is the last beat of the measure
+	if rhythm_engine.get_beats_left_in_measure() == 1:
 		playing = true
+		if counting_measures:
+			measures_alive += 1
+		counting_measures = true
+
 	if not playing:
 		return
 
-	var song_changes = RhythmEngine.get_current_song_changes(RhythmEngine.song_position_in_ms)
-	time_to_target = (beat_offset * RhythmEngine.calculate_seconds_per_beat(song_changes.bpm))
+	# stop accepting beats after the minigame duration ends
+	if measures_alive >= minigame_duration_in_measures:
+		return
+
+	var song_changes = rhythm_engine.get_current_song_changes(rhythm_engine.song_position_in_ms)
+	time_to_target = (beat_offset * rhythm_engine.calculate_seconds_per_beat(song_changes.bpm))
 
 	var beat_object = beat_scene.instantiate()
 	add_child(beat_object)
@@ -132,12 +140,3 @@ func on_beat(minigame_player_id: int, _length: float, _track: String, index: int
 	tween.tween_callback(_beat)
 	tween.play()
 	beats.append(BeatAnimation.new(tween, beat_object, index))
-
-
-# TODO: wait a beat before killing the minigame
-func on_system_measure():
-	if counting_measures:
-		measures_alive += 1
-	if measures_alive >= minigame_duration_in_measures:
-		get_parent().queue_free()
-	counting_measures = true

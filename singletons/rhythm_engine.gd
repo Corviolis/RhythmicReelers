@@ -17,22 +17,25 @@ var sessions: Array[ThreadSession] = []
 
 
 class ThreadSession:
+	var parent: RhythmEngine
 	var thread: Thread
 	var is_active: bool = false
 	var session: Session
 
-	func _init():
+	func _init(parent_in: RhythmEngine):
+		self.parent = parent_in
 		thread = Thread.new()
 
 	func stop():
 		is_active = false
 		session = null
-		thread.wait_to_finish()
+		if thread.is_started():
+			thread.wait_to_finish()
 
 	func start(sess: Session, player_id: int):
 		is_active = true
 		self.session = sess
-		thread.start(RhythmEngine._run_session.bind(sess, player_id))
+		thread.start(parent._run_session.bind(sess, player_id))
 
 
 # tracks: array of tracks in a minigame, pulled from the track names in the beatmap midi file
@@ -40,16 +43,23 @@ class ThreadSession:
 #   the minigame will show the beat this far before it is checked
 # future_beat_sent: dictionary of bools tracking if the next beat has been sent for a given track
 class Session:
+	var parent: RhythmEngine
 	var tracks: Array[BeatMap.Track]
 	var future_beat_offset: int
 	var future_beat_sent: Dictionary
 
-	func _init(minigame: WindowManager.Minigames, difficulty: int, beat_offset: int):
+	func _init(
+		minigame: WindowManager.Minigames,
+		difficulty: int,
+		beat_offset: int,
+		parent_in: RhythmEngine
+	):
+		parent = parent_in
 		future_beat_offset = beat_offset
 
 		var minigame_name: String = WindowManager.Minigames.keys()[minigame]
 		var beatmap_name: String = minigame_name.to_lower() + "-" + str(difficulty)
-		var beatmap: BeatMap = RhythmEngine.beatmaps[RhythmEngine.song][beatmap_name]
+		var beatmap: BeatMap = parent.beatmaps[parent.song][beatmap_name]
 		tracks = beatmap.get_tracks()
 		for track in tracks:
 			future_beat_sent[track.name] = false
@@ -61,12 +71,14 @@ class Session:
 func _ready():
 	sessions.resize(4)
 	for i in range(sessions.size()):
-		sessions[i] = ThreadSession.new()
+		sessions[i] = ThreadSession.new(self)
 	beatmaps = _get_filesystem_beatmaps()
 	add_child(audio)
 
 
 func _process(_delta):
+	if !audio.is_playing():
+		return
 	song_position_in_ms = (
 		(
 			audio.get_playback_position()
@@ -123,7 +135,7 @@ func get_beats_left_in_measure() -> int:
 func start_session(
 	player_id: int, minigame: WindowManager.Minigames, difficulty: int, beat_offset: int
 ):
-	sessions[player_id].start(Session.new(minigame, difficulty, beat_offset), player_id)
+	sessions[player_id].start(Session.new(minigame, difficulty, beat_offset, self), player_id)
 
 
 func end_session(player_id: int):
@@ -133,7 +145,6 @@ func end_session(player_id: int):
 func _exit_tree():
 	for session in sessions:
 		session.stop()
-		session.thread.wait_to_finish()
 
 
 #===== Gameplay / State Management =====
@@ -170,18 +181,22 @@ func _run_session(session: Session, player_id: int):
 # returns time to beat in ms, negative if after the beat
 # BUG: the returned hit time is very irregular and has a wide margin of error
 # BUG: is beat_offset really needed here?
-func hit(player_id: int, track_name: String, beat_index: int, beat_offset: int) -> float:
+func hit(
+	player_id: int,
+	track_name: String,
+	beat_index: int,
+	beat_offset: int,
+	song_time: float = song_position_in_ms
+) -> float:
 	for track in sessions[player_id].session.tracks:
 		if track.name == track_name:
 			return track.get_time_to_beat(
 				beat_index,
 				(
-					song_position_in_ms
+					song_time
 					- (
 						beat_offset
-						* calculate_seconds_per_beat(
-							get_current_song_changes(song_position_in_ms).bpm
-						)
+						* calculate_seconds_per_beat(get_current_song_changes(song_time).bpm)
 						* 1000
 					)
 				)

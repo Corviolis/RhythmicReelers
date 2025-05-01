@@ -1,15 +1,19 @@
 extends GutTest
 
 var test_song_dir = "res://test/test_assets/music/"
+var rhythm_engine: RhythmEngine
 
 
 func before_each():
-	RhythmEngine.beatmaps = RhythmEngine._get_filesystem_beatmaps(test_song_dir)
+	rhythm_engine = load("res://singletons/rhythm_engine.gd").new()
+	add_child_autoqfree(rhythm_engine)
+	rhythm_engine.play_song("test_song", test_song_dir)
+	rhythm_engine.beatmaps = rhythm_engine._get_filesystem_beatmaps(test_song_dir)
 
 
 func test_get_filesystem_beatmaps():
 	# Check if the beat maps are loaded correctly
-	var beat_maps = RhythmEngine._get_filesystem_beatmaps(test_song_dir)
+	var beat_maps = rhythm_engine._get_filesystem_beatmaps(test_song_dir)
 	assert_gt(beat_maps.size(), 0, "Beat maps should not be empty")
 
 	# Check if the beat maps contain the expected keys
@@ -22,7 +26,7 @@ func test_get_filesystem_beatmaps():
 
 
 func test_get_csv_bpm():
-	var bpm_changes := RhythmEngine._get_csv_bpm("test_song", test_song_dir)
+	var bpm_changes := rhythm_engine._get_csv_bpm("test_song", test_song_dir)
 	assert_eq(bpm_changes.size(), 3)
 
 	assert_eq(bpm_changes[0].bpm, 120)
@@ -43,11 +47,10 @@ func test_get_csv_bpm():
 
 func test_play_song():
 	# Check if the song is played correctly
-	RhythmEngine.play_song("test_song", test_song_dir)
-	assert_eq(RhythmEngine.song, "test_song", "Song should be 'test_song'")
+	assert_eq(rhythm_engine.song, "test_song", "Song should be 'test_song'")
 
 	# Check if the audio stream player is playing the correct song
-	var audio = RhythmEngine.audio
+	var audio = rhythm_engine.audio
 	assert_eq(
 		audio.get_stream().resource_path,
 		test_song_dir + "test_song/test_song.mp3",
@@ -57,12 +60,12 @@ func test_play_song():
 
 func test_start_session():
 	# Check session is not started
-	var session = RhythmEngine.sessions[0].session
+	var session = rhythm_engine.sessions[0].session
 	assert_eq(session, null)
 
 	# Check if a session is started correctly
-	RhythmEngine.start_session(0, WindowManager.Minigames.FISHING, 1, 5)
-	session = RhythmEngine.sessions[0].session
+	rhythm_engine.start_session(0, WindowManager.Minigames.FISHING, 1, 5)
+	session = rhythm_engine.sessions[0].session
 	assert_ne(session, null, "Session should not be null")
 	assert_eq(session.future_beat_offset, 5, "Session future beat offset should be 5")
 
@@ -72,28 +75,23 @@ func test_start_session():
 
 func test_hit():
 	# Check if a hit is registered correctly
-	RhythmEngine.play_song("test_song", test_song_dir)
-	RhythmEngine.start_session(0, WindowManager.Minigames.FISHING, 1, 5)
-	var session = RhythmEngine.sesions[0].session
+	rhythm_engine.play_song("test_song", test_song_dir)
+	rhythm_engine.start_session(0, WindowManager.Minigames.FISHING, 1, 5)
+	var session = rhythm_engine.sessions[0].session
 	var track_name = session.tracks[0].name
 
-	var result_hit = RhythmEngine.hit(0, track_name, 0, 0)
-	assert_eq(result_hit, 0, "Hit time should be 0 if on beat")
+	var result_hit = rhythm_engine.hit(0, track_name, 0, 0, 0)
+	assert_eq(result_hit, 0.0, "Hit time should be 0 if on beat")
 
-	await wait_seconds(0.5)
-	var result_fail = RhythmEngine.hit(0, track_name, 0, 0)
-	assert_lt(result_fail, 0, "Hit should be negative if after beat")
-	assert_almost_eq(
-		result_fail,
-		-300,
-		100,
-		"I don't know why but the hit is negative 300ms despite waiting 0.5s"
-	)
+	var result_fail = rhythm_engine.hit(0, track_name, 0, 0, 300)
+	print("Result fail: ", result_fail)
+	assert_eq(result_fail, -300, "Hit time should be -300 if delayed by 300ms")
 
 
 func test_end_session():
 	# Check if a session is ended correctly
-	RhythmEngine.end_session(0)
-	var session = RhythmEngine.sessions[0]
+	rhythm_engine.start_session(0, WindowManager.Minigames.FISHING, 1, 5)
+	rhythm_engine.end_session(0)
+	var session = rhythm_engine.sessions[0]
 	assert_eq(session.session, null, "Session should be null")
 	assert_false(session.is_active, "Session is_active should be false")

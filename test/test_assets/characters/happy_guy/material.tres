@@ -1,7 +1,7 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dvcv4aghrt2aq"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b0ar4vas40i7x"]
 
-[ext_resource type="Shader" uid="uid://d4equ6kbtuq3t" path="res://art/shaders/color_replace.gdshader" id="1_x4saj"]
+[ext_resource type="Shader" uid="uid://d4equ6kbtuq3t" path="res://art/shaders/color_replace.gdshader" id="1_bpkrl"]
 
 [resource]
-shader = ExtResource("1_x4saj")
+shader = ExtResource("1_bpkrl")
 shader_parameter/foreground_color = Color(0.881421, 0.347322, 0.641443, 1)

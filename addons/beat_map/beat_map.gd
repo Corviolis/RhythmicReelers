@@ -23,6 +23,7 @@ class Track:
 		name = n
 		beat_map = map
 
+	# BUG: Occasionally causes a crash??? Cannot inherit from a virtual class
 	func get_next_beat() -> Beat:
 		return Beat.new(
 			beat_map[current_beat_index], beat_map[current_beat_index + 1], current_beat_index

@@ -1,14 +1,18 @@
 extends GutTest
 
 var fishing_minigame: Minigame
+var rhythm_engine: RhythmEngine
 var test_song_dir = "res://test/test_assets/music/"
 
 # TODO: this test creates 2 orphans, attempt to fix this?
 
 
 func before_each():
-	RhythmEngine.beatmaps = RhythmEngine._get_filesystem_beatmaps(test_song_dir)
-	RhythmEngine.play_song("test_song", test_song_dir)
+	rhythm_engine = load("res://singletons/rhythm_engine.gd").new()
+	add_child(rhythm_engine)
+	rhythm_engine.play_song("test_song", test_song_dir)
+	rhythm_engine.beatmaps = rhythm_engine._get_filesystem_beatmaps(test_song_dir)
+
 	assert(ResourceLoader.exists("res://scenes/minigames/fishing/fishing.tscn"))
 	fishing_minigame = (
 		load("res://scenes/minigames/fishing/fishing.tscn").instantiate() as Minigame
@@ -18,8 +22,16 @@ func before_each():
 	PlayerManager.player_data[player.player_id] = {
 		"device": -1, "character_index": 0, "multiplayer_authority": 1
 	}
+	fishing_minigame.rhythm_engine = rhythm_engine
 	fishing_minigame.player_id = player.player_id
-	add_child_autofree(fishing_minigame)
+	fishing_minigame.playing = true
+	add_child(fishing_minigame)
+
+
+func after_each():
+	fishing_minigame.queue_free()
+	rhythm_engine.queue_free()
+	PlayerManager.player_data.clear()
 
 
 func test_onbeat():
