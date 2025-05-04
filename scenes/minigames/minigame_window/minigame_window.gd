@@ -2,6 +2,8 @@ class_name MinigameWindow
 extends NinePatchRect
 
 var progress_bar: ProgressBar
+var progress_bar_delta: float = 0
+var progress_bar_target: float = 0
 var window: WindowManager.BitmapWindow
 var interactable: StationInteractable
 
@@ -40,3 +42,13 @@ func place_window(
 
 	add_child(minigame)
 	setup_direction(window_size)
+
+
+func fill_progess_bar_over_time(value: float, duration: float) -> void:
+	progress_bar_delta = (progress_bar.value - value) / duration
+	progress_bar_target = value
+
+
+func _process(delta: float) -> void:
+	if progress_bar.value < progress_bar_target:
+		progress_bar.value += delta * progress_bar_delta

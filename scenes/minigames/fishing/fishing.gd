@@ -11,6 +11,7 @@ var beat_scene: PackedScene = preload("res://scenes/minigames/fishing/beat.tscn"
 var playing: bool = false
 var counting_measures: bool = false
 var measures_alive: int = 0
+var minigame_window: MinigameWindow
 
 @onready var spawner: Marker2D = $Spawner
 @onready var target: Marker2D = $Target
@@ -28,6 +29,10 @@ class BeatAnimation:
 		self.tween = tween_in
 		self.beat_object = beat_object_in
 		self.beat_index = beat_index_in
+
+
+func _enter_tree() -> void:
+	minigame_window = get_parent() as MinigameWindow
 
 
 func _ready():
