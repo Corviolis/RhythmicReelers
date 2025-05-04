@@ -35,12 +35,12 @@ func test_get_csv_bpm():
 	assert_eq(bpm_changes[0].time_signature_denominator, 4)
 
 	assert_eq(bpm_changes[1].bpm, 100)
-	assert_eq(bpm_changes[1].time, 10)
+	assert_eq(bpm_changes[1].time, 8)
 	assert_eq(bpm_changes[1].time_signature_numerator, 5)
 	assert_eq(bpm_changes[1].time_signature_denominator, 8)
 
 	assert_eq(bpm_changes[2].bpm, 170)
-	assert_eq(bpm_changes[2].time, 13)
+	assert_eq(bpm_changes[2].time, 15.5)
 	assert_eq(bpm_changes[2].time_signature_numerator, 5)
 	assert_eq(bpm_changes[2].time_signature_denominator, 8)
 
@@ -95,3 +95,8 @@ func test_end_session():
 	var session = rhythm_engine.sessions[0]
 	assert_eq(session.session, null, "Session should be null")
 	assert_false(session.is_active, "Session is_active should be false")
+
+
+func test_calculate_duration_of_next_x_measures():
+	var duration = rhythm_engine.calculate_duration_of_next_x_measures(0, 3)
+	assert_almost_eq(duration, 27, 0.1)

@@ -118,11 +118,27 @@ func calculate_seconds_per_measure(bpm: float, beats_per_measure: int) -> float:
 	return calculate_seconds_per_beat(bpm) * beats_per_measure
 
 
+func calculate_duration_of_next_x_measures(song_pos: float, measures: int) -> float:
+	var duration: float = 0.0
+	var current_measure = 0
+	var current_song_time = song_pos
+	while current_measure < measures:
+		var song_changes = get_current_song_changes(current_song_time)
+		var extra_time = calculate_seconds_per_measure(
+			song_changes.bpm, song_changes.time_signature_numerator
+		)
+		duration += extra_time
+		current_song_time += extra_time
+		current_measure += 1
+	return duration
+
+
 func get_current_song_changes(song_pos: float) -> SongChanges:
-	for i in range(bpm_list.size()):
-		if song_pos > bpm_list[i].time:
+	for i in range(bpm_list.size() - 1, -1, -1):
+		if song_pos >= bpm_list[i].time:
 			return bpm_list[i]
-	return bpm_list[bpm_list.size() - 1]
+	printerr("No song changes found for position %s" % song_pos)
+	return bpm_list[0]
 
 
 func get_beats_left_in_measure() -> int:
