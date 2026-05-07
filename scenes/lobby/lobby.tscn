@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://iaqenejaldyp"]
+[gd_scene format=3 uid="uid://iaqenejaldyp"]
 
 [ext_resource type="Theme" uid="uid://cr57qof47xvw8" path="res://art/ui/4x4ui.tres" id="1_2jmq4"]
 [ext_resource type="Script" uid="uid://bxtcttqwbwo71" path="res://scenes/lobby/lobby.gd" id="1_g0qk4"]
@@ -7,7 +7,7 @@
 [ext_resource type="Material" uid="uid://c2bdahsrkh6xb" path="res://art/materials/base_color.tres" id="4_rm4i8"]
 [ext_resource type="Material" uid="uid://bqv7e2yagptbi" path="res://art/materials/base_color_UI.tres" id="5_hc4wr"]
 
-[node name="Lobby" type="Control"]
+[node name="Lobby" type="Control" unique_id=1130500132]
 texture_filter = 1
 layout_mode = 3
 anchor_right = 0.25
@@ -17,7 +17,7 @@ grow_vertical = 2
 theme = ExtResource("1_2jmq4")
 script = ExtResource("1_g0qk4")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=789956743]
 material = ExtResource("4_rm4i8")
 layout_mode = 1
 anchors_preset = 15
@@ -27,7 +27,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_jvwwu")
 
-[node name="LobbyList" type="HBoxContainer" parent="."]
+[node name="LobbyList" type="HBoxContainer" parent="." unique_id=1466454644]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -38,7 +38,7 @@ anchor_bottom = 0.172222
 offset_right = -119.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="LobbyList"]
+[node name="Label" type="Label" parent="LobbyList" unique_id=1519424108]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -46,7 +46,7 @@ theme_override_fonts/font = ExtResource("2_byybb")
 text = "Connected to Lobby:"
 justification_flags = 35
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=321989971]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -56,7 +56,7 @@ anchor_right = 0.284375
 anchor_bottom = 0.827778
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="PanelContainer"]
+[node name="Label" type="Label" parent="PanelContainer" unique_id=1962880205]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 text = "Press
@@ -67,9 +67,9 @@ to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer2" type="PanelContainer" parent="."]
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=715235809]
 material = ExtResource("5_hc4wr")
-layout_mode = 2
+layout_mode = 0
 anchor_left = 0.20625
 anchor_right = 0.20625
 offset_left = 32.0
@@ -78,7 +78,7 @@ offset_right = 91.0
 offset_bottom = 149.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="PanelContainer2"]
+[node name="Label" type="Label" parent="PanelContainer2" unique_id=328295702]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 text = "Press
@@ -89,9 +89,9 @@ to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer3" type="PanelContainer" parent="."]
+[node name="PanelContainer3" type="PanelContainer" parent="." unique_id=1066460342]
 material = ExtResource("5_hc4wr")
-layout_mode = 2
+layout_mode = 0
 anchor_left = 0.20625
 anchor_right = 0.20625
 offset_left = 98.0
@@ -100,7 +100,7 @@ offset_right = 157.0
 offset_bottom = 149.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="PanelContainer3"]
+[node name="Label" type="Label" parent="PanelContainer3" unique_id=499290719]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 text = "Press
@@ -111,9 +111,9 @@ to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer4" type="PanelContainer" parent="."]
+[node name="PanelContainer4" type="PanelContainer" parent="." unique_id=1568174289]
 material = ExtResource("5_hc4wr")
-layout_mode = 2
+layout_mode = 0
 anchor_left = 0.203125
 anchor_right = 0.203125
 offset_left = 164.0
@@ -122,7 +122,7 @@ offset_right = 223.0
 offset_bottom = 149.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="PanelContainer4"]
+[node name="Label" type="Label" parent="PanelContainer4" unique_id=2098105991]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 text = "Press
@@ -133,7 +133,7 @@ to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerList" type="HBoxContainer" parent="."]
+[node name="PlayerList" type="HBoxContainer" parent="." unique_id=979874055]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1125
@@ -144,13 +144,13 @@ grow_vertical = 2
 theme_override_constants/separation = 15
 metadata/_edit_use_anchors_ = true
 
-[node name="Buttons" type="Control" parent="."]
+[node name="Buttons" type="Control" parent="." unique_id=609041850]
 anchors_preset = 0
 anchor_right = 0.0347222
 anchor_bottom = 0.0617284
 metadata/_edit_use_anchors_ = true
 
-[node name="OpenServer" type="Button" parent="Buttons"]
+[node name="OpenServer" type="Button" parent="Buttons" unique_id=1784325778]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -162,7 +162,7 @@ theme = ExtResource("1_2jmq4")
 text = "Host"
 metadata/_edit_use_anchors_ = true
 
-[node name="JoinServer" type="Button" parent="Buttons"]
+[node name="JoinServer" type="Button" parent="Buttons" unique_id=721103940]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -173,7 +173,7 @@ anchor_bottom = 15.75
 text = "Join"
 metadata/_edit_use_anchors_ = true
 
-[node name="ServerIP" type="LineEdit" parent="Buttons"]
+[node name="ServerIP" type="LineEdit" parent="Buttons" unique_id=783928554]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -184,7 +184,7 @@ anchor_bottom = 15.75
 text = "localhost"
 metadata/_edit_use_anchors_ = true
 
-[node name="StartGame" type="Button" parent="Buttons"]
+[node name="StartGame" type="Button" parent="Buttons" unique_id=1335157148]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -197,7 +197,7 @@ offset_right = 13.3333
 offset_bottom = 5.38889
 text = "Start Game"
 
-[node name="LeaveServer" type="Button" parent="Buttons"]
+[node name="LeaveServer" type="Button" parent="Buttons" unique_id=1459035697]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -212,7 +212,7 @@ offset_bottom = -0.111115
 disabled = true
 text = "Leave"
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=347269727]
 position = Vector2(160, 90)
 zoom = Vector2(4, 4)
 

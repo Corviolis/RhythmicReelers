@@ -8,12 +8,16 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Rhythmic Reelers"
 config/version="1.0-prealpha"
 run/main_scene="res://scenes/lobby/lobby.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/bg_color=Color(0.533333, 0.843137, 0.870588, 1)
 boot_splash/use_filter=false
 config/icon="res://icon.png"
@@ -26,7 +30,7 @@ buses/default_bus_layout="res://music/music_busses/default_bus_layout.tres"
 
 [autoload]
 
-MultiplayerInput="*res://addons/multiplayer_input/multiplayer_input.gd"
+MultiplayerInput="*uid://cwv3el6o1w3th"
 PlayerManager="*res://singletons/player_manager.gd"
 NetworkManager="*res://singletons/network_manager.gd"
 GlobalUtils="*res://singletons/global_utils.gd"
@@ -62,10 +66,10 @@ import/fbx/enabled=false
 
 [gui]
 
-theme/custom_font="res://art/fonts/Pixel_4x4-Regular.ttf"
 theme/default_font_antialiasing=0
 theme/default_font_hinting=0
 theme/default_font_subpixel_positioning=0
+theme/custom_font="res://art/fonts/Pixel_4x4-Regular.ttf"
 
 [input]
 
