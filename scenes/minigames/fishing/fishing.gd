@@ -33,6 +33,8 @@ class BeatAnimation:
 
 func _enter_tree() -> void:
 	minigame_window = get_parent() as MinigameWindow
+	if rhythm_engine == null:
+		rhythm_engine = RhythmEngine
 
 
 func _ready():
