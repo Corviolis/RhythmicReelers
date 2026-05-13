@@ -9,13 +9,6 @@ var occupied: bool = false
 @onready var interaction_area: Area2D = $Area2D
 @onready var sprite: Sprite2D = $Sprite2D
 
-signal free_station
-signal occupy_station
-
-
-func _ready() -> void:
-	free_station.connect(_on_free_station)
-
 
 func calculate_color() -> Color:
 	var nearby_player_count := nearby_players.size()
@@ -40,19 +33,29 @@ func remove_nearby_player(player: Player) -> void:
 	set_outline_color(calculate_color())
 
 
-# TODO: don't allow a second player to join the station
-func interact(player_id: int) -> void:
+@rpc("any_peer", "call_local", "reliable")
+func request_interact(player_id: int) -> void:
+	if !multiplayer.is_server():
+		return
 	if occupied:
 		return
-	PlayerManager.start_player_minigame(player_id)
-	WindowManager.create_window.rpc(position, minigame, player_id, occupy_station, free_station)
+	occupied = true
+	open_minigame.bind(player_id).rpc_id(multiplayer.get_remote_sender_id())
 
 
-func _on_free_station():
-	print("free")
+@rpc("any_peer", "call_local", "reliable")
+func close_interact(_player_id: int) -> void:
+	if !multiplayer.is_server():
+		return
 	occupied = false
 
 
-func _on_occupy_station():
-	print("occupied")
-	occupied = true
+@rpc("authority", "call_local", "reliable")
+func open_minigame(player_id: int):
+	PlayerManager.start_player_minigame(player_id)
+	WindowManager.create_window.rpc(position, minigame, player_id)
+
+
+func interact(player_id: int) -> void:
+	print(player_id)
+	request_interact.bind(player_id).rpc_id(1)

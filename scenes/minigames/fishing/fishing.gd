@@ -13,7 +13,6 @@ var measure_scene: PackedScene = preload("res://scenes/minigames/fishing/measure
 var playing: bool = false
 var measures_alive: int = 0
 var read_ahead_seconds: float = read_ahead_measures * Conductor.measure_duration
-var minigame_window: MinigameWindow
 var beatmap: MusicPlayer.BeatMap.Track
 var start_time: float
 var note_seek_head: float
@@ -43,10 +42,6 @@ class NoteAnimation extends BeatAnimation:
 		self.tween = tween_in
 		self.beat_object = beat_object_in
 		self.note = note_in
-
-
-func _enter_tree() -> void:
-	minigame_window = get_parent() as MinigameWindow
 
 
 func _ready():
@@ -110,7 +105,7 @@ func _missed_beat():
 		return
 	var target_note := notes[0]
 	var hit_time: float = (MusicPlayer.song_position - target_note.note.time) * 100
-	_handle_beat_result.rpc(hit_time)
+	_handle_beat_result.rpc(hit_time, true)
 
 
 @rpc("any_peer", "call_local", "reliable")

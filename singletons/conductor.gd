@@ -24,7 +24,7 @@ signal measure
 # - possibly track parts (solo approaching I guess?)
 # - might be hooked up to an external file
 # *- emits signal on active beat window open and close
-# *composer -> https://alphros.itch.io/beatrice
+# *composer -> https://editor.rhythmnator.com
 # - writes a document that tells which buttons must be pressed on which beat
 # - can answer what is the next required input
 # judge -> minigame
@@ -37,7 +37,6 @@ signal measure
 # - gives the track to the music player, bpm to metronome, tracks score,
 #		listens to judge, stops level, etc.
 
-# TODO: read beatmap and parse in minigame
 # TODO: multiplayer for minigames
 # TODO: finish the core 4 minigames
 # TODO: resource manager

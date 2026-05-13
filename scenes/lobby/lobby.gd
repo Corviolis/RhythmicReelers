@@ -8,9 +8,11 @@ var available_icons: Array[bool] = [true]
 
 
 # Called when the node enters the scene tree for the first time.
+# TODO: fix server quit functionality for connected peer
 func _ready():
 	multiplayer.peer_connected.connect(player_connected)
 	multiplayer.peer_disconnected.connect(player_disconnected)
+	multiplayer.server_disconnected.connect(leave_server)
 	PlayerManager.player_joined.connect(add_player)
 	PlayerManager.player_left.connect(delete_player)
 

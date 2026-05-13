@@ -36,13 +36,12 @@ func parse_beatmap(song_name: String, path: String = "res://music/songs/") -> Be
 
 
 class BeatMap:
-	var bpm: float
 	var tracks: Dictionary[String, Track]
 
 	static func parse_beatmap(json: JSON) -> BeatMap:
 		var ret = BeatMap.new()
 		var raw_beatmap = json.data
-		ret.bpm = raw_beatmap["bpm"]
+		Conductor.bpm = raw_beatmap["bpm"]
 		for name: String in raw_beatmap["groups"]:
 			ret.tracks[name] = Track.new()
 			for note_raw in raw_beatmap["groups"][name]:
@@ -52,11 +51,9 @@ class BeatMap:
 				ret.tracks[name].notes.append(note)
 		return ret
 
-
 	class Track:
 		var name: String
 		var notes: Array[Note]
-
 
 	class Note:
 		var time: float
