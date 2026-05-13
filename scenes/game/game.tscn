@@ -66,7 +66,6 @@ y_sort_enabled = true
 z_index = -1
 y_sort_enabled = true
 material = ExtResource("1_vul7a")
-position = Vector2(-3, 5)
 texture = ExtResource("2_el6o1")
 
 [node name="MovementHitbox" type="CollisionPolygon2D" parent="Boat" unique_id=1967351548]
@@ -76,7 +75,7 @@ disabled = true
 
 [node name="CuttingStation" type="StaticBody2D" parent="Boat" unique_id=1154964097]
 y_sort_enabled = true
-position = Vector2(93, -4)
+position = Vector2(93, -9)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("5_mpawt")
@@ -102,7 +101,7 @@ debug_color = Color(0.968435, 0, 0.467885, 0.42)
 
 [node name="FishingStation" type="StaticBody2D" parent="Boat" unique_id=631448836]
 y_sort_enabled = true
-position = Vector2(-18, -24)
+position = Vector2(-18, -29)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("5_mpawt")
@@ -127,7 +126,7 @@ debug_color = Color(0.968435, 0, 0.467885, 0.42)
 
 [node name="FishingStation2" type="StaticBody2D" parent="Boat" unique_id=634850107]
 y_sort_enabled = true
-position = Vector2(43, -24)
+position = Vector2(43, -29)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("5_mpawt")

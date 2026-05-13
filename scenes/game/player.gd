@@ -42,6 +42,7 @@ func _physics_process(_delta):
 
 
 # custom input handling
+# WARN: Is the multiplayer just mirroring raw inputs without confirming location???
 func _handle_input():
 	if !is_multiplayer_authority():
 		return

@@ -1,7 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://dwbo4v0o1pism"]
+[gd_scene format=3 uid="uid://b682gfjkjapxq"]
 
 [ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="1_7e5j7"]
 
-[node name="Beat" type="Sprite2D"]
-scale = Vector2(0.542814, 0.10022)
+[node name="Node2D" type="Node2D" unique_id=1815297219]
+
+[node name="Beat2" type="Sprite2D" parent="." unique_id=924845921]
+position = Vector2(-50, 0)
+scale = Vector2(0.10734451, 0.03125)
+texture = ExtResource("1_7e5j7")
+
+[node name="Beat3" type="Sprite2D" parent="." unique_id=1219493396]
+position = Vector2(50, 0)
+scale = Vector2(0.107344516, 0.03125)
 texture = ExtResource("1_7e5j7")

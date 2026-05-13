@@ -5,12 +5,12 @@ var progress_bar: ProgressBar
 var progress_bar_delta: float = 0
 var progress_bar_target: float = 0
 var window: WindowManager.BitmapWindow
-var interactable: StationInteractable
+var free_signal: Signal
 
 
 func _exit_tree() -> void:
 	WindowManager.free_window(window)
-	interactable.playing = false
+	free_signal.emit()
 
 
 func setup_direction(window_size: Vector2i):

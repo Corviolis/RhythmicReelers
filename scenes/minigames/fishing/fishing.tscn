@@ -1,26 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://coxwf0j7ifo2"]
+[gd_scene format=3 uid="uid://coxwf0j7ifo2"]
 
 [ext_resource type="Script" uid="uid://bj3jvq4v0kg5o" path="res://scenes/minigames/fishing/fishing.gd" id="1_cwcie"]
 [ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="1_lfjkg"]
 
-[node name="Fishing" type="Node2D"]
+[node name="Fishing" type="Node2D" unique_id=22956318]
 script = ExtResource("1_cwcie")
 
-[node name="Icon" type="Sprite2D" parent="."]
+[node name="Icon" type="Sprite2D" parent="." unique_id=1610222142]
 position = Vector2(81.7146, 137.25)
 scale = Vector2(0.0318604, 1.92578)
 texture = ExtResource("1_lfjkg")
 
-[node name="Icon4" type="Sprite2D" parent="."]
-position = Vector2(82, 27)
+[node name="Icon4" type="Sprite2D" parent="." unique_id=1981260837]
+position = Vector2(82.267395, 39)
 scale = Vector2(0.910428, 0.0537398)
 texture = ExtResource("1_lfjkg")
 
-[node name="Target" type="Marker2D" parent="."]
-position = Vector2(82, 27)
+[node name="Target" type="Marker2D" parent="." unique_id=1161393779]
+position = Vector2(82.267395, 39)
 
-[node name="Spawner" type="Marker2D" parent="."]
-position = Vector2(83, 194)
+[node name="Spawner" type="Marker2D" parent="." unique_id=1876551243]
+position = Vector2(83, 254)
 
-[node name="End" type="Marker2D" parent="."]
-position = Vector2(82, 2)
+[node name="End" type="Marker2D" parent="." unique_id=756720497]
+position = Vector2(82, 17)

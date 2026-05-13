@@ -26,7 +26,7 @@ config/transparent_background=true
 
 [audio]
 
-buses/default_bus_layout="res://music/music_busses/default_bus_layout.tres"
+buses/default_bus_layout="uid://bx3bhyl8r1e3t"
 
 [autoload]
 
@@ -34,8 +34,9 @@ MultiplayerInput="*uid://cwv3el6o1w3th"
 PlayerManager="*res://singletons/player_manager.gd"
 NetworkManager="*res://singletons/network_manager.gd"
 GlobalUtils="*res://singletons/global_utils.gd"
-RhythmEngine="*res://singletons/rhythm_engine.gd"
 WindowManager="*res://singletons/window_manager.gd"
+Conductor="*uid://bqdufgt0jyv4c"
+MusicPlayer="*uid://b57drb267r3g4"
 
 [debug]
 
@@ -57,7 +58,7 @@ project/assembly_name="Rhythmic Reelers"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/beat_map/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/multiplayer_input/plugin.cfg")
+enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/multiplayer_input/plugin.cfg")
 
 [filesystem]
 

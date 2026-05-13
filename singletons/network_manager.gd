@@ -8,8 +8,6 @@ var port: int = 0
 var thread := Thread.new()
 var is_multiplayer: bool = false
 
-# TODO: add support to transition from multiplayer back to singleplayer
-#		don't forget to clear the players again
 # TODO: disable port remapping when server is open so it closes the correct port
 
 #=== UTILITY ===

@@ -4,14 +4,17 @@ extends Node2D
 @export var minigame: WindowManager.Minigames
 
 var nearby_players: Array[Player] = []
-var playing: bool = false
+var occupied: bool = false
 
 @onready var interaction_area: Area2D = $Area2D
 @onready var sprite: Sprite2D = $Sprite2D
 
+signal free_station
+signal occupy_station
+
 
 func _ready() -> void:
-	pass
+	free_station.connect(_on_free_station)
 
 
 func calculate_color() -> Color:
@@ -37,8 +40,19 @@ func remove_nearby_player(player: Player) -> void:
 	set_outline_color(calculate_color())
 
 
+# TODO: don't allow a second player to join the station
 func interact(player_id: int) -> void:
-	if playing:
+	if occupied:
 		return
 	PlayerManager.start_player_minigame(player_id)
-	WindowManager.create_window.rpc(position, minigame, player_id, self)
+	WindowManager.create_window.rpc(position, minigame, player_id, occupy_station, free_station)
+
+
+func _on_free_station():
+	print("free")
+	occupied = false
+
+
+func _on_occupy_station():
+	print("occupied")
+	occupied = true

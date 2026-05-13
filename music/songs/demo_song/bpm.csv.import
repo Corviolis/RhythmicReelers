@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://fxc4xg3kk55m"
+
+[deps]
+
+files=["res://music/songs/demo_song/bpm.BPM.translation", "res://music/songs/demo_song/bpm.Time Signature Numerator.translation", "res://music/songs/demo_song/bpm.Time Signature Denominator.translation"]
+
+source_file="res://music/songs/demo_song/bpm.csv"
+dest_files=["res://music/songs/demo_song/bpm.BPM.translation", "res://music/songs/demo_song/bpm.Time Signature Numerator.translation", "res://music/songs/demo_song/bpm.Time Signature Denominator.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true
