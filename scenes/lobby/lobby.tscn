@@ -195,6 +195,7 @@ anchor_bottom = 15.275
 offset_left = -15.0
 offset_right = 13.3333
 offset_bottom = 5.38889
+disabled = true
 text = "Start Game"
 
 [node name="LeaveServer" type="Button" parent="Buttons" unique_id=1459035697]

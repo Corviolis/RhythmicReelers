@@ -18,7 +18,7 @@ func _ready():
 	for i in range(0, PlayerManager.get_character_asset_count()):
 		available_icons[i] = true
 
-	RhythmEngine.play_song("demo_song")
+	# RhythmEngine.play_song("demo_song")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -33,12 +33,16 @@ func add_player(player: int, authority: int):
 	player_card.name = StringName(str(player))
 	player_list.add_child(player_card)
 	player_card.init(player)
+	if not NetworkManager.is_multiplayer or multiplayer.is_server():
+		$Buttons/StartGame.disabled = false
 
 
 func delete_player(player: int):
 	var player_card := player_list.get_node(str(player))
 	available_icons[player_card.char_index] = true
 	player_card.queue_free()
+	if PlayerManager.player_data.is_empty():
+		$Buttons/StartGame.disabled = true
 
 
 func host_game():
@@ -68,7 +72,6 @@ func leave_server():
 			node.queue_free()
 	$Buttons/OpenServer.disabled = false
 	$Buttons/JoinServer.disabled = false
-	$Buttons/StartGame.disabled = false
 	$Buttons/LeaveServer.disabled = true
 
 
