@@ -1,13 +1,13 @@
 extends Node
 
 var bpm: float = 60
-var beat_duration: float = 60/bpm
+var beat_duration: float = 60 / bpm
 var beats_per_measure: int = 4
 var measure_duration: float = beats_per_measure * beat_duration
 # var offset: float = 0.2
 
 var nextbeat: float = 0
-var beatcount: int = 0 # NOTE: BEATS START AT 0, NOT 1
+var beatcount: int = 0  # NOTE: BEATS START AT 0, NOT 1
 signal beat(count: int)
 signal measure
 
@@ -37,9 +37,8 @@ signal measure
 # - gives the track to the music player, bpm to metronome, tracks score,
 #		listens to judge, stops level, etc.
 
-# TODO: multiplayer for minigames
-# TODO: finish the core 4 minigames
 # TODO: resource manager
+# TODO: finish the core 4 minigames
 # TODO: add song timer to map
 # TODO: add solo section
 # - song timer
@@ -53,7 +52,7 @@ func _ready():
 
 
 func get_time_of_next_measure() -> float:
-	var beats_left_in_measure = beats_per_measure - beatcount 
+	var beats_left_in_measure = beats_per_measure - beatcount
 	return nextbeat + beat_duration * beats_left_in_measure
 
 

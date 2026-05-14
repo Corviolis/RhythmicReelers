@@ -1,18 +1,31 @@
+class_name Game
 extends Node2D
 
 var player_scene = load("res://scenes/game/player.tscn") as PackedScene
+var raw_fish: int = 0
+var cut_fish: int = 0
+
 @onready var boat = $Boat as StaticBody2D
+@onready var resources = $Control/Resources as Label
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	multiplayer.server_disconnected.connect(_error_to_lobby)
 	_create_players()
+	resources.text = "FISH: %s\nCUT: %s" % [raw_fish, cut_fish]
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	pass
+func add_raw_fish(count: int):
+	raw_fish += count
+	resources.text = "FISH: %s\nCUT: %s" % [raw_fish, cut_fish]
+
+
+func add_cut_fish(count: int):
+	if raw_fish <= 0:
+		return
+	raw_fish -= count
+	cut_fish += count
+	resources.text = "FISH: %s\nCUT: %s" % [raw_fish, cut_fish]
 
 
 func _go_to_lobby():

@@ -2,30 +2,44 @@
 
 [ext_resource type="Script" uid="uid://dnnq1kr072twh" path="res://scenes/minigames/cutting/cutting.gd" id="1_g666d"]
 [ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="2_7qh60"]
+[ext_resource type="Material" uid="uid://c2bdahsrkh6xb" path="res://art/materials/base_color.tres" id="3_qfemg"]
 
 [node name="Cutting" type="Node2D" unique_id=1205671767]
 script = ExtResource("1_g666d")
 
-[node name="Icon" type="Sprite2D" parent="." unique_id=1970879935]
+[node name="Game" type="Node2D" parent="." unique_id=611343774]
+visible = false
+
+[node name="Icon" type="Sprite2D" parent="Game" unique_id=1970879935]
 position = Vector2(134.25002, 79.82042)
 rotation = -1.5707941
 scale = Vector2(0.0318604, 1.92578)
 texture = ExtResource("2_7qh60")
 
-[node name="Icon4" type="Sprite2D" parent="." unique_id=649848189]
+[node name="Icon4" type="Sprite2D" parent="Game" unique_id=649848189]
 position = Vector2(36.00002, 79.267395)
 rotation = -1.5707941
 scale = Vector2(0.910428, 0.0537398)
 texture = ExtResource("2_7qh60")
 
-[node name="Target" type="Marker2D" parent="." unique_id=921499949]
+[node name="Target" type="Marker2D" parent="Game" unique_id=921499949]
 position = Vector2(36.000023, 79.26741)
 rotation = -1.5707941
 
-[node name="Spawner" type="Marker2D" parent="." unique_id=1324746890]
+[node name="Spawner" type="Marker2D" parent="Game" unique_id=1324746890]
 position = Vector2(251.00002, 78.53528)
 rotation = -1.5707941
 
-[node name="End" type="Marker2D" parent="." unique_id=716186567]
+[node name="End" type="Marker2D" parent="Game" unique_id=716186567]
 position = Vector2(14.000022, 79.53476)
 rotation = -1.5707941
+
+[node name="Label" type="Label" parent="." unique_id=469816421]
+material = ExtResource("3_qfemg")
+offset_left = 87.0
+offset_top = 58.0
+offset_right = 191.0
+offset_bottom = 98.0
+theme_override_font_sizes/font_size = 39
+text = "12.8"
+vertical_alignment = 1

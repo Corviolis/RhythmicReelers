@@ -57,6 +57,8 @@ func close_window():
 #	*or*
 #	setting bullets up and working your way up to harder but more rewarding bullets?
 
+# for the fishing and cutting minigames, one measure = one finished item
+
 # Bullets travel AWAY from the judgment line.
 # You initiate bullets with a hit.
 # While traveling, they require follow-up inputs.

@@ -37,7 +37,6 @@ shader_parameter/outline_color = Color(0, 0, 0, 0)
 y_sort_enabled = true
 texture_filter = 1
 script = ExtResource("1_eu407")
-metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1097390890]
 zoom = Vector2(4, 4)
@@ -167,5 +166,3 @@ offset_top = 5.0
 offset_right = 58.0
 offset_bottom = 22.0
 theme = ExtResource("11_kp23o")
-text = "Fish: 0
-Cut: 0"
