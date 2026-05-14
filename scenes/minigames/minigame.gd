@@ -5,7 +5,7 @@ extends Node2D
 var player_id: int
 var input: DeviceInput
 var minigame_window: MinigameWindow
-var minigame_station: StationInteractable
+var minigame_station: NodePath
 
 
 func _enter_tree():
@@ -32,8 +32,13 @@ func _beat():
 
 
 func _exit_minigame():
+	close_window.rpc()
+	get_node(minigame_station).close_interact.bind(player_id).rpc()
+
+
+@rpc("any_peer", "call_local", "reliable")
+func close_window():
 	minigame_window.queue_free()
-	minigame_station.close_interact.bind(player_id).rpc_id(1)
 
 # How the minigames work:
 # Fishing: highway bottom to top mimicking fishing
@@ -43,6 +48,7 @@ func _exit_minigame():
 #	remember to add animation to crosshair on fire + sound design
 #	multiple imperfect timings cause you to slowly overheat?
 #	can deliberately vent? heat impacts damage? resource you need to manage
+#	maybe venting heat has an aoe effect around your ship
 # Reloading: bullets have a rhythm you need to hit, different for each bullet
 #	-> there is a highway leading away from the hit line rather than towards it
 #	bullets have a charge and a cooldown, can only add so many of a type at a time

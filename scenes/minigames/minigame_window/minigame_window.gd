@@ -34,7 +34,7 @@ func place_window(
 	window_size: Vector2i,
 	minigame_scene: PackedScene,
 	player_id: int,
-	minigame_station: StationInteractable
+	minigame_station: NodePath
 ):
 	size = Vector2i(window_size.x, window_size.y)
 	position = Vector2i(window_center.x - window_size.x / 2, window_center.y - window_size.y / 2)
