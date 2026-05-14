@@ -2,29 +2,35 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ct21luvxm50sy"
-path="res://.godot/imported/1pixel.png-5bc15f7422027b26ce7cb84861219eff.ctex"
+uid="uid://tyjt32pa53bq"
+path="res://.godot/imported/crosshair.png-f6d512de52715674cd4f50e409cb0819.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/world/minigames/1pixel.png"
-dest_files=["res://.godot/imported/1pixel.png-5bc15f7422027b26ce7cb84861219eff.ctex"]
+source_file="res://art/minigames/shooting/crosshair.png"
+dest_files=["res://.godot/imported/crosshair.png-f6d512de52715674cd4f50e409cb0819.ctex"]
 
 [params]
 
 compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
-compress/channel_pack=1
+compress/channel_pack=0
 mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
+process/channel_remap/red=0
+process/channel_remap/green=1
+process/channel_remap/blue=2
+process/channel_remap/alpha=3
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

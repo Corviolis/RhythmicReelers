@@ -2,30 +2,36 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqaq61kcqls28"
-path="res://.godot/imported/minigame-ninepatch.png-e6e9c2c71acfe216da2475cb2c956a3a.ctex"
+uid="uid://ct21luvxm50sy"
+path="res://.godot/imported/1pixel.png-c4ec4e9dee7dbf962bbd8a2b081bbeb2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/world/minigames/minigame-ninepatch.png"
-dest_files=["res://.godot/imported/minigame-ninepatch.png-e6e9c2c71acfe216da2475cb2c956a3a.ctex"]
+source_file="res://art/world/minigame_window/1pixel.png"
+dest_files=["res://.godot/imported/1pixel.png-c4ec4e9dee7dbf962bbd8a2b081bbeb2.ctex"]
 
 [params]
 
 compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=1
 mipmaps/generate=false
 mipmaps/limit=-1
-roughness/mode=1
+roughness/mode=0
 roughness/src_normal=""
-process/fix_alpha_border=false
+process/channel_remap/red=0
+process/channel_remap/green=1
+process/channel_remap/blue=2
+process/channel_remap/alpha=3
+process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false

@@ -53,9 +53,8 @@ func close_interact(_player_id: int) -> void:
 @rpc("authority", "call_local", "reliable")
 func open_minigame(player_id: int):
 	PlayerManager.start_player_minigame(player_id)
-	WindowManager.create_window.rpc(position, minigame, player_id)
+	WindowManager.create_window.rpc(position, minigame, player_id, self)
 
 
 func interact(player_id: int) -> void:
-	print(player_id)
 	request_interact.bind(player_id).rpc_id(1)

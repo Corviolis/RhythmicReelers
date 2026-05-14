@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dthr52mlblm18"]
+
+[ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="1_u7mus"]
+
+[node name="Node2D" type="Node2D" unique_id=1815297219]
+rotation = -1.5707964
+
+[node name="Beat2" type="Sprite2D" parent="." unique_id=924845921]
+position = Vector2(-50, 0)
+scale = Vector2(0.10734451, 0.10022)
+texture = ExtResource("1_u7mus")
+
+[node name="Beat3" type="Sprite2D" parent="." unique_id=1219493396]
+position = Vector2(50, 0)
+scale = Vector2(0.107344516, 0.10022)
+texture = ExtResource("1_u7mus")

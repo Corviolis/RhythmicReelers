@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://hh4qm7kg6xt6"]
+
+[ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="1_bxbhd"]
+
+[node name="Beat" type="Sprite2D" unique_id=1271843547]
+rotation = -1.5707964
+scale = Vector2(0.542814, 0.10022)
+texture = ExtResource("1_bxbhd")

@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bl4k5dsq2egoy"]
+
+[ext_resource type="Script" uid="uid://dnnq1kr072twh" path="res://scenes/minigames/cutting/cutting.gd" id="1_g666d"]
+[ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="2_7qh60"]
+
+[node name="Cutting" type="Node2D" unique_id=1205671767]
+script = ExtResource("1_g666d")
+
+[node name="Icon" type="Sprite2D" parent="." unique_id=1970879935]
+position = Vector2(134.25002, 79.82042)
+rotation = -1.5707941
+scale = Vector2(0.0318604, 1.92578)
+texture = ExtResource("2_7qh60")
+
+[node name="Icon4" type="Sprite2D" parent="." unique_id=649848189]
+position = Vector2(36.00002, 79.267395)
+rotation = -1.5707941
+scale = Vector2(0.910428, 0.0537398)
+texture = ExtResource("2_7qh60")
+
+[node name="Target" type="Marker2D" parent="." unique_id=921499949]
+position = Vector2(36.000023, 79.26741)
+rotation = -1.5707941
+
+[node name="Spawner" type="Marker2D" parent="." unique_id=1324746890]
+position = Vector2(251.00002, 78.53528)
+rotation = -1.5707941
+
+[node name="End" type="Marker2D" parent="." unique_id=716186567]
+position = Vector2(14.000022, 79.53476)
+rotation = -1.5707941

@@ -35,7 +35,8 @@ class BeatAnimation:
 		self.beat_object = beat_object_in
 
 
-class NoteAnimation extends BeatAnimation:
+class NoteAnimation:
+	extends BeatAnimation
 	var note: MusicPlayer.BeatMap.Note
 
 	func _init(tween_in: Tween, beat_object_in: Node2D, note_in: MusicPlayer.BeatMap.Note):
@@ -54,22 +55,8 @@ func _ready():
 	MusicPlayer.update_song_position.connect(_on_song_position)
 
 
-func _process(_delta: float):
-	_handle_input()
-
-
-func _handle_input():
-	if !is_multiplayer_authority():
-		return
-	if input.is_action_just_pressed("beat"):
-		_beat()
-
-
 func _exit_tree():
 	PlayerManager.stop_player_minigame(player_id)
-	for object: BeatAnimation in highway:
-		object.tween.kill()
-		object.beat_object.queue_free()
 
 
 # ==== Helper Functions ====
@@ -78,7 +65,7 @@ func _exit_tree():
 # return closest note following note_seek_head
 func _get_next_seek_note() -> MusicPlayer.BeatMap.Note:
 	var index = beatmap.notes.find_custom(
-		func (x: MusicPlayer.BeatMap.Note): return x.time >= note_seek_head
+		func(x: MusicPlayer.BeatMap.Note): return x.time >= note_seek_head
 	)
 	return beatmap.notes[index]
 
@@ -133,6 +120,7 @@ func _handle_beat_result(hit_time: float, missed: bool = false):
 
 # ==== Callback Functions ====
 
+
 # TODO: Rewrite to not use tween
 # instead, directly use song_position as delta time to animate itself forward
 func _on_song_position(song_position: float):
@@ -156,7 +144,7 @@ func _on_song_position(song_position: float):
 		)
 		tween.play()
 		tween.tween_callback(
-			func (): 
+			func():
 				tween.kill()
 				object.queue_free()
 		)

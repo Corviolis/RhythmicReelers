@@ -192,8 +192,7 @@ func load_minigame(minigame: Minigames) -> PackedScene:
 		Minigames.FISHING:
 			return load("res://scenes/minigames/fishing/fishing.tscn")
 		Minigames.CUTTING:
-			push_error("Using a test scene for Cutting")
-			return load("res://scenes/minigames/cutting/cutting_test.tscn")
+			return load("res://scenes/minigames/cutting/cutting.tscn")
 		_:
 			push_error("No minigame scene provided for " + Minigames.keys()[minigame])
 			return load("")
@@ -217,6 +216,7 @@ func create_window(
 	initial_center: Vector2i,
 	minigame: Minigames,
 	player_id: int,
+	minigame_station: StationInteractable
 ) -> void:
 	var minigame_window = window_scene.instantiate() as MinigameWindow
 	var character_index = PlayerManager.get_player_data(player_id, "character_index")
@@ -234,4 +234,6 @@ func create_window(
 	window_position = array_to_screenspace(window_position)
 	minigame_window.window = window
 
-	minigame_window.place_window(window_position, window_size, load_minigame(minigame), player_id)
+	minigame_window.place_window(
+		window_position, window_size, load_minigame(minigame), player_id, minigame_station
+	)
