@@ -4,7 +4,7 @@ enum Minigames { FISHING, CUTTING, PACKAGING, SHOOTING }
 
 const WINDOW_PADDING: int = 1
 
-var window_scene = (
+var window_scene := (
 	load("res://scenes/minigames/minigame_window/minigame_window.tscn") as PackedScene
 )
 # 2d grid of booleans, representing the available space for windows. true is occupied
@@ -193,6 +193,8 @@ func load_minigame(minigame: Minigames) -> PackedScene:
 			return load("res://scenes/minigames/fishing/fishing.tscn")
 		Minigames.CUTTING:
 			return load("res://scenes/minigames/cutting/cutting.tscn")
+		Minigames.SHOOTING:
+			return load("res://scenes/minigames/shooting/shooting.tscn")
 		_:
 			push_error("No minigame scene provided for " + Minigames.keys()[minigame])
 			return load("")
@@ -206,6 +208,8 @@ func get_window_size(minigame: Minigames) -> Vector2:
 			return Vector2i(31, 55)
 		Minigames.CUTTING:
 			return Vector2i(55, 31)
+		Minigames.SHOOTING:
+			return Vector2.ZERO
 		_:
 			push_error("No minigame size provided for " + Minigames.keys()[minigame])
 			return Vector2.ZERO
@@ -215,6 +219,9 @@ func get_window_size(minigame: Minigames) -> Vector2:
 func create_window(
 	initial_center: Vector2i, minigame: Minigames, player_id: int, minigame_station: NodePath
 ) -> void:
+	if minigame == Minigames.SHOOTING:
+		_create_shooting_window(Minigames.SHOOTING, player_id, minigame_station)
+		return
 	var minigame_window = window_scene.instantiate() as MinigameWindow
 	var character_index = PlayerManager.get_player_data(player_id, "character_index")
 	minigame_window.material = (
@@ -234,3 +241,16 @@ func create_window(
 	minigame_window.place_window(
 		window_position, window_size, load_minigame(minigame), player_id, minigame_station
 	)
+
+
+func _create_shooting_window(
+	minigame: Minigames, player_id: int, minigame_station: NodePath
+) -> void:
+	var minigame_window = load_minigame(minigame).instantiate() as Minigame
+	var character_index = PlayerManager.get_player_data(player_id, "character_index")
+	minigame_window.material = (
+		PlayerManager.get_character_assets(character_index)["material.tres"]
+	)
+	minigame_window.minigame_station = minigame_station
+	minigame_window.player_id = player_id
+	add_child(minigame_window)

@@ -13,11 +13,11 @@ func _enter_tree():
 	minigame_window = get_parent() as MinigameWindow
 
 
-func _process(_delta: float):
-	_handle_input()
+func _process(delta: float):
+	_handle_input(delta)
 
 
-func _handle_input():
+func _handle_input(_delta: float):
 	if !is_multiplayer_authority():
 		return
 	if input.is_action_just_pressed("exit"):
@@ -32,13 +32,17 @@ func _beat():
 
 
 func _exit_minigame():
+	PlayerManager.stop_player_minigame(player_id)
 	close_window.rpc()
 	get_node(minigame_station).close_interact.bind(player_id).rpc()
 
 
 @rpc("any_peer", "call_local", "reliable")
 func close_window():
-	minigame_window.queue_free()
+	if minigame_window == null:
+		queue_free()
+	else:
+		minigame_window.queue_free()
 
 # How the minigames work:
 # Fishing: highway bottom to top mimicking fishing

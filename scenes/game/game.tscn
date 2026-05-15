@@ -13,7 +13,7 @@
 [ext_resource type="Material" uid="uid://bqv7e2yagptbi" path="res://art/materials/base_color_UI.tres" id="11_5jirj"]
 [ext_resource type="Theme" uid="uid://cr57qof47xvw8" path="res://art/ui/4x4ui.tres" id="11_kp23o"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tuou4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5jirj"]
 shader = ExtResource("5_i06nm")
 shader_parameter/outline_color = Color(0, 0, 0, 0)
 
@@ -21,6 +21,10 @@ shader_parameter/outline_color = Color(0, 0, 0, 0)
 size = Vector2(16, 8)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j7gkv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tuou4"]
+shader = ExtResource("5_i06nm")
+shader_parameter/outline_color = Color(0, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1at6i"]
 shader = ExtResource("5_i06nm")
@@ -73,6 +77,32 @@ texture = ExtResource("2_el6o1")
 visible = false
 polygon = PackedVector2Array(-115, 10, -63, -10, -29, -12, 67, -12, 101, -10, 106, -8, 108, -3, 108, 34, 107, 38, 94, 41, 53, 43, -35, 43, -69, 40, -112, 19, -115, 15)
 disabled = true
+
+[node name="ShootingStation" type="StaticBody2D" parent="Boat" unique_id=1225409563]
+y_sort_enabled = true
+position = Vector2(90, 26)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("5_mpawt")
+minigame = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Boat/ShootingStation" unique_id=1250278536]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_5jirj")
+texture = ExtResource("5_qjdk3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/ShootingStation" unique_id=227738633]
+position = Vector2(-0.5, 4)
+shape = SubResource("RectangleShape2D_bfln0")
+
+[node name="Area2D" type="Area2D" parent="Boat/ShootingStation" unique_id=330496726]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boat/ShootingStation/Area2D" unique_id=1580846985]
+position = Vector2(-0.5, 4)
+shape = SubResource("RectangleShape2D_j7gkv")
+debug_color = Color(0.968435, 0, 0.467885, 0.42)
 
 [node name="CuttingStation" type="StaticBody2D" parent="Boat" unique_id=1154964097]
 y_sort_enabled = true

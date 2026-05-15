@@ -2,13 +2,14 @@
 
 [ext_resource type="Script" uid="uid://bj3jvq4v0kg5o" path="res://scenes/minigames/fishing/fishing.gd" id="1_cwcie"]
 [ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="1_lfjkg"]
-[ext_resource type="Material" uid="uid://c2bdahsrkh6xb" path="res://art/materials/base_color.tres" id="3_7qhaq"]
 
 [node name="Fishing" type="Node2D" unique_id=22956318]
+use_parent_material = true
 script = ExtResource("1_cwcie")
 
 [node name="Game" type="Node2D" parent="." unique_id=16619924]
 visible = false
+use_parent_material = true
 
 [node name="Icon" type="Sprite2D" parent="Game" unique_id=1610222142]
 position = Vector2(81.7146, 137.25)
@@ -30,7 +31,7 @@ position = Vector2(83, 254)
 position = Vector2(82, 17)
 
 [node name="Label" type="Label" parent="." unique_id=1646895103]
-material = ExtResource("3_7qhaq")
+use_parent_material = true
 offset_left = 31.0
 offset_top = 123.0
 offset_right = 135.0

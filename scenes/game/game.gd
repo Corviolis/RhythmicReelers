@@ -9,6 +9,14 @@ var cut_fish: int = 0
 @onready var resources = $Control/Resources as Label
 
 
+func _enter_tree():
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+
+
+func _exit_tree():
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
 func _ready():
 	multiplayer.server_disconnected.connect(_error_to_lobby)
 	_create_players()

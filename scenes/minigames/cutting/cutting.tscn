@@ -2,13 +2,14 @@
 
 [ext_resource type="Script" uid="uid://dnnq1kr072twh" path="res://scenes/minigames/cutting/cutting.gd" id="1_g666d"]
 [ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="2_7qh60"]
-[ext_resource type="Material" uid="uid://c2bdahsrkh6xb" path="res://art/materials/base_color.tres" id="3_qfemg"]
 
 [node name="Cutting" type="Node2D" unique_id=1205671767]
+use_parent_material = true
 script = ExtResource("1_g666d")
 
 [node name="Game" type="Node2D" parent="." unique_id=611343774]
 visible = false
+use_parent_material = true
 
 [node name="Icon" type="Sprite2D" parent="Game" unique_id=1970879935]
 position = Vector2(134.25002, 79.82042)
@@ -35,7 +36,7 @@ position = Vector2(14.000022, 79.53476)
 rotation = -1.5707941
 
 [node name="Label" type="Label" parent="." unique_id=469816421]
-material = ExtResource("3_qfemg")
+use_parent_material = true
 offset_left = 87.0
 offset_top = 58.0
 offset_right = 191.0

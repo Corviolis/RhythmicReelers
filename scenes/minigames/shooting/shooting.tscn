@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dx1imr2lr6mfk"]
+
+[ext_resource type="Script" uid="uid://6n1dbpiainwf" path="res://scenes/minigames/shooting/shooting.gd" id="1_p34gj"]
+[ext_resource type="Texture2D" uid="uid://tyjt32pa53bq" path="res://art/minigames/shooting/crosshair.png" id="1_xie4b"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_yrvko"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Shooting" type="Node2D" unique_id=541713650]
+z_index = 1
+script = ExtResource("1_p34gj")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1580908517]
+use_parent_material = true
+texture = ExtResource("1_xie4b")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=753314925]
+replication_config = SubResource("SceneReplicationConfig_yrvko")

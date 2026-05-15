@@ -37,7 +37,6 @@ signal measure
 # - gives the track to the music player, bpm to metronome, tracks score,
 #		listens to judge, stops level, etc.
 
-# TODO: resource manager
 # TODO: finish the core 4 minigames
 # TODO: add song timer to map
 # TODO: add solo section

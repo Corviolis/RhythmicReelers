@@ -60,10 +60,6 @@ func _specific_ready():
 	pass
 
 
-func _exit_tree():
-	PlayerManager.stop_player_minigame(player_id)
-
-
 # ==== Helper Functions ====
 
 
