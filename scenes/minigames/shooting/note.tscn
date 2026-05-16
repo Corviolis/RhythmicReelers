@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://brb8nnivcjhrm"]
+
+[ext_resource type="Texture2D" uid="uid://iu6f2vg4sdaq" path="res://art/minigames/shooting/crosshair_note.png" id="1_r522d"]
+
+[node name="Note" type="Sprite2D" unique_id=2023669272]
+z_index = -1
+texture = ExtResource("1_r522d")
+hframes = 10

@@ -9,7 +9,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="Shooting" type="Node2D" unique_id=541713650]
-z_index = 1
+z_index = 2
 script = ExtResource("1_p34gj")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1580908517]

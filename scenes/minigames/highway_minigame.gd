@@ -1,7 +1,6 @@
-class_name Highway_Minigame
+class_name HighwayMinigame
 extends Minigame
 
-@export var minigame_duration_in_measures: int = 1
 @export var high_accuracy: int = 10
 @export var low_accuracy: int = 20
 @export var read_ahead_measures: int = 1
@@ -11,8 +10,6 @@ var highway: Array[BeatAnimation] = []
 var note_scene: PackedScene
 var beat_scene: PackedScene
 var measure_scene: PackedScene
-var playing: bool = false
-var measures_alive: int = 0
 var read_ahead_seconds: float = read_ahead_measures * Conductor.measure_duration
 var beatmap: MusicPlayer.BeatMap.Track
 var start_time: float

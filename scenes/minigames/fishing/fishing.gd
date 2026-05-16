@@ -1,4 +1,4 @@
-extends Highway_Minigame
+extends HighwayMinigame
 
 
 func _specific_ready():
