@@ -23,6 +23,7 @@ class NoteAnimation:
 	var start_time: float
 	var time_to_hit_from_start_time: float
 	var missed_beat: Callable
+	var queued_to_delete: bool = false
 
 	func _init(
 		beat_object_in: Sprite2D,
@@ -39,12 +40,16 @@ class NoteAnimation:
 
 	func _on_song_position(song_position: float):
 		var frame: int = max(floori((song_position - start_time) / frame_time), 0)
-		if frame >= beat_object.hframes:
-			# TODO: rather than dieing instantly, start a timer for the late note grace period
-			missed_beat.call()
-			kill()
+		if frame >= beat_object.hframes and not queued_to_delete:
+			var timer = Timer.new()
+			timer.one_shot = true
+			timer.autostart = true
+			timer.wait_time = 0.2
+			timer.timeout.connect(func(): missed_beat.call())
+			beat_object.add_child(timer)
+			queued_to_delete = true
 			return
-		beat_object.frame = frame
+		beat_object.frame = mini(frame, beat_object.hframes - 1)
 
 	func kill():
 		MusicPlayer.update_song_position.disconnect(_on_song_position)
@@ -64,7 +69,11 @@ func _process(delta: float):
 
 
 func _beat():
-	pass
+	if len(notes) == 0:
+		return
+	var target_note := notes[0]
+	var hit_time: float = (MusicPlayer.song_position - target_note.note.time) * 100
+	_handle_beat_result.rpc(hit_time)
 
 
 func _missed_beat():
@@ -97,7 +106,7 @@ func _handle_beat_result(hit_time: float, missed: bool = false):
 			printerr("Impossible hit time! %s" % hit_time)
 
 
-func _on_song_position(song_position: float):
+func _on_song_position(_song_position: float):
 	pass
 
 
