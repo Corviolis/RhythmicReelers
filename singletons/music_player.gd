@@ -45,9 +45,7 @@ class BeatMap:
 		for name: String in raw_beatmap["groups"]:
 			ret.tracks[name] = Track.new()
 			for note_raw in raw_beatmap["groups"][name]:
-				var note = Note.new()
-				note.time = note_raw["time"]
-				note.duration = note_raw["duration"]
+				var note = Note.new(note_raw["time"], note_raw["duration"])
 				ret.tracks[name].notes.append(note)
 		return ret
 
@@ -58,3 +56,7 @@ class BeatMap:
 	class Note:
 		var time: float
 		var duration: float
+
+		func _init(time_in: float, duration_in: float = 0):
+			time = time_in
+			duration = duration_in
