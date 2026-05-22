@@ -11,7 +11,7 @@ func _exit_tree() -> void:
 	WindowManager.free_window(window)
 
 
-func setup_direction(window_size: Vector2i):
+func setup_direction(window_size: Vector2i) -> void:
 	progress_bar = find_child(&"ProgressBar")
 
 	if window_size.x > window_size.y:  # horizontal
@@ -35,7 +35,7 @@ func place_window(
 	minigame_scene: PackedScene,
 	player_id: int,
 	minigame_station: NodePath
-):
+) -> void:
 	size = Vector2i(window_size.x, window_size.y)
 	position = Vector2i(window_center.x - window_size.x / 2, window_center.y - window_size.y / 2)
 	var minigame: Minigame = minigame_scene.instantiate() as Minigame

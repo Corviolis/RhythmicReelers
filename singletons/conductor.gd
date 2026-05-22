@@ -46,16 +46,16 @@ signal measure
 # bullet types: air, water, extra damage
 
 
-func _ready():
+func _ready() -> void:
 	MusicPlayer.update_song_position.connect(_on_song_position)
 
 
 func get_time_of_next_measure() -> float:
-	var beats_left_in_measure = beats_per_measure - beatcount
+	var beats_left_in_measure := beats_per_measure - beatcount
 	return nextbeat + beat_duration * beats_left_in_measure
 
 
-func _on_song_position(song_position: float):
+func _on_song_position(song_position: float) -> void:
 	if song_position > nextbeat:
 		if beatcount == 0:
 			measure.emit()

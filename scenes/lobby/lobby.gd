@@ -1,15 +1,15 @@
 class_name Lobby
 extends Control
 
-var player_card_scene = load("res://scenes/lobby/player_card.tscn") as Resource
+var player_card_scene := load("res://scenes/lobby/player_card.tscn") as PackedScene
 var available_icons: Array[bool] = [true]
-@onready var lobby_list = $LobbyList as HBoxContainer
-@onready var player_list = $PlayerList as HBoxContainer
+@onready var lobby_list := $LobbyList as HBoxContainer
+@onready var player_list := $PlayerList as HBoxContainer
 
 
 # Called when the node enters the scene tree for the first time.
 # TODO: fix server quit functionality for connected peer
-func _ready():
+func _ready() -> void:
 	multiplayer.peer_connected.connect(player_connected)
 	multiplayer.peer_disconnected.connect(player_disconnected)
 	multiplayer.server_disconnected.connect(leave_server)
@@ -24,60 +24,60 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
+func _process(_delta: float) -> void:
 	PlayerManager.handle_join_input()
 
 
-func add_player(player: int, authority: int):
+func add_player(player: int, authority: int) -> void:
 	PlayerManager.set_player_data(player, &"multiplayer_authority", authority)
-	var player_card = player_card_scene.instantiate() as PlayerCard
+	var player_card := player_card_scene.instantiate() as PlayerCard
 	player_card.set_multiplayer_authority(authority)
 	player_card.name = StringName(str(player))
 	player_list.add_child(player_card)
 	player_card.init(player)
 	if not NetworkManager.is_multiplayer or multiplayer.is_server():
-		$Buttons/StartGame.disabled = false
+		($Buttons/StartGame as Button).disabled = false
 
 
-func delete_player(player: int):
-	var player_card := player_list.get_node(str(player))
+func delete_player(player: int) -> void:
+	var player_card: PlayerCard = player_list.get_node(str(player))
 	available_icons[player_card.char_index] = true
 	player_card.queue_free()
 	if PlayerManager.player_data.is_empty():
-		$Buttons/StartGame.disabled = true
+		($Buttons/StartGame as Button).disabled = true
 
 
-func host_game():
-	$Buttons/OpenServer.disabled = true
-	$Buttons/JoinServer.disabled = true
-	$Buttons/LeaveServer.disabled = false
+func host_game() -> void:
+	($Buttons/OpenServer as Button).disabled = true
+	($Buttons/JoinServer as Button).disabled = true
+	($Buttons/LeaveServer as Button).disabled = false
 	NetworkManager.host_game()
 
 
-func join_game():
-	$Buttons/OpenServer.disabled = true
-	$Buttons/JoinServer.disabled = true
-	$Buttons/StartGame.disabled = true
-	$Buttons/LeaveServer.disabled = false
-	NetworkManager.join_game($Buttons/ServerIP.text)
+func join_game() -> void:
+	($Buttons/OpenServer as Button).disabled = true
+	($Buttons/JoinServer as Button).disabled = true
+	($Buttons/StartGame as Button).disabled = true
+	($Buttons/LeaveServer as Button).disabled = false
+	NetworkManager.join_game(($Buttons/ServerIP as Button).text)
 
 
-func start_game():
+func start_game() -> void:
 	GlobalUtils.goto_scene.rpc("res://scenes/game/game.tscn")
 
 
-func leave_server():
+func leave_server() -> void:
 	NetworkManager.leave_server()
 	PlayerManager.drop_all_players()
 	for node in lobby_list.get_children():
 		if node.name != &"Label":
 			node.queue_free()
-	$Buttons/OpenServer.disabled = false
-	$Buttons/JoinServer.disabled = false
-	$Buttons/LeaveServer.disabled = true
+	($Buttons/OpenServer as Button).disabled = false
+	($Buttons/JoinServer as Button).disabled = false
+	($Buttons/LeaveServer as Button).disabled = true
 
 
-func player_connected(id: int):
+func player_connected(id: int) -> void:
 	print("Recieved connection from %d" % id)
 	var player_label := Label.new()
 	player_label.text = str(id)
@@ -104,6 +104,6 @@ func player_connected(id: int):
 			)
 
 
-func player_disconnected(id: int):
-	var player_label = lobby_list.get_node(str(id))
+func player_disconnected(id: int) -> void:
+	var player_label := lobby_list.get_node(str(id))
 	player_label.queue_free()

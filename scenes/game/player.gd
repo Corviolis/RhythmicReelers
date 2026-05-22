@@ -11,12 +11,12 @@ var nearby_interactables: Array[StationInteractable]
 @onready var interaction_area: Area2D = $Area2D
 
 
-func _enter_tree():
+func _enter_tree() -> void:
 	PlayerManager.stop_player_minigame(player_id)
 
 
-func _ready():
-	color = sprite.material.get_shader_parameter("foreground_color")
+func _ready() -> void:
+	color = (sprite.material as ShaderMaterial).get_shader_parameter("foreground_color")
 	interaction_area.area_entered.connect(add_interactable)
 	interaction_area.area_exited.connect(remove_interactable)
 
@@ -25,7 +25,7 @@ func _process(_delta: float) -> void:
 	_handle_input()
 
 
-func _physics_process(_delta):
+func _physics_process(_delta: float) -> void:
 	if !input:
 		return
 	if PlayerManager.get_player_in_minigame(player_id):
@@ -42,34 +42,33 @@ func _physics_process(_delta):
 
 
 # custom input handling
-# WARN: Is the multiplayer just mirroring raw inputs without confirming location???
-func _handle_input():
+func _handle_input() -> void:
 	if !is_multiplayer_authority():
 		return
 	if PlayerManager.get_player_in_minigame(player_id):
 		return
 	if input.is_action_just_pressed(&"interact"):
 		if not nearby_interactables.is_empty():
-			nearby_interactables.back().interact(player_id)
+			(nearby_interactables.back() as StationInteractable).interact(player_id)
 
 
-func set_device(device: int):
+func set_device(device: int) -> void:
 	input = DeviceInput.new(device)
 
 
 func add_interactable(area2d: Area2D) -> void:
 	if not nearby_interactables.is_empty():
-		nearby_interactables.back().remove_nearby_player(self)
+		(nearby_interactables.back() as StationInteractable).remove_nearby_player(self)
 	var interactable: StationInteractable = area2d.get_parent()
 	nearby_interactables.append(interactable)
 	interactable.add_nearby_player(self)
 
 
 func remove_interactable(area2d: Area2D) -> void:
-	var current_interact_target = nearby_interactables.back()
+	var current_interact_target: StationInteractable = nearby_interactables.back()
 	var interactable: StationInteractable = area2d.get_parent()
 	nearby_interactables.erase(interactable)
 	if interactable == current_interact_target:
 		interactable.remove_nearby_player(self)
 		if not nearby_interactables.is_empty():
-			nearby_interactables.back().add_nearby_player(self)
+			(nearby_interactables.back() as StationInteractable).add_nearby_player(self)

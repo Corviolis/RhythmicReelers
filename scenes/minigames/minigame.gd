@@ -8,16 +8,16 @@ var minigame_window: MinigameWindow
 var minigame_station: NodePath
 
 
-func _enter_tree():
+func _enter_tree() -> void:
 	set_multiplayer_authority(PlayerManager.get_player_authority(player_id))
 	minigame_window = get_parent() as MinigameWindow
 
 
-func _process(delta: float):
+func _process(delta: float) -> void:
 	_handle_input(delta)
 
 
-func _handle_input(_delta: float):
+func _handle_input(_delta: float) -> void:
 	if !is_multiplayer_authority():
 		return
 	if input.is_action_just_pressed("exit"):
@@ -27,18 +27,18 @@ func _handle_input(_delta: float):
 
 
 # Check how close the oldest alive beat is to the target
-func _beat():
+func _beat() -> void:
 	pass
 
 
-func _exit_minigame():
+func _exit_minigame() -> void:
 	PlayerManager.stop_player_minigame(player_id)
 	close_window.rpc()
-	get_node(minigame_station).close_interact.bind(player_id).rpc()
+	(get_node(minigame_station) as StationInteractable).close_interact.bind(player_id).rpc()
 
 
 @rpc("any_peer", "call_local", "reliable")
-func close_window():
+func close_window() -> void:
 	if minigame_window == null:
 		queue_free()
 	else:

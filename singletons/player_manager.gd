@@ -13,11 +13,11 @@ const MAX_PLAYERS = 4
 # map from player integer to dictionary of data
 # the existence of a key in this dictionary means this player is joined.
 # use get_player_data() and set_player_data() to use this dictionary.
-var player_data: Dictionary = {}
+var player_data: Dictionary[int, Dictionary] = {}
 var character_assets: Array[Dictionary]
 
 
-func _ready():
+func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_player_disconnected)
 	multiplayer.server_disconnected.connect(_server_closed)
 	catalogue_player_assets()
@@ -26,19 +26,19 @@ func _ready():
 #=== DATA MANAGEMENT ===
 
 
-func get_character_asset_count():
+func get_character_asset_count() -> int:
 	return character_assets.size()
 
 
-func get_character_assets(index: int):
+func get_character_assets(index: int) -> Dictionary:
 	return character_assets[index]
 
 
-func get_player_count():
+func get_player_count() -> int:
 	return player_data.size()
 
 
-func get_player_indexes():
+func get_player_indexes() -> Array[int]:
 	return player_data.keys()
 
 
@@ -60,7 +60,7 @@ func stop_player_minigame(player: int) -> void:
 
 # get player data.
 # null means it doesn't exist.
-func get_player_data(player: int, key: StringName):
+func get_player_data(player: int, key: StringName) -> Variant:
 	if player_data.has(player) and player_data[player].has(key):
 		return player_data[player][key]
 	printerr("Failure when trying to access key [%s] on player [%d]" % [key, player])
@@ -68,24 +68,24 @@ func get_player_data(player: int, key: StringName):
 
 
 # set player data to get later
-func set_player_data(player: int, key: StringName, value: Variant):
-	# if this player is not joined, don't do anything:
+func set_player_data(player: int, key: StringName, value: Variant) -> void:
+	# if this player has not joined, don't do anything:
 	if !player_data.has(player):
 		return
 	player_data[player][key] = value
 
 
-func catalogue_player_assets(path: String = "res://art/characters/"):
-	var characters_directory = DirAccess.open(path)
+func catalogue_player_assets(path: String = "res://art/characters/") -> void:
+	var characters_directory := DirAccess.open(path)
 	characters_directory.list_dir_begin()
-	var character_file = characters_directory.get_next() as String
+	var character_file := characters_directory.get_next() as String
 
 	while character_file != "":
-		var unit_assets = {}
+		var unit_assets := {}
 		var character_path := DirAccess.open(path + character_file)
 		character_path.list_dir_begin()
 
-		var asset = character_path.get_next() as String
+		var asset := character_path.get_next() as String
 		while not asset.is_empty() and not asset.ends_with(".import"):
 			unit_assets[asset] = load(path + character_file + "/" + asset)
 			asset = character_path.get_next()
@@ -97,21 +97,21 @@ func catalogue_player_assets(path: String = "res://art/characters/"):
 #=== LOCAL UTILITIES ===
 
 @rpc("any_peer", "call_local", "reliable")
-func leave(player: int):
+func leave(player: int) -> void:
 	if player_data.has(player):
 		player_data.erase(player)
 		player_left.emit(player)
 
 
-func drop_all_players():
-	for player in get_player_indexes():
+func drop_all_players() -> void:
+	for player: int in get_player_indexes():
 		leave(player)
 
 
 # call this from a loop in the main menu or anywhere they can join
 # this is an example of how to look for an action on all devices
-func handle_join_input():
-	for device in get_unjoined_devices():
+func handle_join_input() -> void:
+	for device: int in get_unjoined_devices():
 		# for testing controller (TODO remember to remove after game is done)
 		if device == -1 or multiplayer.is_server():
 			if MultiplayerInput.is_action_just_pressed(device, &"join"):
@@ -119,18 +119,18 @@ func handle_join_input():
 
 
 # returns an array of all valid devices that are *not* associated with a joined player
-func get_unjoined_devices():
-	var devices = Input.get_connected_joypads()
+func get_unjoined_devices() -> Array[int]:
+	var devices := Input.get_connected_joypads()
 	# also consider keyboard player
 	devices.append(-1)
 	# filter out devices that are joined:
-	return devices.filter(func(device): return !_is_device_joined(device))
+	return devices.filter(func(device: int) -> bool: return !_is_device_joined(device))
 
 
 # checks if the lobby is multiplayer
 #	if it is request an open player spot from the server
 #	else request an open player spot locally
-func _attempt_to_join(device: int):
+func _attempt_to_join(device: int) -> void:
 	if NetworkManager.is_multiplayer:
 		_next_player_rpc.rpc_id(1, device)
 		return
@@ -141,7 +141,7 @@ func _attempt_to_join(device: int):
 # called by the server after verifying that a player spot exists
 # or called locally if not multiplayer (or if server)
 @rpc("call_local", "reliable")
-func _join_game(device: int, player: int, character_index: int):
+func _join_game(device: int, player: int, character_index: int) -> void:
 	create_empty_player.rpc(player, -2 if (device == -1) else -3, character_index)
 	if player >= 0:
 		# initialize default player data here
@@ -151,7 +151,7 @@ func _join_game(device: int, player: int, character_index: int):
 
 func _is_device_joined(device: int) -> bool:
 	for player_id in player_data:
-		var d = get_player_device(player_id)
+		var d := get_player_device(player_id)
 		if device == d:
 			return true
 	return false
@@ -167,7 +167,7 @@ func _next_player() -> int:
 
 
 func _get_random_available_player_icon() -> int:
-	var available_icons = get_node("/root/Lobby").available_icons
+	var available_icons := (get_node("/root/Lobby") as Lobby).available_icons
 	var possible_icons: Array[int]
 	for i in len(available_icons):
 		if available_icons[i]:
@@ -187,7 +187,7 @@ func create_empty_player(
 	device: int,
 	character_index: int,
 	multiplayer_authority: int = multiplayer.get_remote_sender_id()
-):
+) -> void:
 	if player >= 0:
 		# initialize default player data here
 		player_data[player] = {
@@ -205,7 +205,7 @@ func get_player_authority(player: int) -> int:
 # returns a valid player integer for a new player.
 # returns -1 if there is no room for a new player.
 @rpc("any_peer", "call_local", "reliable")
-func _next_player_rpc(device: int):
+func _next_player_rpc(device: int) -> void:
 	var character_index: int = _get_random_available_player_icon()
 	for i in MAX_PLAYERS:
 		if !player_data.has(i):
@@ -217,11 +217,11 @@ func _next_player_rpc(device: int):
 #=== SIGNAL CALLBACKS ===
 
 
-func _player_disconnected(id: int):
-	for player in get_player_indexes():
+func _player_disconnected(id: int) -> void:
+	for player: int in get_player_indexes():
 		if get_player_authority(player) == id:
 			leave(player)
 
 
-func _server_closed():
+func _server_closed() -> void:
 	drop_all_players()

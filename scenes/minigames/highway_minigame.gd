@@ -28,7 +28,7 @@ class BeatAnimation:
 	var tween: Tween
 	var beat_object: Node2D
 
-	func _init(tween_in: Tween, beat_object_in: Node2D):
+	func _init(tween_in: Tween, beat_object_in: Node2D) -> void:
 		self.tween = tween_in
 		self.beat_object = beat_object_in
 
@@ -37,15 +37,15 @@ class NoteAnimation:
 	extends BeatAnimation
 	var note: MusicPlayer.BeatMap.Note
 
-	func _init(tween_in: Tween, beat_object_in: Node2D, note_in: MusicPlayer.BeatMap.Note):
+	func _init(tween_in: Tween, beat_object_in: Node2D, note_in: MusicPlayer.BeatMap.Note) -> void:
 		self.tween = tween_in
 		self.beat_object = beat_object_in
 		self.note = note_in
 
 
-func _ready():
+func _ready() -> void:
 	_specific_ready()
-	var device = PlayerManager.get_player_device(player_id)
+	var device := PlayerManager.get_player_device(player_id)
 	input = DeviceInput.new(device)
 	start_time = Conductor.get_time_of_next_measure() + Conductor.measure_duration
 	note_seek_head = start_time
@@ -53,7 +53,7 @@ func _ready():
 	MusicPlayer.update_song_position.connect(_on_song_position)
 
 
-func _specific_ready():
+func _specific_ready() -> void:
 	pass
 
 
@@ -62,8 +62,8 @@ func _specific_ready():
 
 # return closest note following note_seek_head
 func _get_next_seek_note() -> MusicPlayer.BeatMap.Note:
-	var index = beatmap.notes.find_custom(
-		func(x: MusicPlayer.BeatMap.Note): return x.time >= note_seek_head
+	var index := beatmap.notes.find_custom(
+		func(x: MusicPlayer.BeatMap.Note) -> bool: return x.time >= note_seek_head
 	)
 	return beatmap.notes[index]
 
@@ -77,7 +77,7 @@ func _calc_tween_time() -> float:
 
 
 # Check how close the oldest alive beat is to the target
-func _beat():
+func _beat() -> void:
 	if len(notes) == 0:
 		return
 	var target_note := notes[0]
@@ -85,7 +85,7 @@ func _beat():
 	_handle_beat_result.rpc(hit_time)
 
 
-func _missed_beat():
+func _missed_beat() -> void:
 	if len(notes) == 0:
 		return
 	var target_note := notes[0]
@@ -94,7 +94,7 @@ func _missed_beat():
 
 
 @rpc("any_peer", "call_local", "reliable")
-func _handle_beat_result(hit_time: float, missed: bool = false):
+func _handle_beat_result(hit_time: float, missed: bool = false) -> void:
 	var note_animation: BeatAnimation = notes.pop_front()
 	note_animation.tween.kill()
 	note_animation.beat_object.queue_free()
@@ -121,12 +121,14 @@ func _handle_beat_result(hit_time: float, missed: bool = false):
 
 # TODO: Rewrite to not use tween
 # instead, directly use song_position as delta time to animate itself forward
-func _on_song_position(song_position: float):
+func _on_song_position(song_position: float) -> void:
 	if song_position > start_time - Conductor.measure_duration:
-		$Label.visible = false
-		$Game.visible = true
+		($Label as Label).visible = false
+		($Game as Node2D).visible = true
 	else:
-		$Label.text = str(snappedf(start_time - song_position - Conductor.measure_duration, 0.01))
+		($Label as Label).text = str(
+			snappedf(start_time - song_position - Conductor.measure_duration, 0.01)
+		)
 
 	song_position += read_ahead_seconds
 	if song_position < start_time:
@@ -150,7 +152,7 @@ func _on_song_position(song_position: float):
 		)
 		tween.play()
 		tween.tween_callback(
-			func():
+			func() -> void:
 				tween.kill()
 				object.queue_free()
 		)
@@ -165,7 +167,7 @@ func _on_song_position(song_position: float):
 	if song_position > next_note.time:
 		note_seek_head = next_note.time + 0.01
 
-		var object = note_scene.instantiate()
+		var object: Node2D = note_scene.instantiate()
 		add_child(object)
 		object.position = spawner.position
 
@@ -178,5 +180,5 @@ func _on_song_position(song_position: float):
 		notes.append(NoteAnimation.new(tween, object, next_note))
 
 
-func _add_resource():
+func _add_resource() -> void:
 	pass

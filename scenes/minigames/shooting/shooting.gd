@@ -30,7 +30,7 @@ class NoteAnimation:
 		note_in: MusicPlayer.BeatMap.Note,
 		time_until_hit: float,
 		missed_beat_in: Callable
-	):
+	) -> void:
 		self.beat_object = beat_object_in
 		self.note = note_in
 		self.frame_time = time_until_hit / beat_object_in.hframes
@@ -38,37 +38,37 @@ class NoteAnimation:
 		self.missed_beat = missed_beat_in
 		MusicPlayer.update_song_position.connect(_on_song_position)
 
-	func _on_song_position(song_position: float):
+	func _on_song_position(song_position: float) -> void:
 		var frame: int = max(floori((song_position - start_time) / frame_time), 0)
 		if frame >= beat_object.hframes and not queued_to_delete:
-			var timer = Timer.new()
+			var timer := Timer.new()
 			timer.one_shot = true
 			timer.autostart = true
 			timer.wait_time = 0.2
-			timer.timeout.connect(func(): missed_beat.call())
+			timer.timeout.connect(func() -> void: missed_beat.call())
 			beat_object.add_child(timer)
 			queued_to_delete = true
 			return
 		beat_object.frame = mini(frame, beat_object.hframes - 1)
 
-	func kill():
+	func kill() -> void:
 		MusicPlayer.update_song_position.disconnect(_on_song_position)
 		beat_object.queue_free()
 
 
-func _ready():
-	var device = PlayerManager.get_player_device(player_id)
+func _ready() -> void:
+	var device := PlayerManager.get_player_device(player_id)
 	input = DeviceInput.new(device)
 	beatmap = MusicPlayer.beat_map.tracks["Fishing"]
 	MusicPlayer.update_song_position.connect(_on_song_position)
 	Conductor.beat.connect(_on_beat)
 
 
-func _process(delta: float):
+func _process(delta: float) -> void:
 	_handle_input(delta)
 
 
-func _beat():
+func _beat() -> void:
 	if len(notes) == 0:
 		return
 	var target_note := notes[0]
@@ -76,7 +76,7 @@ func _beat():
 	_handle_beat_result.rpc(hit_time)
 
 
-func _missed_beat():
+func _missed_beat() -> void:
 	if len(notes) == 0:
 		return
 	var target_note := notes[0]
@@ -85,7 +85,7 @@ func _missed_beat():
 
 
 @rpc("any_peer", "call_local", "reliable")
-func _handle_beat_result(hit_time: float, missed: bool = false):
+func _handle_beat_result(hit_time: float, missed: bool = false) -> void:
 	var note_animation: NoteAnimation = notes.pop_front()
 	note_animation.kill()
 	if missed:
@@ -106,26 +106,26 @@ func _handle_beat_result(hit_time: float, missed: bool = false):
 			printerr("Impossible hit time! %s" % hit_time)
 
 
-func _on_song_position(_song_position: float):
+func _on_song_position(_song_position: float) -> void:
 	pass
 
 
-func _on_beat(_beat_count: int):
+func _on_beat(_beat_count: int) -> void:
 	_create_note(MusicPlayer.BeatMap.Note.new(MusicPlayer.song_position + read_ahead_seconds))
 
 
-func _create_note(note: MusicPlayer.BeatMap.Note):
-	var note_object = note_scene.instantiate() as Sprite2D
+func _create_note(note: MusicPlayer.BeatMap.Note) -> void:
+	var note_object := note_scene.instantiate() as Sprite2D
 	add_child(note_object)
 	notes.append(NoteAnimation.new(note_object, note, read_ahead_seconds, _missed_beat))
 
 
-func _unhandled_input(event):
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		using_mouse = true
 
 
-func _handle_input(delta: float):
+func _handle_input(delta: float) -> void:
 	if !is_multiplayer_authority():
 		return
 	if input.is_action_just_pressed("exit"):

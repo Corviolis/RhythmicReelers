@@ -20,7 +20,7 @@ func calculate_color() -> Color:
 
 
 func set_outline_color(color: Color) -> void:
-	sprite.material.set_shader_parameter("outline_color", color)
+	(sprite.material as ShaderMaterial).set_shader_parameter("outline_color", color)
 
 
 func add_nearby_player(player: Player) -> void:
@@ -51,7 +51,7 @@ func close_interact(_player_id: int) -> void:
 
 
 @rpc("authority", "call_local", "reliable")
-func open_minigame(player_id: int):
+func open_minigame(player_id: int) -> void:
 	PlayerManager.start_player_minigame(player_id)
 	WindowManager.create_window.rpc(position, minigame, player_id, get_path())
 

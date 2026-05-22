@@ -13,8 +13,8 @@ func _ready() -> void:
 	beat_map = parse_beatmap("song_2")
 
 
-func _process(_delta: float):
-	var time = audio_player.get_playback_position() + AudioServer.get_time_since_last_mix()
+func _process(_delta: float) -> void:
+	var time := audio_player.get_playback_position() + AudioServer.get_time_since_last_mix()
 	time -= AudioServer.get_output_latency()
 	song_position = time
 	update_song_position.emit(time)
@@ -39,13 +39,13 @@ class BeatMap:
 	var tracks: Dictionary[String, Track]
 
 	static func parse_beatmap(json: JSON) -> BeatMap:
-		var ret = BeatMap.new()
-		var raw_beatmap = json.data
+		var ret := BeatMap.new()
+		var raw_beatmap: Variant = json.data
 		Conductor.bpm = raw_beatmap["bpm"]
 		for name: String in raw_beatmap["groups"]:
 			ret.tracks[name] = Track.new()
-			for note_raw in raw_beatmap["groups"][name]:
-				var note = Note.new(note_raw["time"], note_raw["duration"])
+			for note_raw: Dictionary in raw_beatmap["groups"][name]:
+				var note := Note.new(note_raw["time"] as float, note_raw["duration"] as float)
 				ret.tracks[name].notes.append(note)
 		return ret
 
@@ -57,6 +57,6 @@ class BeatMap:
 		var time: float
 		var duration: float
 
-		func _init(time_in: float, duration_in: float = 0):
+		func _init(time_in: float, duration_in: float = 0) -> void:
 			time = time_in
 			duration = duration_in

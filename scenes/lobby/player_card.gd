@@ -2,7 +2,7 @@ class_name PlayerCard
 extends Control
 
 var player_id: int
-var char_index = null
+var char_index: int
 var input: DeviceInput
 var device: int
 var color_replace_shader := preload("res://art/shaders/color_replace.gdshader") as Shader
@@ -13,20 +13,20 @@ var sprite: TextureRect = get_node("PanelContainer/MarginContainer/VBoxContainer
 @onready var lobby: Lobby = get_node("/root/Lobby")
 
 
-func init(player_num: int):
+func init(player_num: int) -> void:
 	player_id = player_num
 	device = PlayerManager.get_player_device(player_id)
 	input = DeviceInput.new(device)
 	name_tag.text = ("Player %d" % (player_id + 1))
 	_show_player_authority()
 	# _set_device_icon()
-	set_char_icon(PlayerManager.get_player_data(player_id, "character_index"))
+	set_char_icon(PlayerManager.get_player_data(player_id, "character_index") as int)
 	if !is_multiplayer_authority():
-		$PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchLeft.visible = false
-		$PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchRight.visible = false
+		($PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchLeft as Button).visible = false
+		($PanelContainer/MarginContainer/VBoxContainer/CharacterSelect/SwitchRight as Button).visible = false
 
 
-func _process(_delta):
+func _process(_delta: float) -> void:
 	if is_multiplayer_authority():
 		if input.is_action_just_pressed(&"join"):
 			PlayerManager.leave.rpc(player_id)
@@ -37,7 +37,7 @@ func _process(_delta):
 
 
 @rpc("authority", "call_local", "reliable")
-func set_char_icon(dir: int):
+func set_char_icon(dir: int) -> void:
 	if char_index != null:
 		lobby.available_icons[char_index] = true
 	char_index = (dir) % PlayerManager.get_character_asset_count()
@@ -47,19 +47,19 @@ func set_char_icon(dir: int):
 	PlayerManager.set_player_data(player_id, "character_index", char_index)
 
 
-func increase_char_icon():
+func increase_char_icon() -> void:
 	_change_char_icon(1)
 
 
-func decrease_char_icon():
+func decrease_char_icon() -> void:
 	_change_char_icon(-1)
 
 
-func _change_char_icon(amount: int):
+func _change_char_icon(amount: int) -> void:
 	if !lobby.available_icons.has(true):
 		printerr("No available icons")
 		return
-	var next_available_icon = char_index
+	var next_available_icon := char_index
 	next_available_icon = (next_available_icon + amount) % PlayerManager.get_character_asset_count()
 	while !lobby.available_icons[next_available_icon]:
 		next_available_icon = (
@@ -70,8 +70,8 @@ func _change_char_icon(amount: int):
 	set_char_icon.rpc(next_available_icon)
 
 
-func _show_player_authority():
-	var device_name = get_node(^"PanelContainer/MarginContainer/VBoxContainer/DeviceName") as Label
+func _show_player_authority() -> void:
+	var device_name := get_node(^"PanelContainer/MarginContainer/VBoxContainer/DeviceName") as Label
 	device_name.text = "authority\n%d" % get_multiplayer_authority()
 
 # func _set_device_icon():

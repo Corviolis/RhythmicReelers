@@ -17,11 +17,11 @@ func get_port() -> int:
 	return port if port != 0 else DEFAULT_PORT
 
 
-func setup_upnp():
+func setup_upnp() -> void:
 	upnp = UPNP.new()
-	var upnp_discover_result = upnp.discover() as UPNP.UPNPResult
+	var upnp_discover_result := upnp.discover() as UPNP.UPNPResult
 	if upnp_discover_result == UPNP.UPNP_RESULT_SUCCESS and upnp.get_gateway().is_valid_gateway():
-		var udp_mapping_result = upnp.add_port_mapping(
+		var udp_mapping_result := upnp.add_port_mapping(
 			get_port(), 0, ProjectSettings.get_setting("application/config/name") as String
 		)
 		if udp_mapping_result == UPNP.UPNP_RESULT_SUCCESS:
@@ -33,23 +33,23 @@ func setup_upnp():
 		printerr("Gateway not discovered: %s" % upnp_discover_result)
 
 
-func host_game():
+func host_game() -> void:
 	thread.start(setup_upnp)
 	peer = ENetMultiplayerPeer.new()
-	peer.create_server(get_port(), 4)
+	(peer as ENetMultiplayerPeer).create_server(get_port(), 4)
 	multiplayer.multiplayer_peer = peer
 	is_multiplayer = true
 
 
-func join_game(server_ip: String):
+func join_game(server_ip: String) -> void:
 	PlayerManager.drop_all_players()
 	peer = ENetMultiplayerPeer.new()
-	peer.create_client(server_ip, get_port())
+	(peer as ENetMultiplayerPeer).create_client(server_ip, get_port())
 	multiplayer.multiplayer_peer = peer
 	is_multiplayer = true
 
 
-func leave_server():
+func leave_server() -> void:
 	if thread.is_alive():
 		thread.wait_to_finish()
 	if upnp_open:
@@ -62,7 +62,7 @@ func leave_server():
 #=== SIGNAL CALLBACKS ===
 
 
-func _exit_tree():
+func _exit_tree() -> void:
 	if thread.is_alive():
 		thread.wait_to_finish()
 	if upnp_open:

@@ -1,34 +1,34 @@
 class_name Game
 extends Node2D
 
-var player_scene = load("res://scenes/game/player.tscn") as PackedScene
+var player_scene := load("res://scenes/game/player.tscn") as PackedScene
 var raw_fish: int = 0
 var cut_fish: int = 0
 
-@onready var boat = $Boat as StaticBody2D
-@onready var resources = $Control/Resources as Label
+@onready var boat := $Boat as StaticBody2D
+@onready var resources := $Control/Resources as Label
 
 
-func _enter_tree():
+func _enter_tree() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 
-func _exit_tree():
+func _exit_tree() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
-func _ready():
+func _ready() -> void:
 	multiplayer.server_disconnected.connect(_error_to_lobby)
 	_create_players()
 	resources.text = "FISH: %s\nCUT: %s" % [raw_fish, cut_fish]
 
 
-func add_raw_fish(count: int):
+func add_raw_fish(count: int) -> void:
 	raw_fish += count
 	resources.text = "FISH: %s\nCUT: %s" % [raw_fish, cut_fish]
 
 
-func add_cut_fish(count: int):
+func add_cut_fish(count: int) -> void:
 	if raw_fish <= 0:
 		return
 	raw_fish -= count
@@ -36,16 +36,16 @@ func add_cut_fish(count: int):
 	resources.text = "FISH: %s\nCUT: %s" % [raw_fish, cut_fish]
 
 
-func _go_to_lobby():
+func _go_to_lobby() -> void:
 	GlobalUtils.goto_scene(^"res://scenes/lobby/lobby.tscn")
 
 
-func _error_to_lobby():
+func _error_to_lobby() -> void:
 	PlayerManager.drop_all_players()
 	_go_to_lobby()
 
 
-func _create_players():
+func _create_players() -> void:
 	for player_index in PlayerManager.get_player_indexes():
 		var char_index := PlayerManager.get_player_data(player_index, "character_index") as int
 		var device: int = PlayerManager.get_player_device(player_index)

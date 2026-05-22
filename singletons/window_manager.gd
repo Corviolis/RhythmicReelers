@@ -63,15 +63,15 @@ class BitmapWindow:
 # ==== Pixel Grid Management ====
 
 
-func _ready():
+func _ready() -> void:
 	pixel_mapping = BitMap.new()
 	pixel_mapping.create(Vector2i(viewport_width, viewport_height))
 
 
 func reserve_window(window_center: Vector2i, window_size: Vector2i) -> BitmapWindow:
-	var new_window = BitmapWindow.new(window_center, window_size)
+	var new_window := BitmapWindow.new(window_center, window_size)
 	bitmap_windows.push_back(new_window)
-	var window = Rect2i(
+	var window := Rect2i(
 		window_center.x - window_size.x / 2,
 		window_center.y - window_size.y / 2,
 		window_size.x,
@@ -81,10 +81,10 @@ func reserve_window(window_center: Vector2i, window_size: Vector2i) -> BitmapWin
 	return new_window
 
 
-func free_window(bitmap_window: BitmapWindow):
+func free_window(bitmap_window: BitmapWindow) -> void:
 	bitmap_windows.erase(bitmap_window)
 	assert(!bitmap_windows.has(bitmap_window))
-	var window = Rect2i(bitmap_window.center, bitmap_window.size)
+	var window := Rect2i(bitmap_window.center, bitmap_window.size)
 	pixel_mapping.set_bit_rect(window, false)
 
 
@@ -133,8 +133,8 @@ func is_valid_position(center: Vector2i, window_size: Vector2i) -> bool:
 
 func get_neighbours(index: Vector2i, searched_bitmap: BitMap) -> Array[Vector2i]:
 	var neighbours: Array[Vector2i] = []
-	var x = index.x
-	var y = index.y
+	var x := index.x
+	var y := index.y
 
 	neighbours.append(Vector2i(x - 1, y - 1))
 	neighbours.append(Vector2i(x - 1, y))
@@ -222,8 +222,8 @@ func create_window(
 	if minigame == Minigames.SHOOTING:
 		_create_shooting_window(Minigames.SHOOTING, player_id, minigame_station)
 		return
-	var minigame_window = window_scene.instantiate() as MinigameWindow
-	var character_index = PlayerManager.get_player_data(player_id, "character_index")
+	var minigame_window := window_scene.instantiate() as MinigameWindow
+	var character_index: int = PlayerManager.get_player_data(player_id, "character_index")
 	minigame_window.material = (
 		PlayerManager.get_character_assets(character_index)["material.tres"]
 	)
@@ -234,7 +234,7 @@ func create_window(
 
 	var window_position: Vector2i = find_nearest_space(initial_center, window_size)
 	assert(window_position != Vector2i.ZERO)
-	var window = reserve_window(window_position, window_size)
+	var window := reserve_window(window_position, window_size)
 	window_position = array_to_screenspace(window_position)
 	minigame_window.window = window
 
@@ -246,8 +246,8 @@ func create_window(
 func _create_shooting_window(
 	minigame: Minigames, player_id: int, minigame_station: NodePath
 ) -> void:
-	var minigame_window = load_minigame(minigame).instantiate() as Minigame
-	var character_index = PlayerManager.get_player_data(player_id, "character_index")
+	var minigame_window := load_minigame(minigame).instantiate() as Minigame
+	var character_index: int = PlayerManager.get_player_data(player_id, "character_index")
 	minigame_window.material = (
 		PlayerManager.get_character_assets(character_index)["material.tres"]
 	)
