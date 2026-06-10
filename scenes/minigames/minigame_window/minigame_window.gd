@@ -1,10 +1,13 @@
 class_name MinigameWindow
 extends NinePatchRect
 
-var progress_bar: ProgressBar
 var progress_bar_delta: float = 0
 var progress_bar_target: float = 0
 var window: WindowManager.BitmapWindow
+
+@onready var progress_bar: ProgressBar = $ProgressBar
+@onready var score_label: Label = $ScoreLabel
+@onready var navigation_obstacle: NavigationObstacle2D = $NavigationObstacle2D
 
 
 func _exit_tree() -> void:
@@ -12,8 +15,6 @@ func _exit_tree() -> void:
 
 
 func setup_direction(window_size: Vector2i) -> void:
-	progress_bar = find_child(&"ProgressBar")
-
 	if window_size.x > window_size.y:  # horizontal
 		region_rect = Rect2(2, 0, 3, 5)
 		patch_margin_top = 3
@@ -42,6 +43,11 @@ func place_window(
 	minigame.apply_scale(Vector2(0.2, 0.2))
 	minigame.player_id = player_id
 	minigame.minigame_station = minigame_station
+	minigame.score_label = score_label
+
+	navigation_obstacle.vertices[1] = Vector2(window_size.x, 0)
+	navigation_obstacle.vertices[2] = Vector2(window_size.x, window_size.y)
+	navigation_obstacle.vertices[3] = Vector2(0, window_size.y)
 
 	add_child(minigame)
 	setup_direction(window_size)

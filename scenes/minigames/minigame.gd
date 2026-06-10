@@ -6,6 +6,7 @@ var player_id: int
 var input: DeviceInput
 var minigame_window: MinigameWindow
 var minigame_station: NodePath
+var score_label: Label
 
 
 func _enter_tree() -> void:

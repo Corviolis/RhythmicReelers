@@ -98,20 +98,21 @@ func _handle_beat_result(hit_time: float, missed: bool = false) -> void:
 	var note_animation: BeatAnimation = notes.pop_front()
 	note_animation.tween.kill()
 	note_animation.beat_object.queue_free()
+	hit_time = snappedf(hit_time, 0.01)
 	if missed:
-		print("Missed! %s" % hit_time)
+		score_label.text = "Missed! %s" % hit_time
 		return
 	match true:
 		_ when abs(hit_time) <= high_accuracy:
-			print("Nice! %s" % hit_time)
+			score_label.text = "Nice! %s" % hit_time
 		_ when hit_time > 0 and abs(hit_time) <= low_accuracy:
-			print("Slightly Slow! %s" % hit_time)
+			score_label.text = "Slow! %s" % hit_time
 		_ when hit_time < 0 and abs(hit_time) <= low_accuracy:
-			print("Slightly Fast! %s" % hit_time)
+			score_label.text = "Fast! %s" % hit_time
 		_ when hit_time > 0 and abs(hit_time) > low_accuracy:
-			print("Very Slow! %s" % hit_time)
+			score_label.text = "Very Slow! %s" % hit_time
 		_ when hit_time < 0 and abs(hit_time) > low_accuracy:
-			print("Very Fast! %s" % hit_time)
+			score_label.text = "Very Fast! %s" % hit_time
 		_:
 			printerr("Impossible hit time! %s" % hit_time)
 

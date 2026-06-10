@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://dqyybdik4r3kk"]
+
+[ext_resource type="Script" uid="uid://bv4cn7s40cypo" path="res://scenes/enemies/imp.gd" id="1_svurw"]
+[ext_resource type="Texture2D" uid="uid://cb8bp42mpfxxt" path="res://icon.svg" id="1_xvdto"]
+[ext_resource type="Script" uid="uid://c0u6w3tro6mx2" path="res://components/pathfinding_component.gd" id="2_dloyg"]
+[ext_resource type="Script" uid="uid://ciayc6o53sf8l" path="res://components/health_component.gd" id="3_0ue5q"]
+[ext_resource type="Script" uid="uid://cxcfq2u0at1k3" path="res://components/movement_component.gd" id="4_vh4c1"]
+[ext_resource type="Script" uid="uid://73wfglpeeat7" path="res://components/attack_component.gd" id="6_b7d7s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xvdto"]
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vh4c1"]
+radius = 44.011364
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xvdto"]
+size = Vector2(24, 24)
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0ue5q"]
+
+[node name="Imp" type="CharacterBody2D" unique_id=1431030748]
+collision_layer = 0
+script = ExtResource("1_svurw")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=997684906]
+scale = Vector2(0.11788502, 0.11788502)
+texture = ExtResource("1_xvdto")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2006491937]
+shape = SubResource("CircleShape2D_xvdto")
+
+[node name="HealthComponent" type="Node" parent="." unique_id=763491489]
+unique_name_in_owner = true
+script = ExtResource("3_0ue5q")
+
+[node name="PathfindingComponent" type="NavigationAgent2D" parent="." unique_id=888381146 node_paths=PackedStringArray("body", "movement_component")]
+unique_name_in_owner = true
+avoidance_enabled = true
+radius = 12.0
+neighbor_distance = 200.0
+avoidance_layers = 2
+avoidance_mask = 3
+debug_enabled = true
+debug_path_custom_point_size = 2.0
+script = ExtResource("2_dloyg")
+body = NodePath("..")
+movement_component = NodePath("../MovementComponent")
+
+[node name="MovementComponent" type="Node" parent="." unique_id=1043813263 node_paths=PackedStringArray("body", "pathfinding_component")]
+unique_name_in_owner = true
+script = ExtResource("4_vh4c1")
+body = NodePath("..")
+pathfinding_component = NodePath("../PathfindingComponent")
+
+[node name="AttackComponent" type="Node2D" parent="." unique_id=1996235753]
+unique_name_in_owner = true
+script = ExtResource("6_b7d7s")
+
+[node name="Range" type="Area2D" parent="AttackComponent" unique_id=837863097]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent/Range" unique_id=1500058057]
+shape = SubResource("CircleShape2D_vh4c1")
+debug_color = Color(0.96816915, 9.62615e-08, 0.47265458, 0.41960785)
+
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1580137792]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=839159186]
+scale = Vector2(0.5703628, 0.5703628)
+shape = SubResource("RectangleShape2D_xvdto")
+debug_color = Color(0.6095099, 0.37139773, 0.98366195, 0.41960785)
+
+[node name="AnimationComponent" type="AnimationTree" parent="." unique_id=845356095]
+root_node = NodePath(".")
+tree_root = SubResource("AnimationNodeStateMachine_0ue5q")
+anim_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationComponent" unique_id=1703417779]
+
+[connection signal="navigation_finished" from="PathfindingComponent" to="PathfindingComponent" method="_on_navigation_finished"]
+[connection signal="velocity_computed" from="PathfindingComponent" to="PathfindingComponent" method="_on_velocity_computed"]
+[connection signal="velocity_updated" from="PathfindingComponent" to="MovementComponent" method="_on_pathfinding_velocity_updated"]

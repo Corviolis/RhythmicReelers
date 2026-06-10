@@ -183,6 +183,10 @@ exit={
 2d_physics/layer_1="Boat"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Interactables"
+2d_physics/layer_9="Enemy"
+2d_physics/layer_10="Enemy Hitbox"
+avoidance/layer_1="Minigame Window"
+avoidance/layer_2="Air Enemy"
 
 [rendering]
 

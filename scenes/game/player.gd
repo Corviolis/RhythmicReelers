@@ -1,7 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
-const SPEED = 100
+const SPEED = 90
 var input: DeviceInput
 var player_id: int
 var color: Color
@@ -36,7 +36,7 @@ func _physics_process(_delta: float) -> void:
 	if direction != Vector2.ZERO:
 		velocity = direction * SPEED
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, 100)
+		velocity = velocity.move_toward(Vector2.ZERO, 10)
 
 	move_and_slide()
 
