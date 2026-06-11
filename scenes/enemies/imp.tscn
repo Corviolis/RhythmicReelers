@@ -6,20 +6,30 @@
 [ext_resource type="Script" uid="uid://ciayc6o53sf8l" path="res://components/health_component.gd" id="3_0ue5q"]
 [ext_resource type="Script" uid="uid://cxcfq2u0at1k3" path="res://components/movement_component.gd" id="4_vh4c1"]
 [ext_resource type="Script" uid="uid://73wfglpeeat7" path="res://components/attack_component.gd" id="6_b7d7s"]
+[ext_resource type="Script" uid="uid://b4ea5gdd1ndmo" path="res://components/hurtbox_component.gd" id="7_b7d7s"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xvdto"]
 radius = 7.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vh4c1"]
-radius = 44.011364
+radius = 14.035668
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xvdto"]
 size = Vector2(24, 24)
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0ue5q"]
 
+[sub_resource type="Animation" id="Animation_b7d7s"]
+resource_name = "die"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8vdv3"]
+_data = {
+&"die": SubResource("Animation_b7d7s")
+}
+
 [node name="Imp" type="CharacterBody2D" unique_id=1431030748]
-collision_layer = 0
+collision_layer = 256
+collision_mask = 256
 script = ExtResource("1_svurw")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=997684906]
@@ -35,6 +45,9 @@ script = ExtResource("3_0ue5q")
 
 [node name="PathfindingComponent" type="NavigationAgent2D" parent="." unique_id=888381146 node_paths=PackedStringArray("body", "movement_component")]
 unique_name_in_owner = true
+path_desired_distance = 10.0
+target_desired_distance = 2.0
+path_max_distance = 20.0
 avoidance_enabled = true
 radius = 12.0
 neighbor_distance = 200.0
@@ -56,14 +69,22 @@ pathfinding_component = NodePath("../PathfindingComponent")
 unique_name_in_owner = true
 script = ExtResource("6_b7d7s")
 
+[node name="AttackCooldown" type="Timer" parent="AttackComponent" unique_id=1455483548]
+process_callback = 0
+
 [node name="Range" type="Area2D" parent="AttackComponent" unique_id=837863097]
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent/Range" unique_id=1500058057]
 shape = SubResource("CircleShape2D_vh4c1")
 debug_color = Color(0.96816915, 9.62615e-08, 0.47265458, 0.41960785)
 
-[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1580137792]
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1580137792 node_paths=PackedStringArray("health_component")]
 unique_name_in_owner = true
+collision_layer = 512
+collision_mask = 0
+script = ExtResource("7_b7d7s")
+health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=839159186]
 scale = Vector2(0.5703628, 0.5703628)
@@ -76,7 +97,13 @@ tree_root = SubResource("AnimationNodeStateMachine_0ue5q")
 anim_player = NodePath("AnimationPlayer")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationComponent" unique_id=1703417779]
+libraries/ = SubResource("AnimationLibrary_8vdv3")
 
+[connection signal="navigation_finished" from="PathfindingComponent" to="." method="_on_pathfinding_reached"]
 [connection signal="navigation_finished" from="PathfindingComponent" to="PathfindingComponent" method="_on_navigation_finished"]
 [connection signal="velocity_computed" from="PathfindingComponent" to="PathfindingComponent" method="_on_velocity_computed"]
 [connection signal="velocity_updated" from="PathfindingComponent" to="MovementComponent" method="_on_pathfinding_velocity_updated"]
+[connection signal="left_attack_range" from="AttackComponent" to="." method="_on_leave_attack_range"]
+[connection signal="timeout" from="AttackComponent/AttackCooldown" to="AttackComponent" method="_attack"]
+[connection signal="body_exited" from="AttackComponent/Range" to="AttackComponent" method="_on_range_body_exited"]
+[connection signal="input_event" from="HurtboxComponent" to="HurtboxComponent" method="_on_input_event"]

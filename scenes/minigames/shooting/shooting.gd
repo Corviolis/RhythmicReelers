@@ -15,6 +15,8 @@ var note_seek_head: float
 var beat_seek_head: float
 var beatcount: int = 0
 
+@onready var hit_area: Area2D = $HitArea
+
 
 class NoteAnimation:
 	var beat_object: Sprite2D
@@ -73,7 +75,11 @@ func _beat() -> void:
 		return
 	var target_note := notes[0]
 	var hit_time: float = (MusicPlayer.song_position - target_note.note.time) * 100
-	_handle_beat_result.rpc(hit_time)
+	var areas_hit := hit_area.get_overlapping_areas()
+	var hurtboxes_hit: Array[HurtboxComponent]
+	hurtboxes_hit.assign(areas_hit)
+
+	_handle_beat_result.rpc(hit_time, false, hurtboxes_hit)
 
 
 func _missed_beat() -> void:
@@ -84,8 +90,11 @@ func _missed_beat() -> void:
 	_handle_beat_result.rpc(hit_time, true)
 
 
+# TODO: spawn bullets rather than hitting the hurtboxes themselves
 @rpc("any_peer", "call_local", "reliable")
-func _handle_beat_result(hit_time: float, missed: bool = false) -> void:
+func _handle_beat_result(
+	hit_time: float, missed: bool = false, hurtboxes_hit: Array[HurtboxComponent] = []
+) -> void:
 	var note_animation: NoteAnimation = notes.pop_front()
 	note_animation.kill()
 	if missed:
@@ -94,10 +103,16 @@ func _handle_beat_result(hit_time: float, missed: bool = false) -> void:
 	match true:
 		_ when abs(hit_time) <= high_accuracy:
 			print("Nice! %s" % hit_time)
+			for hurtbox_component: HurtboxComponent in hurtboxes_hit:
+				hurtbox_component.take_hit(2)
 		_ when hit_time > 0 and abs(hit_time) <= low_accuracy:
 			print("Slightly Slow! %s" % hit_time)
+			for hurtbox_component: HurtboxComponent in hurtboxes_hit:
+				hurtbox_component.take_hit(2)
 		_ when hit_time < 0 and abs(hit_time) <= low_accuracy:
 			print("Slightly Fast! %s" % hit_time)
+			for hurtbox_component: HurtboxComponent in hurtboxes_hit:
+				hurtbox_component.take_hit(2)
 		_ when hit_time > 0 and abs(hit_time) > low_accuracy:
 			print("Very Slow! %s" % hit_time)
 		_ when hit_time < 0 and abs(hit_time) > low_accuracy:
