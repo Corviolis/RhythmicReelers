@@ -24,15 +24,15 @@ scale = Vector2(0.910428, 0.0537398)
 texture = ExtResource("2_7qh60")
 
 [node name="Target" type="Marker2D" parent="Game" unique_id=921499949]
-position = Vector2(36.000023, 79.26741)
+position = Vector2(36, 79)
 rotation = -1.5707941
 
 [node name="Spawner" type="Marker2D" parent="Game" unique_id=1324746890]
-position = Vector2(251.00002, 78.53528)
+position = Vector2(251, 79)
 rotation = -1.5707941
 
 [node name="End" type="Marker2D" parent="Game" unique_id=716186567]
-position = Vector2(14.000022, 79.53476)
+position = Vector2(14, 79)
 rotation = -1.5707941
 
 [node name="Label" type="Label" parent="." unique_id=469816421]

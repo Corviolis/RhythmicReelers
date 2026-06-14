@@ -7,10 +7,16 @@ var window: WindowManager.BitmapWindow
 
 @onready var progress_bar: ProgressBar = $ProgressBar
 @onready var score_label: Label = $ScoreLabel
+@onready var pushbox: Area2D = $Pushbox
+@onready var pushbox_shape: CollisionShape2D = $Pushbox/CollisionShape2D
 @onready var navigation_obstacle: NavigationObstacle2D = $NavigationObstacle2D
+@onready var nav_region: NavigationRegion2D = get_tree().get_root().get_child(-1).get_child(1)
 
 
+# TODO: On instantiate push all enemies in range away based on distance from center(?)
+#	make sure to only push away from boat
 func _exit_tree() -> void:
+	nav_region.bake_navigation_polygon(true)
 	WindowManager.free_window(window)
 
 
@@ -45,12 +51,20 @@ func place_window(
 	minigame.minigame_station = minigame_station
 	minigame.score_label = score_label
 
-	navigation_obstacle.vertices[1] = Vector2(window_size.x, 0)
-	navigation_obstacle.vertices[2] = Vector2(window_size.x, window_size.y)
-	navigation_obstacle.vertices[3] = Vector2(0, window_size.y)
+	navigation_obstacle.vertices[0] = Vector2(-window_size.x / 2, -window_size.y / 2)
+	navigation_obstacle.vertices[1] = Vector2(window_size.x / 2, -window_size.y / 2)
+	navigation_obstacle.vertices[2] = Vector2(window_size.x / 2, window_size.y / 2)
+	navigation_obstacle.vertices[3] = Vector2(-window_size.x / 2, window_size.y / 2)
+	navigation_obstacle.radius = max(window_size.x / 2, window_size.y / 2)
+	navigation_obstacle.global_position = window_center
+
+	var push_rect := pushbox_shape.shape as RectangleShape2D
+	push_rect.size = window_size
+	pushbox.global_position = window_center
 
 	add_child(minigame)
 	setup_direction(window_size)
+	nav_region.bake_navigation_polygon(true)
 
 
 func fill_progess_bar_over_time(value: float, duration: float) -> void:

@@ -7,9 +7,11 @@
 [ext_resource type="Script" uid="uid://cxcfq2u0at1k3" path="res://components/movement_component.gd" id="4_vh4c1"]
 [ext_resource type="Script" uid="uid://73wfglpeeat7" path="res://components/attack_component.gd" id="6_b7d7s"]
 [ext_resource type="Script" uid="uid://b4ea5gdd1ndmo" path="res://components/hurtbox_component.gd" id="7_b7d7s"]
+[ext_resource type="Script" uid="uid://c0e52mlcxrklf" path="res://components/avoid_minigame_component.gd" id="8_8vdv3"]
+[ext_resource type="Script" uid="uid://b8t4aukevu7v6" path="res://components/animation_component.gd" id="9_il2rw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xvdto"]
-radius = 7.0
+radius = 6.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vh4c1"]
 radius = 14.035668
@@ -17,10 +19,37 @@ radius = 14.035668
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xvdto"]
 size = Vector2(24, 24)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b7d7s"]
+size = Vector2(16, 16)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_il2rw"]
+animation = &"die"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_il2rw"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0ue5q"]
+states/die/node = SubResource("AnimationNodeAnimation_il2rw")
+states/die/position = Vector2(721.4844, 100)
+transitions = ["die", "End", SubResource("AnimationNodeStateMachineTransition_il2rw")]
 
 [sub_resource type="Animation" id="Animation_b7d7s"]
 resource_name = "die"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8vdv3"]
 _data = {
@@ -29,7 +58,6 @@ _data = {
 
 [node name="Imp" type="CharacterBody2D" unique_id=1431030748]
 collision_layer = 256
-collision_mask = 256
 script = ExtResource("1_svurw")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=997684906]
@@ -47,9 +75,7 @@ script = ExtResource("3_0ue5q")
 unique_name_in_owner = true
 path_desired_distance = 10.0
 target_desired_distance = 2.0
-path_max_distance = 20.0
 avoidance_enabled = true
-radius = 12.0
 neighbor_distance = 200.0
 avoidance_layers = 2
 avoidance_mask = 3
@@ -72,10 +98,11 @@ script = ExtResource("6_b7d7s")
 [node name="AttackCooldown" type="Timer" parent="AttackComponent" unique_id=1455483548]
 process_callback = 0
 
-[node name="Range" type="Area2D" parent="AttackComponent" unique_id=837863097]
+[node name="Hitbox" type="Area2D" parent="AttackComponent" unique_id=837863097]
 collision_layer = 0
+collision_mask = 16
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent/Range" unique_id=1500058057]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent/Hitbox" unique_id=1500058057]
 shape = SubResource("CircleShape2D_vh4c1")
 debug_color = Color(0.96816915, 9.62615e-08, 0.47265458, 0.41960785)
 
@@ -91,19 +118,34 @@ scale = Vector2(0.5703628, 0.5703628)
 shape = SubResource("RectangleShape2D_xvdto")
 debug_color = Color(0.6095099, 0.37139773, 0.98366195, 0.41960785)
 
+[node name="AvoidMinigameComponent" type="Area2D" parent="." unique_id=1953953333]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 1024
+script = ExtResource("8_8vdv3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AvoidMinigameComponent" unique_id=1486972185]
+shape = SubResource("RectangleShape2D_b7d7s")
+
 [node name="AnimationComponent" type="AnimationTree" parent="." unique_id=845356095]
 root_node = NodePath(".")
 tree_root = SubResource("AnimationNodeStateMachine_0ue5q")
 anim_player = NodePath("AnimationPlayer")
+script = ExtResource("9_il2rw")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationComponent" unique_id=1703417779]
 libraries/ = SubResource("AnimationLibrary_8vdv3")
 
+[connection signal="died" from="HealthComponent" to="AnimationComponent" method="_on_die"]
 [connection signal="navigation_finished" from="PathfindingComponent" to="." method="_on_pathfinding_reached"]
 [connection signal="navigation_finished" from="PathfindingComponent" to="PathfindingComponent" method="_on_navigation_finished"]
 [connection signal="velocity_computed" from="PathfindingComponent" to="PathfindingComponent" method="_on_velocity_computed"]
 [connection signal="velocity_updated" from="PathfindingComponent" to="MovementComponent" method="_on_pathfinding_velocity_updated"]
 [connection signal="left_attack_range" from="AttackComponent" to="." method="_on_leave_attack_range"]
 [connection signal="timeout" from="AttackComponent/AttackCooldown" to="AttackComponent" method="_attack"]
-[connection signal="body_exited" from="AttackComponent/Range" to="AttackComponent" method="_on_range_body_exited"]
+[connection signal="body_exited" from="AttackComponent/Hitbox" to="AttackComponent" method="_on_range_body_exited"]
 [connection signal="input_event" from="HurtboxComponent" to="HurtboxComponent" method="_on_input_event"]
+[connection signal="area_entered" from="AvoidMinigameComponent" to="AvoidMinigameComponent" method="_on_area_entered"]
+[connection signal="area_exited" from="AvoidMinigameComponent" to="AvoidMinigameComponent" method="_on_area_exited"]
+[connection signal="entered_window" from="AvoidMinigameComponent" to="." method="_on_enter_minigame_window"]
+[connection signal="left_window" from="AvoidMinigameComponent" to="." method="_on_leave_minigame_window"]

@@ -6,13 +6,13 @@ extends Node
 	set(value):
 		health = clampi(value, 0, max_health)
 
-signal health_changed(amount: int)
+signal health_changed(health: int, max_health: int)
 signal died
 
 
 func take_damage(amount: int) -> void:
 	health -= amount
-	health_changed.emit(health)
+	health_changed.emit(health, max_health)
 	if health == 0:
 		died.emit()
 		print("died")
@@ -20,4 +20,4 @@ func take_damage(amount: int) -> void:
 
 func heal(amount: int) -> void:
 	health += amount
-	health_changed.emit(health)
+	health_changed.emit(health, max_health)

@@ -1,0 +1,26 @@
+[gd_resource type="Theme" format=3 uid="uid://bhn8258rvi1is"]
+
+[ext_resource type="FontFile" uid="uid://c4bsy58jygres" path="res://art/fonts/Pixel_4x4-Regular.ttf" id="1_tga32"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q5u7m"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6qad"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
+[resource]
+default_font = ExtResource("1_tga32")
+ProgressBar/constants/outline_size = 10
+ProgressBar/font_sizes/font_size = 16
+ProgressBar/styles/background = SubResource("StyleBoxFlat_q5u7m")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_k6qad")

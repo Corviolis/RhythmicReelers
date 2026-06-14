@@ -75,9 +75,8 @@ func _beat() -> void:
 		return
 	var target_note := notes[0]
 	var hit_time: float = (MusicPlayer.song_position - target_note.note.time) * 100
-	var areas_hit := hit_area.get_overlapping_areas()
 	var hurtboxes_hit: Array[HurtboxComponent]
-	hurtboxes_hit.assign(areas_hit)
+	hurtboxes_hit.assign(hit_area.get_overlapping_areas())
 
 	_handle_beat_result.rpc(hit_time, false, hurtboxes_hit)
 

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ef00eci4vhfi"]
+
+[ext_resource type="Script" uid="uid://dc2adwm037wyk" path="res://scenes/game/attack_spot.gd" id="1_82uln"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pg2xm"]
+
+[node name="AttackSpot" type="Area2D" unique_id=551145529]
+collision_layer = 0
+collision_mask = 1024
+script = ExtResource("1_82uln")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1833477242]
+shape = SubResource("CircleShape2D_pg2xm")
+
+[connection signal="area_entered" from="." to="." method="_on_window_entered"]
+[connection signal="area_exited" from="." to="." method="_on_window_exited"]
