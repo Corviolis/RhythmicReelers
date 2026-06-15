@@ -14,7 +14,7 @@ var is_in_range: bool:
 @onready var hitbox: Area2D = $Hitbox
 
 
-func _on_range_body_exited(_body: Node2D) -> void:
+func _on_range_exited(_body: Area2D) -> void:
 	left_attack_range.emit()
 	stop_attacking()
 

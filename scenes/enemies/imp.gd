@@ -46,15 +46,20 @@ func _enter_waiting_room() -> void:
 	var closest_wait_spot := _get_closest_valid_waiting_spot()
 	var possible_attack_slot := closest_wait_spot.get_available_slot()
 	if possible_attack_slot:
-		attack_slot = possible_attack_slot
-		attack_slot.add_occupant()
-		pathfinding_component.set_target(attack_slot.global_position)
-		change_state(States.APPROACHING)
+		_target_attack_spot(possible_attack_slot)
 		return
 	change_state(States.SEARCHING)
 	wait_spot = closest_wait_spot
 	wait_spot.add_occupant()
 	pathfinding_component.set_target(wait_spot.global_position)
+
+
+func _target_attack_spot(target: AttackSpot) -> void:
+	attack_slot = target
+	attack_slot.add_occupant()
+	pathfinding_component.set_target(attack_slot.global_position)
+	change_state(States.APPROACHING)
+	attack_slot.covered.connect(func() -> void: change_state(States.MOVING))
 
 
 # WARN: change to index before full release

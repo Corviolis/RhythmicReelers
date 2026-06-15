@@ -60,6 +60,7 @@ script = ExtResource("1_eu407")
 [node name="Boat" type="StaticBody2D" parent="." unique_id=1015629361]
 y_sort_enabled = true
 collision_mask = 0
+collision_priority = 2.0
 script = ExtResource("2_otnwt")
 metadata/_edit_lock_ = true
 
