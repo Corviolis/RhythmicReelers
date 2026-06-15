@@ -15,7 +15,7 @@ var note_seek_head: float
 var beat_seek_head: float
 var beatcount: int = 0
 
-@onready var hit_area: Area2D = $HitArea
+var basic_bullet: PackedScene = preload("res://scenes/minigames/shooting/bullets/basic_bullet.tscn")
 
 
 class NoteAnimation:
@@ -75,10 +75,7 @@ func _beat() -> void:
 		return
 	var target_note := notes[0]
 	var hit_time: float = (MusicPlayer.song_position - target_note.note.time) * 100
-	var hurtboxes_hit: Array[HurtboxComponent]
-	hurtboxes_hit.assign(hit_area.get_overlapping_areas())
-
-	_handle_beat_result.rpc(hit_time, false, hurtboxes_hit)
+	_handle_beat_result.rpc(hit_time)
 
 
 func _missed_beat() -> void:
@@ -91,9 +88,7 @@ func _missed_beat() -> void:
 
 # TODO: spawn bullets rather than hitting the hurtboxes themselves
 @rpc("any_peer", "call_local", "reliable")
-func _handle_beat_result(
-	hit_time: float, missed: bool = false, hurtboxes_hit: Array[HurtboxComponent] = []
-) -> void:
+func _handle_beat_result(hit_time: float, missed: bool = false) -> void:
 	var note_animation: NoteAnimation = notes.pop_front()
 	note_animation.kill()
 	if missed:
@@ -102,22 +97,25 @@ func _handle_beat_result(
 	match true:
 		_ when abs(hit_time) <= high_accuracy:
 			print("Nice! %s" % hit_time)
-			for hurtbox_component: HurtboxComponent in hurtboxes_hit:
-				hurtbox_component.take_hit(2)
+			_shoot_bullet(basic_bullet)
 		_ when hit_time > 0 and abs(hit_time) <= low_accuracy:
 			print("Slightly Slow! %s" % hit_time)
-			for hurtbox_component: HurtboxComponent in hurtboxes_hit:
-				hurtbox_component.take_hit(2)
+			_shoot_bullet(basic_bullet)
 		_ when hit_time < 0 and abs(hit_time) <= low_accuracy:
 			print("Slightly Fast! %s" % hit_time)
-			for hurtbox_component: HurtboxComponent in hurtboxes_hit:
-				hurtbox_component.take_hit(2)
+			_shoot_bullet(basic_bullet)
 		_ when hit_time > 0 and abs(hit_time) > low_accuracy:
 			print("Very Slow! %s" % hit_time)
 		_ when hit_time < 0 and abs(hit_time) > low_accuracy:
 			print("Very Fast! %s" % hit_time)
 		_:
 			printerr("Impossible hit time! %s" % hit_time)
+
+
+func _shoot_bullet(scene: PackedScene) -> void:
+	var bullet := scene.instantiate() as Node2D
+	bullet.global_position = global_position
+	add_sibling(bullet)
 
 
 func _on_song_position(_song_position: float) -> void:

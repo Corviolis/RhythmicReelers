@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://cxcfq2u0at1k3" path="res://components/movement_component.gd" id="4_vh4c1"]
 [ext_resource type="Script" uid="uid://73wfglpeeat7" path="res://components/attack_component.gd" id="6_b7d7s"]
 [ext_resource type="Script" uid="uid://b4ea5gdd1ndmo" path="res://components/hurtbox_component.gd" id="7_b7d7s"]
+[ext_resource type="Script" uid="uid://jrnu5j1tiarx" path="res://components/attack_cooldown_component.gd" id="7_i5vaa"]
 [ext_resource type="Script" uid="uid://c0e52mlcxrklf" path="res://components/avoid_minigame_component.gd" id="8_8vdv3"]
 [ext_resource type="Script" uid="uid://b8t4aukevu7v6" path="res://components/animation_component.gd" id="9_il2rw"]
 
@@ -56,6 +57,11 @@ _data = {
 &"die": SubResource("Animation_b7d7s")
 }
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_il2rw"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
 [node name="Imp" type="CharacterBody2D" unique_id=1431030748]
 collision_layer = 256
 script = ExtResource("1_svurw")
@@ -91,20 +97,20 @@ script = ExtResource("4_vh4c1")
 body = NodePath("..")
 pathfinding_component = NodePath("../PathfindingComponent")
 
-[node name="AttackComponent" type="Node2D" parent="." unique_id=1996235753]
+[node name="AttackComponent" type="Area2D" parent="." unique_id=837863097]
 unique_name_in_owner = true
-script = ExtResource("6_b7d7s")
-
-[node name="AttackCooldown" type="Timer" parent="AttackComponent" unique_id=1455483548]
-process_callback = 0
-
-[node name="Hitbox" type="Area2D" parent="AttackComponent" unique_id=837863097]
 collision_layer = 0
 collision_mask = 16
+script = ExtResource("6_b7d7s")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent/Hitbox" unique_id=1500058057]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent" unique_id=1500058057]
 shape = SubResource("CircleShape2D_vh4c1")
 debug_color = Color(0.96816915, 9.62615e-08, 0.47265458, 0.41960785)
+
+[node name="AttackCooldownComponent" type="Timer" parent="." unique_id=1455483548]
+unique_name_in_owner = true
+process_callback = 0
+script = ExtResource("7_i5vaa")
 
 [node name="HurtboxComponent" type="Area2D" parent="." unique_id=1580137792 node_paths=PackedStringArray("health_component")]
 unique_name_in_owner = true
@@ -136,14 +142,16 @@ script = ExtResource("9_il2rw")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationComponent" unique_id=1703417779]
 libraries/ = SubResource("AnimationLibrary_8vdv3")
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1577240020]
+replication_config = SubResource("SceneReplicationConfig_il2rw")
+
 [connection signal="died" from="HealthComponent" to="AnimationComponent" method="_on_die"]
 [connection signal="navigation_finished" from="PathfindingComponent" to="." method="_on_pathfinding_reached"]
 [connection signal="navigation_finished" from="PathfindingComponent" to="PathfindingComponent" method="_on_navigation_finished"]
 [connection signal="velocity_computed" from="PathfindingComponent" to="PathfindingComponent" method="_on_velocity_computed"]
 [connection signal="velocity_updated" from="PathfindingComponent" to="MovementComponent" method="_on_pathfinding_velocity_updated"]
 [connection signal="left_attack_range" from="AttackComponent" to="." method="_on_leave_attack_range"]
-[connection signal="timeout" from="AttackComponent/AttackCooldown" to="AttackComponent" method="_attack"]
-[connection signal="area_exited" from="AttackComponent/Hitbox" to="AttackComponent" method="_on_range_exited"]
+[connection signal="left_attack_range" from="AttackComponent" to="AttackCooldownComponent" method="stop_attacking"]
 [connection signal="input_event" from="HurtboxComponent" to="HurtboxComponent" method="_on_input_event"]
 [connection signal="area_entered" from="AvoidMinigameComponent" to="AvoidMinigameComponent" method="_on_area_entered"]
 [connection signal="area_exited" from="AvoidMinigameComponent" to="AvoidMinigameComponent" method="_on_area_exited"]

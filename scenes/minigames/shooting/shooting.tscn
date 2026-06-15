@@ -8,9 +8,6 @@ properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_yrvko"]
-size = Vector2(3, 3)
-
 [node name="Shooting" type="Node2D" unique_id=541713650]
 z_index = 2
 script = ExtResource("1_p34gj")
@@ -21,11 +18,3 @@ texture = ExtResource("1_xie4b")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=753314925]
 replication_config = SubResource("SceneReplicationConfig_yrvko")
-
-[node name="HitArea" type="Area2D" parent="." unique_id=738286067]
-collision_layer = 0
-collision_mask = 512
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=1679936129]
-position = Vector2(0.5, 0.5)
-shape = SubResource("RectangleShape2D_yrvko")

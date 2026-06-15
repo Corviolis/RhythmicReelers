@@ -7,6 +7,7 @@ var attack_slot: AttackSpot = null
 
 @onready var pathfinding_component: PathfindingComponent = %PathfindingComponent
 @onready var attack_component: AttackComponent = %AttackComponent
+@onready var attack_cooldown_component: AttackCooldownComponent = %AttackCooldownComponent
 @onready var avoid_minigame_component: AvoidMinigameComponent = %AvoidMinigameComponent
 @onready var boat: Node2D = get_tree().get_root().get_child(-1).get_child(0)
 
@@ -95,7 +96,6 @@ func _reached_wait_spot() -> void:
 
 
 func _on_pathfinding_reached() -> void:
-	print(States.find_key(current_state))
 	match current_state:
 		States.MOVING:
 			change_state(States.SEARCHING)
@@ -133,7 +133,6 @@ func change_state(state: States) -> void:
 				change_state(States.MOVING)
 				return
 			current_state = States.ATTACKING
-			print("attack state")
-			attack_component.start_attacking()
+			attack_cooldown_component.start_attacking()
 		_:
 			push_error("Unexpected state %s" % state)
