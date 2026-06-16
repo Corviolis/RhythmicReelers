@@ -1,6 +1,6 @@
 extends Node
 
-enum Minigames { FISHING, CUTTING, PACKAGING, SHOOTING }
+enum Minigames { FISHING, CUTTING, PACKAGING, SHOOTING, LOADING }
 
 const WINDOW_PADDING: int = 1
 

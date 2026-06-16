@@ -15,7 +15,7 @@ var note_seek_head: float
 var beat_seek_head: float
 var beatcount: int = 0
 
-var basic_bullet: PackedScene = preload("res://scenes/minigames/shooting/bullets/basic_bullet.tscn")
+@onready var shooting_station: ShootingStation = get_node(minigame_station) as ShootingStation
 
 
 class NoteAnimation:
@@ -97,13 +97,13 @@ func _handle_beat_result(hit_time: float, missed: bool = false) -> void:
 	match true:
 		_ when abs(hit_time) <= high_accuracy:
 			print("Nice! %s" % hit_time)
-			_shoot_bullet(basic_bullet)
+			_shoot_bullet(shooting_station.shoot_bullet())
 		_ when hit_time > 0 and abs(hit_time) <= low_accuracy:
 			print("Slightly Slow! %s" % hit_time)
-			_shoot_bullet(basic_bullet)
+			_shoot_bullet(shooting_station.shoot_bullet())
 		_ when hit_time < 0 and abs(hit_time) <= low_accuracy:
 			print("Slightly Fast! %s" % hit_time)
-			_shoot_bullet(basic_bullet)
+			_shoot_bullet(shooting_station.shoot_bullet())
 		_ when hit_time > 0 and abs(hit_time) > low_accuracy:
 			print("Very Slow! %s" % hit_time)
 		_ when hit_time < 0 and abs(hit_time) > low_accuracy:
@@ -113,6 +113,9 @@ func _handle_beat_result(hit_time: float, missed: bool = false) -> void:
 
 
 func _shoot_bullet(scene: PackedScene) -> void:
+	if not scene:
+		print("ammo empty!")
+		return
 	var bullet := scene.instantiate() as Node2D
 	bullet.global_position = global_position
 	add_sibling(bullet)

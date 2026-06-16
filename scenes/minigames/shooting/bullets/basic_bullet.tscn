@@ -13,7 +13,7 @@ attack_component = NodePath("AttackComponent")
 [node name="AttackComponent" type="Area2D" parent="." unique_id=902026264]
 unique_name_in_owner = true
 collision_layer = 0
-collision_mask = 16777215
+collision_mask = 512
 script = ExtResource("1_mx8ew")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent" unique_id=870635737]

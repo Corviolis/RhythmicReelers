@@ -4,6 +4,6 @@ extends Node2D
 
 
 func _physics_process(_delta: float) -> void:
-	attack_component.attack()
 	await get_tree().physics_frame
+	attack_component.attack()
 	queue_free()

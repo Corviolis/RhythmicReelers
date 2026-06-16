@@ -20,4 +20,5 @@ func attack() -> void:
 	var hurtboxes_hit: Array[HurtboxComponent]
 	hurtboxes_hit.assign(get_overlapping_areas())
 	for hurtbox_component: HurtboxComponent in hurtboxes_hit:
+		print("hit")
 		hurtbox_component.take_hit(damage)
