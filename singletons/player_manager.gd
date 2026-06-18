@@ -167,7 +167,9 @@ func _next_player() -> int:
 
 
 func _get_random_available_player_icon() -> int:
-	var available_icons := (get_node("/root/Lobby") as Lobby).available_icons
+	var available_icons := (
+		(get_tree().current_scene.get_node("/root/Control/Lobby") as Lobby).available_icons
+	)
 	var possible_icons: Array[int]
 	for i in len(available_icons):
 		if available_icons[i]:

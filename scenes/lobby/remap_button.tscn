@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://c23yewfc5kvbs"]
+
+[ext_resource type="Script" uid="uid://ccsrgysji55r1" path="res://scenes/lobby/remap_button.gd" id="1_owcmy"]
+[ext_resource type="Material" uid="uid://bqv7e2yagptbi" path="res://art/materials/base_color_UI.tres" id="1_rb1v4"]
+[ext_resource type="Theme" uid="uid://cr57qof47xvw8" path="res://art/ui/4x4ui.tres" id="2_rb1v4"]
+[ext_resource type="Theme" uid="uid://bhn8258rvi1is" path="res://art/ui/general_theme.tres" id="2_xhjnd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gme4"]
+content_margin_left = 2.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xhjnd"]
+content_margin_left = 2.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_afb3u"]
+content_margin_left = 2.0
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6gdat"]
+content_margin_left = 2.0
+bg_color = Color(1, 1, 1, 1)
+
+[node name="Remap1" type="HBoxContainer" unique_id=1043811976]
+material = ExtResource("1_rb1v4")
+use_parent_material = true
+offset_right = 70.0
+offset_bottom = 8.0
+focus_mode = 2
+theme = ExtResource("2_xhjnd")
+theme_override_constants/separation = -1
+script = ExtResource("1_owcmy")
+
+[node name="Assign" type="Button" parent="." unique_id=1012051631]
+use_parent_material = true
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme = ExtResource("2_rb1v4")
+toggle_mode = true
+text = "[ assign ]"
+
+[node name="Remove" type="Button" parent="." unique_id=1832998072]
+use_parent_material = true
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+theme = ExtResource("2_rb1v4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8gme4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xhjnd")
+theme_override_styles/hover = SubResource("StyleBoxFlat_afb3u")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6gdat")
+text = "x"
+
+[connection signal="toggled" from="Assign" to="." method="_toggled"]
+[connection signal="pressed" from="Remove" to="." method="_unbind"]

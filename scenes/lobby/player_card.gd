@@ -10,7 +10,7 @@ var color_replace_shader := preload("res://art/shaders/color_replace.gdshader") 
 @onready
 var sprite: TextureRect = get_node("PanelContainer/MarginContainer/VBoxContainer/CharacterTexture")
 @onready var name_tag: Label = get_node("PanelContainer/MarginContainer/VBoxContainer/PlayerName")
-@onready var lobby: Lobby = get_node("/root/Lobby")
+@onready var lobby: Lobby = get_node("/root/Control/Lobby")
 
 
 func init(player_num: int) -> void:

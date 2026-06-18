@@ -2,6 +2,18 @@
 
 [ext_resource type="FontFile" uid="uid://c4bsy58jygres" path="res://art/fonts/Pixel_4x4-Regular.ttf" id="1_tga32"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tga32"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q5u7m"]
 bg_color = Color(1, 1, 1, 1)
 border_width_left = 1
@@ -18,9 +30,23 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_64buw"]
+bg_color = Color(0.6349854, 0.6349854, 0.63498527, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_tga32"]
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = 0.0
+vertical = true
+
 [resource]
 default_font = ExtResource("1_tga32")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_tga32")
 ProgressBar/constants/outline_size = 10
 ProgressBar/font_sizes/font_size = 16
 ProgressBar/styles/background = SubResource("StyleBoxFlat_q5u7m")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_k6qad")
+ScrollContainer/icons/scroll_hint_horizontal = null
+ScrollContainer/icons/scroll_hint_vertical = null
+ScrollContainer/styles/focus = SubResource("StyleBoxFlat_64buw")
+VSeparator/styles/separator = SubResource("StyleBoxLine_tga32")

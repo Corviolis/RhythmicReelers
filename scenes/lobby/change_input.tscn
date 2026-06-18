@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://dwgcjnrg0k2r6"]
+
+[ext_resource type="Material" uid="uid://bqv7e2yagptbi" path="res://art/materials/base_color_UI.tres" id="1_0mgug"]
+[ext_resource type="Theme" uid="uid://cr57qof47xvw8" path="res://art/ui/4x4ui.tres" id="2_1a4sy"]
+[ext_resource type="Theme" uid="uid://bhn8258rvi1is" path="res://art/ui/general_theme.tres" id="2_un7hn"]
+[ext_resource type="Script" uid="uid://dihmaib3xttcr" path="res://scenes/lobby/change_input.gd" id="3_un7hn"]
+[ext_resource type="PackedScene" uid="uid://c23yewfc5kvbs" path="res://scenes/lobby/remap_button.tscn" id="5_xdeji"]
+
+[node name="ChangeInput" type="HBoxContainer" unique_id=1474666383]
+material = ExtResource("1_0mgug")
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_un7hn")
+script = ExtResource("3_un7hn")
+
+[node name="Label" type="Label" parent="." unique_id=1749308378]
+use_parent_material = true
+layout_mode = 2
+theme = ExtResource("2_1a4sy")
+text = "action name"
+
+[node name="Remap1" parent="." unique_id=1043811976 instance=ExtResource("5_xdeji")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Remap2" parent="." unique_id=1825903123 instance=ExtResource("5_xdeji")]
+layout_mode = 2
+
+[node name="Remap3" parent="." unique_id=1037573726 instance=ExtResource("5_xdeji")]
+layout_mode = 2

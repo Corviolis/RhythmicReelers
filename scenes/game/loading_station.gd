@@ -1,4 +1,4 @@
 class_name LoadingStation
 extends StationInteractable
 
-@export var ShootingStation: ShootingStation
+@export var shooting_station: ShootingStation

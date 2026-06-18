@@ -6,18 +6,35 @@
 [ext_resource type="Texture2D" uid="uid://ct21luvxm50sy" path="res://art/world/minigame_window/1pixel.png" id="3_jvwwu"]
 [ext_resource type="Material" uid="uid://c2bdahsrkh6xb" path="res://art/materials/base_color.tres" id="4_rm4i8"]
 [ext_resource type="Material" uid="uid://bqv7e2yagptbi" path="res://art/materials/base_color_UI.tres" id="5_hc4wr"]
+[ext_resource type="Texture2D" uid="uid://dwrivndrolbqv" path="res://art/ui/settings_cog.png" id="7_2tt0b"]
+[ext_resource type="Theme" uid="uid://bhn8258rvi1is" path="res://art/ui/general_theme.tres" id="7_iytm0"]
+[ext_resource type="Texture2D" uid="uid://hly4q7s5an00" path="res://art/ui/settings_cog_focus.png" id="9_l1n8d"]
+[ext_resource type="Texture2D" uid="uid://bqr6sjklgqgg2" path="res://art/ui/settings_cog_pressed.png" id="9_m8hcm"]
+[ext_resource type="Script" uid="uid://ckicotdycxcth" path="res://scenes/lobby/settings.gd" id="11_a0ps3"]
 
-[node name="Lobby" type="Control" unique_id=1130500132]
-texture_filter = 1
+[node name="Control" type="Control" unique_id=1179025585]
+material = ExtResource("5_hc4wr")
 layout_mode = 3
 anchor_right = 0.25
 anchor_bottom = 0.25
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("7_iytm0")
+
+[node name="Lobby" type="Control" parent="." unique_id=1130500132]
+texture_filter = 1
+material = ExtResource("5_hc4wr")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_2jmq4")
 script = ExtResource("1_g0qk4")
+metadata/_edit_group_ = true
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=789956743]
+[node name="TextureRect" type="TextureRect" parent="Lobby" unique_id=789956743]
 material = ExtResource("4_rm4i8")
 layout_mode = 1
 anchors_preset = 15
@@ -27,7 +44,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_jvwwu")
 
-[node name="LobbyList" type="HBoxContainer" parent="." unique_id=1466454644]
+[node name="LobbyList" type="HBoxContainer" parent="Lobby" unique_id=1466454644]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -35,10 +52,11 @@ anchor_left = 0.08125
 anchor_top = 0.0555556
 anchor_right = 1.35
 anchor_bottom = 0.172222
-offset_right = -119.0
+offset_right = 35.25
+offset_bottom = 1.3333416
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="LobbyList" unique_id=1519424108]
+[node name="Label" type="Label" parent="Lobby/LobbyList" unique_id=1519424108]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -46,17 +64,15 @@ theme_override_fonts/font = ExtResource("2_byybb")
 text = "Connected to Lobby:"
 justification_flags = 35
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=321989971]
+[node name="PanelContainer" type="PanelContainer" parent="Lobby" unique_id=321989971]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.1
-anchor_top = 0.177778
-anchor_right = 0.284375
-anchor_bottom = 0.827778
-metadata/_edit_use_anchors_ = true
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 91.0
+offset_bottom = 149.0
 
-[node name="Label" type="Label" parent="PanelContainer" unique_id=1962880205]
+[node name="Label" type="Label" parent="Lobby/PanelContainer" unique_id=1962880205]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 text = "Press
@@ -67,7 +83,7 @@ to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=715235809]
+[node name="PanelContainer2" type="PanelContainer" parent="Lobby" unique_id=715235809]
 material = ExtResource("5_hc4wr")
 layout_mode = 0
 anchor_left = 0.20625
@@ -78,7 +94,7 @@ offset_right = 91.0
 offset_bottom = 149.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="PanelContainer2" unique_id=328295702]
+[node name="Label" type="Label" parent="Lobby/PanelContainer2" unique_id=328295702]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 text = "Press
@@ -89,7 +105,7 @@ to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer3" type="PanelContainer" parent="." unique_id=1066460342]
+[node name="PanelContainer3" type="PanelContainer" parent="Lobby" unique_id=1066460342]
 material = ExtResource("5_hc4wr")
 layout_mode = 0
 anchor_left = 0.20625
@@ -100,7 +116,7 @@ offset_right = 157.0
 offset_bottom = 149.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="PanelContainer3" unique_id=499290719]
+[node name="Label" type="Label" parent="Lobby/PanelContainer3" unique_id=499290719]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 text = "Press
@@ -111,7 +127,7 @@ to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer4" type="PanelContainer" parent="." unique_id=1568174289]
+[node name="PanelContainer4" type="PanelContainer" parent="Lobby" unique_id=1568174289]
 material = ExtResource("5_hc4wr")
 layout_mode = 0
 anchor_left = 0.203125
@@ -122,7 +138,7 @@ offset_right = 223.0
 offset_bottom = 149.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="PanelContainer4" unique_id=2098105991]
+[node name="Label" type="Label" parent="Lobby/PanelContainer4" unique_id=2098105991]
 material = ExtResource("5_hc4wr")
 layout_mode = 2
 text = "Press
@@ -133,7 +149,7 @@ to Join"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerList" type="HBoxContainer" parent="." unique_id=979874055]
+[node name="PlayerList" type="HBoxContainer" parent="Lobby" unique_id=979874055]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1125
@@ -144,13 +160,13 @@ grow_vertical = 2
 theme_override_constants/separation = 15
 metadata/_edit_use_anchors_ = true
 
-[node name="Buttons" type="Control" parent="." unique_id=609041850]
+[node name="Buttons" type="Control" parent="Lobby" unique_id=609041850]
 anchors_preset = 0
 anchor_right = 0.0347222
 anchor_bottom = 0.0617284
 metadata/_edit_use_anchors_ = true
 
-[node name="OpenServer" type="Button" parent="Buttons" unique_id=1784325778]
+[node name="OpenServer" type="Button" parent="Lobby/Buttons" unique_id=1784325778]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -162,7 +178,7 @@ theme = ExtResource("1_2jmq4")
 text = "Host"
 metadata/_edit_use_anchors_ = true
 
-[node name="JoinServer" type="Button" parent="Buttons" unique_id=721103940]
+[node name="JoinServer" type="Button" parent="Lobby/Buttons" unique_id=721103940]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -173,7 +189,7 @@ anchor_bottom = 15.75
 text = "Join"
 metadata/_edit_use_anchors_ = true
 
-[node name="ServerIP" type="LineEdit" parent="Buttons" unique_id=783928554]
+[node name="ServerIP" type="LineEdit" parent="Lobby/Buttons" unique_id=783928554]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -184,7 +200,7 @@ anchor_bottom = 15.75
 text = "localhost"
 metadata/_edit_use_anchors_ = true
 
-[node name="StartGame" type="Button" parent="Buttons" unique_id=1335157148]
+[node name="StartGame" type="Button" parent="Lobby/Buttons" unique_id=1335157148]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -198,7 +214,7 @@ offset_bottom = 5.38889
 disabled = true
 text = "Start Game"
 
-[node name="LeaveServer" type="Button" parent="Buttons" unique_id=1459035697]
+[node name="LeaveServer" type="Button" parent="Lobby/Buttons" unique_id=1459035697]
 material = ExtResource("5_hc4wr")
 layout_mode = 1
 anchors_preset = -1
@@ -213,11 +229,69 @@ offset_bottom = -0.111115
 disabled = true
 text = "Leave"
 
+[node name="Settings" type="Control" parent="." unique_id=1892109904 node_paths=PackedStringArray("lobby")]
+visible = false
+material = ExtResource("5_hc4wr")
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("11_a0ps3")
+lobby = NodePath("../Lobby")
+
+[node name="PanelContainer" type="PanelContainer" parent="Settings" unique_id=2084931221]
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 2.0
+offset_top = -85.0
+offset_right = 266.0
+offset_bottom = 85.0
+grow_vertical = 2
+theme = ExtResource("7_iytm0")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Settings/PanelContainer" unique_id=912359288]
+use_parent_material = true
+layout_mode = 2
+theme = ExtResource("7_iytm0")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+metadata/_edit_lock_ = true
+
+[node name="RemapActions" type="VBoxContainer" parent="Settings/PanelContainer/ScrollContainer" unique_id=982584559]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ToggleSettings" type="TextureButton" parent="." unique_id=1183406521]
+material = ExtResource("5_hc4wr")
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -23.0
+offset_top = 7.0
+offset_right = -8.0
+offset_bottom = 22.0
+grow_horizontal = 0
+theme = ExtResource("7_iytm0")
+texture_normal = ExtResource("7_2tt0b")
+texture_pressed = ExtResource("9_m8hcm")
+texture_hover = ExtResource("9_l1n8d")
+texture_focused = ExtResource("9_l1n8d")
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=347269727]
 position = Vector2(160, 90)
 zoom = Vector2(4, 4)
 
-[connection signal="pressed" from="Buttons/OpenServer" to="." method="host_game"]
-[connection signal="pressed" from="Buttons/JoinServer" to="." method="join_game"]
-[connection signal="pressed" from="Buttons/StartGame" to="." method="start_game"]
-[connection signal="pressed" from="Buttons/LeaveServer" to="." method="leave_server"]
+[connection signal="pressed" from="Lobby/Buttons/OpenServer" to="Lobby" method="host_game"]
+[connection signal="pressed" from="Lobby/Buttons/JoinServer" to="Lobby" method="join_game"]
+[connection signal="pressed" from="Lobby/Buttons/StartGame" to="Lobby" method="start_game"]
+[connection signal="pressed" from="Lobby/Buttons/LeaveServer" to="Lobby" method="leave_server"]
+[connection signal="pressed" from="ToggleSettings" to="Settings" method="toggle_open"]
