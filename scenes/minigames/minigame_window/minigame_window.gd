@@ -51,10 +51,12 @@ func place_window(
 	minigame.minigame_station = minigame_station
 	minigame.score_label = score_label
 
-	navigation_obstacle.vertices[0] = Vector2(-window_size.x / 2, -window_size.y / 2)
-	navigation_obstacle.vertices[1] = Vector2(window_size.x / 2, -window_size.y / 2)
-	navigation_obstacle.vertices[2] = Vector2(window_size.x / 2, window_size.y / 2)
-	navigation_obstacle.vertices[3] = Vector2(-window_size.x / 2, window_size.y / 2)
+	var nav_vertices: PackedVector2Array
+	nav_vertices.append(Vector2(-window_size.x / 2, -window_size.y / 2))
+	nav_vertices.append(Vector2(window_size.x / 2, -window_size.y / 2))
+	nav_vertices.append(Vector2(window_size.x / 2, window_size.y / 2))
+	nav_vertices.append(Vector2(-window_size.x / 2, window_size.y / 2))
+	navigation_obstacle.set_vertices(nav_vertices)
 	navigation_obstacle.radius = max(window_size.x / 2, window_size.y / 2)
 	navigation_obstacle.global_position = window_center
 
